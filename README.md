@@ -32,10 +32,10 @@ Users make a post when they have leftover food from an event (or for whatever re
 * User can open up Google maps to find a route to the free food
 * User can post about free food, including a picture of the item and its location
 * Users can mark when food has been fully claimed after posting
+* User can open up camera from the app when posting food
 
 **Optional Nice-to-have Stories**
 * User can get real-time notifications when people near them post
-* User can open up camera from the app when posting food
 * User can edit their profile to include dietary restrictions
 * User can filter posts on their feed/in notifications for dietary restrictions
 * User can mark allergens the food they post contains
@@ -87,7 +87,7 @@ Users make a post when they have leftover food from an event (or for whatever re
     * Stream
 
 ## Wireframes
-[Add picture of your hand sketched wireframes in this section]
+https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
 
 ### [BONUS] Digital Wireframes & Mockups
