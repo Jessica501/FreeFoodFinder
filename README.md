@@ -95,10 +95,73 @@ https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 ### [BONUS] Interactive Prototype
 
 ## Schema
-[This section will be completed in Unit 9]
 ### Models
-[Add table of models]
+
+**Post**
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| objectId | String | unique id for the user post (default field) |
+| author | Pointer to User | post author |
+| image | File | image that user posts |
+| title | String | name of the food |
+| location | JSON Object with "__type": "Geopoint" | location of the food
+| description | String | more detailed description of the food |
+| contains | JSON Object | maps various allergens/ingredients to a boolean (true if the food contains the allergen) |
+| commentsCount | Number | Number of comments that have been posted to an image
+| comments | Relation to Comment | all the comments that are on this post |
+| claimed | Boolean | true if the food has been marked claimed, false otherwise |
+| createdAt | DateTime | date when post is created (default field) |
+| updatedAt | DateTime | date when post is last updated (default field) |
+
+**User**
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| objectId | String | unique id for the user (default field) |
+| name | String | user's name |
+| username | String | user's username |
+| password | String | user's password |
+| profileImage | File | user's profile image |
+| posts | Relation to Post | all the posts that have been posted by this user |
+| createdAt | DateTime | date when post is created (default field) |
+| updatedAt | DateTime | date when post is last updated (default field) |
+
+**Comment**
+| Property | Type | Description |
+| -------- | ---- | ----------- |
+| objectId | String | unique id for the user (default field) |
+| post | Pointer to Post | the post that the comment is on |
+| author | Pointer to User | the author of the comment |
+| image | File | image associated with the comment |
+| description | String | comment by author |
+| createdAt | DateTime | date when post is created (default field) |
+| updatedAt | DateTime | date when post is last updated (default field) |
+
+
 ### Networking
-- [Add list of network requests by screen ]
-- [Create basic snippets for each Parse network request]
+* Login
+    * (Read/GET) log in user
+* Register
+    * (Create/POST) create a new User
+* Stream
+    * (Read/GET) query all posts nearby
+* Map
+    * (Read/GET) query all posts nearby
+* Post Detail
+    * (Update/PUT) change claimed to true
+    * (Update/PUT) change fields of post (title, image, location, description, contains)
+    * (Delete) delete post
+    * (Read/GET) query all comments on a post
+    * (Create/POST) create a new comment on a post
+    * (Delete) delete existing comment
+* Creation
+* Create Detail
+    * (Create/POST) create a new post object
+* Profile
+    * (Read/GET) query logged in user object
+    * (Read/GET) query posts associated with user
+    * (Update/PUT) update user profile image
+* Settings
+    * (Update/PUT) change various user fields
+
+
 - [OPTIONAL: List endpoints if using existing API such as Yelp]
