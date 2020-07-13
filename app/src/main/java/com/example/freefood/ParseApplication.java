@@ -3,6 +3,7 @@ package com.example.freefood;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.freefood.models.Post;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -29,6 +30,9 @@ public class ParseApplication extends Application {
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         builder.networkInterceptors().add(httpLoggingInterceptor);
 
+        // register parse models
+        ParseObject.registerSubclass(Post.class);
+
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured
         // any network interceptors must be added with the Configuration Builder given this syntax
@@ -37,6 +41,6 @@ public class ParseApplication extends Application {
                 .clientKey("fbuFreeFoodFinder")  // set explicitly unless clientKey is explicitly configured on Parse server
                 .clientBuilder(builder)
                 .server("https://jyxu-free-food.herokuapp.com/parse").build());
-        
+
     }
 }
