@@ -33,13 +33,14 @@ Users make a post when they have leftover food from an event (or for whatever re
 * User can post about free food, including a picture of the item and its location
 * Users can mark when food has been fully claimed after posting
 * User can open up camera from the app when posting food
+* User can mark allergens the food they post contains
+* User can filter posts on their feed/in notifications for dietary restrictions
+* User can filter posts on their feed/in notifications for how far the food is and whether it's been claimed
 
 **Optional Nice-to-have Stories**
 * User can get real-time notifications when people near them post
+* Poster gets a notification an hour after the posting asking if the food has been claimed if they haven't already market it as such
 * User can edit their profile to include dietary restrictions
-* User can filter posts on their feed/in notifications for dietary restrictions
-* User can mark allergens the food they post contains
-* User can filter posts on their feed/in notifications for how far the food is and whether it's been claimed
 * User can view the posts in their feed in a map view
 * Users can comment on posts/rate the food
 * Users can follow companies/organizations that post frequently
@@ -90,6 +91,7 @@ Users make a post when they have leftover food from an event (or for whatever re
 https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
 ![](https://i.imgur.com/Z5zAuvB.png)
+
 
 ### [BONUS] Digital Wireframes & Mockups
 
