@@ -89,6 +89,7 @@ Users make a post when they have leftover food from an event (or for whatever re
 ## Wireframes
 https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
+![](https://i.imgur.com/Z5zAuvB.png)
 
 ### [BONUS] Digital Wireframes & Mockups
 
