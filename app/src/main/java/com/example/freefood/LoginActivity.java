@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.freefood.databinding.ActivityLoginBinding;
+import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,5 +26,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+
     }
 }
