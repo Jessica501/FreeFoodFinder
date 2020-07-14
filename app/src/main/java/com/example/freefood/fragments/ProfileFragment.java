@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.freefood.LoginActivity;
 import com.example.freefood.R;
 import com.example.freefood.SettingsActivity;
 import com.example.freefood.databinding.FragmentProfileBinding;
+import com.parse.ParseUser;
 
 public class ProfileFragment extends Fragment {
 
@@ -37,6 +39,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), SettingsActivity.class);
+                startActivity(i);
+            }
+        });
+
+        // log out user and switch to LoginActivity
+        binding.btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOut();
+                Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
             }
         });

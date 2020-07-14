@@ -24,10 +24,12 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // log in persistence
         if (ParseUser.getCurrentUser() != null) {
             goToMainActivity();
         }
 
+        // Switch to SignupActivity
         binding.tvNoAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -36,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Handle click on log in button
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,8 +47,6 @@ public class LoginActivity extends AppCompatActivity {
                 logInUser(username, password);
             }
         });
-
-
     }
 
     private void logInUser(String username, String password) {
@@ -55,7 +56,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (e == null) {
                     Log.i(TAG, "Successfully logged in");
                     goToMainActivity();
-                } else if (e.getCode() == ParseException.USERNAME_MISSING) {
+                }
+                // error handling
+                else if (e.getCode() == ParseException.USERNAME_MISSING) {
                     Toast.makeText(LoginActivity.this, "Username cannot be empty.", Toast.LENGTH_SHORT).show();
                 } else if (e.getCode() == ParseException.PASSWORD_MISSING) {
                     Toast.makeText(LoginActivity.this, "Password cannot be empty.", Toast.LENGTH_SHORT).show();

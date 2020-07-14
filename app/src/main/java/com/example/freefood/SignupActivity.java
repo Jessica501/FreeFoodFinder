@@ -24,6 +24,7 @@ public class SignupActivity extends AppCompatActivity {
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Switch to LoginActivity
         binding.tvHaveAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -32,6 +33,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
+        // handle click on sign up button
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,8 +41,6 @@ public class SignupActivity extends AppCompatActivity {
                 String password = String.valueOf(binding.etPassword.getText());
                 String name = String.valueOf(binding.etName.getText());
                 signUpUser(username, password, name);
-
-
             }
         });
     }
@@ -58,7 +58,9 @@ public class SignupActivity extends AppCompatActivity {
                     Intent i = new Intent(SignupActivity.this, MainActivity.class);
                     startActivity(i);
                     finish();
-                } else if (e.getCode() == ParseException.USERNAME_TAKEN) {
+                }
+                // error handling
+                else if (e.getCode() == ParseException.USERNAME_TAKEN) {
                     Toast.makeText(SignupActivity.this, "Username taken. Try again!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(SignupActivity.this, "Error signing up. Check log.", Toast.LENGTH_SHORT).show();
