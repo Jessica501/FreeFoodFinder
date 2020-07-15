@@ -32,6 +32,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.SaveCallback;
 
+import org.parceler.Parcels;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -94,8 +96,9 @@ public class ComposeFragment extends Fragment {
                             Log.e(TAG, "Error saving image file to Parse", e);
                             return;
                         }
+                        // go to PostDetailActivity with the parseFile
                         Intent i = new Intent(getContext(), PostDetailActivity.class);
-                        i.putExtra("image", parseFile);
+                        i.putExtra("image", Parcels.wrap(parseFile));
                         startActivity(i);
                     }
                 });
