@@ -10,6 +10,7 @@
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:cropToPadding="false"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_fastfood_24" />

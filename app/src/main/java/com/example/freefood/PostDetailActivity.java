@@ -11,6 +11,7 @@ import com.example.freefood.databinding.ActivityPostDetailBinding;
 import com.example.freefood.models.Post;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -44,6 +45,12 @@ public class PostDetailActivity extends AppCompatActivity {
                     Log.e(TAG, "Error querying post", e);
                     return;
                 }
+                if (!ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
+                    binding.btnClaimed.setVisibility(View.INVISIBLE);
+                } else {
+                    binding.btnClaimed.setVisibility(View.VISIBLE);
+                }
+
                 binding.tvTitle.setText(post.getTitle());
                 binding.tvLocation.setText(String.valueOf(post.getLocation()));
                 binding.tvUsername.setText(post.getAuthor().getUsername());
@@ -63,10 +70,15 @@ public class PostDetailActivity extends AppCompatActivity {
                     Glide.with(PostDetailActivity.this)
                             .load(post.getImage().getUrl())
                             .into(binding.ivImage);
+                } else {
+                    binding.ivImage.setPadding(64, 64, 64, 64);
                 }
-                if (!ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
-                    binding.btnClaimed.setVisibility(View.INVISIBLE);
-                }
+                ParseFile profileImage = post.getAuthor().getParseFile("profileImage");
+                Glide.with(PostDetailActivity.this)
+                        .load(profileImage.getUrl())
+                        .circleCrop()
+                        .into(binding.ivProfile);
+
             }
         });
     }
