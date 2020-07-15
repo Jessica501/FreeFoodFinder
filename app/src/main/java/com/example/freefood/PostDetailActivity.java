@@ -53,7 +53,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
                 binding.tvTitle.setText(post.getTitle());
                 binding.tvLocation.setText(String.valueOf(post.getLocation()));
-                binding.tvUsername.setText(post.getAuthor().getUsername());
+                binding.tvUsername.setText("@" + post.getAuthor().getUsername());
                 String description = post.getDescription().trim();
                 if (description.isEmpty()) {
                     binding.tvDescription.setVisibility(View.GONE);

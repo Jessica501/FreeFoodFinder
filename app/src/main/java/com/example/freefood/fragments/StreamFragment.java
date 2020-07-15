@@ -26,6 +26,8 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.freefood.Utils.queryPosts;
+
 
 public class StreamFragment extends Fragment {
 
@@ -55,13 +57,13 @@ public class StreamFragment extends Fragment {
         adapter = new PostsAdapter(getContext(), allPosts);
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-        queryPosts();
+        queryPosts(adapter);
 
         // add refresh listener to swipe container
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                queryPosts();
+                queryPosts(adapter);
                 binding.swipeContainer.setRefreshing(false);
             }
         });
@@ -72,25 +74,5 @@ public class StreamFragment extends Fragment {
                 android.R.color.holo_red_light);
     }
 
-    protected void queryPosts() {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_AUTHOR);
-        query.setLimit(20);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> posts, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Issue with getting posts", e);
-                    return;
-                }
-                for (Post post: posts) {
-                    Log.i(TAG, "Post: " + post.getTitle() + ", username: " + post.getAuthor().getUsername() + ", description: " + post.getDescription());
-                }
-                adapter.clear();
-                adapter.addAll(posts);
-            }
-        });
 
-    }
 }
