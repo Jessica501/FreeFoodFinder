@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.freefood.PostDetailActivity;
 import com.example.freefood.PostsAdapter;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentStreamBinding;
