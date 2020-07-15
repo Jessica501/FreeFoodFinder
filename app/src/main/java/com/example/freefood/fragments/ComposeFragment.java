@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.freefood.CreateDetailActivity;
-import com.example.freefood.PostDetailActivity;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentComposeBinding;
 import com.parse.Parse;
@@ -97,7 +96,7 @@ public class ComposeFragment extends Fragment {
                             return;
                         }
                         // go to PostDetailActivity with the parseFile
-                        Intent i = new Intent(getContext(), PostDetailActivity.class);
+                        Intent i = new Intent(getContext(), CreateDetailActivity.class);
                         i.putExtra("image", Parcels.wrap(parseFile));
                         startActivity(i);
                     }
