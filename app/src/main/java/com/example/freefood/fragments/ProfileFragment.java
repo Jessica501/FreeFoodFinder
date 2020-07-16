@@ -66,7 +66,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(i);
             }
         });
-        ParseUser user = ParseUser.getCurrentUser();
+        final ParseUser user = ParseUser.getCurrentUser();
         binding.tvName.setText(user.getString("name"));
         binding.tvUsername.setText("@" + user.getUsername());
         Glide.with(getContext())
@@ -85,7 +85,13 @@ public class ProfileFragment extends Fragment {
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                // query posts again
                 queryPosts(adapter, ParseUser.getCurrentUser());
+                // reload profile image
+                Glide.with(getContext())
+                        .load(user.getParseFile("profileImage").getUrl())
+                        .circleCrop()
+                        .into(binding.ivProfile);
                 binding.swipeContainer.setRefreshing(false);
             }
         });

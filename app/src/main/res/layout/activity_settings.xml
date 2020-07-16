@@ -6,13 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Settings"
+    <ImageView
+        android:id="@+id/ivProfile"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="24dp"
+        android:textColor="#303030"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivProfile"
+        app:layout_constraintTop_toTopOf="@+id/ivProfile"
+        tools:text="Name" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvName"
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        tools:text="Username" />
+
+    <Button
+        android:id="@+id/btnUpdateProfilePhoro"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="Update profile photo"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ivProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 </androidx.constraintlayout.widget.ConstraintLayout>

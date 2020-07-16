@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.freefood.CreateDetailActivity;
 import com.example.freefood.R;
+import com.example.freefood.Utils;
 import com.example.freefood.databinding.FragmentComposeBinding;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -41,12 +42,12 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.freefood.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.freefood.Utils.PICK_PHOTO_CODE;
 
 @RuntimePermissions
 public class ComposeFragment extends Fragment {
 
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-    public static final int PICK_PHOTO_CODE = 2;
     public static final String TAG = "ComposeFragment";
 
     FragmentComposeBinding binding;
@@ -155,26 +156,6 @@ public class ComposeFragment extends Fragment {
         }
     }
 
-    // returns Bitmap from Uri for image selected from gallery
-    public Bitmap loadFromUri(Uri photoUri) {
-        Bitmap image = null;
-        try {
-            // check version of Android on device
-            if (Build.VERSION.SDK_INT > 27) {
-                // on newer versions of Android, use the new decodeBitmap method
-                ImageDecoder.Source source = ImageDecoder.createSource(getContext().getContentResolver(), photoUri);
-                image = ImageDecoder.decodeBitmap(source);
-            } else {
-                // support older versions of Android by using getBitmap
-                image = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), photoUri);
-            }
-        } catch (IOException e) {
-            Log.e(TAG, "Error loading image", e);
-        }
-        return image;
-    }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Result from camera
@@ -196,7 +177,7 @@ public class ComposeFragment extends Fragment {
             Uri photoUri = data.getData();
 
             // Load the image located at photoUri into selectedImage
-            Bitmap selectedImage = loadFromUri(photoUri);
+            Bitmap selectedImage = Utils.loadFromUri(photoUri, getContext());
 
             // convert Bitmap to byte[], then create parseFile
             ByteArrayOutputStream stream = new ByteArrayOutputStream();

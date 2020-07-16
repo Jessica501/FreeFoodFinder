@@ -1,6 +1,18 @@
 package com.example.freefood;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.freefood.models.Post;
 import com.parse.FindCallback;
@@ -11,13 +23,20 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+
 public class Utils {
 
+
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
+    public static final int PICK_PHOTO_CODE = 2;
+
     // converts the contains JSONObject to a String
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected static String containsJsontoString(JSONObject jsonObject) throws JSONException {
         if (jsonObject == null) {
             return "NO MAJOR ALLERGENS";
@@ -63,5 +82,25 @@ public class Utils {
 
     public static void queryPosts(PostsAdapter adapter) {
         queryPosts(adapter, null);
+    }
+
+
+    // returns Bitmap from Uri for image selected from gallery
+    public static Bitmap loadFromUri(Uri photoUri, Context context) {
+        Bitmap image = null;
+        try {
+            // check version of Android on device
+            if (Build.VERSION.SDK_INT > 27) {
+                // on newer versions of Android, use the new decodeBitmap method
+                ImageDecoder.Source source = ImageDecoder.createSource(context.getContentResolver(), photoUri);
+                image = ImageDecoder.decodeBitmap(source);
+            } else {
+                // support older versions of Android by using getBitmap
+                image = MediaStore.Images.Media.getBitmap(context.getContentResolver(), photoUri);
+            }
+        } catch (IOException e) {
+            Log.e("Utils.loadFromUri", "Error loading image", e);
+        }
+        return image;
     }
 }
