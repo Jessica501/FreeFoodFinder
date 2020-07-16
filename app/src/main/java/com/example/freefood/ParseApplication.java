@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.example.freefood.models.Post;
+import com.example.freefood.models.User;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -32,6 +33,7 @@ public class ParseApplication extends Application {
 
         // register parse models
         ParseObject.registerSubclass(Post.class);
+        ParseObject.registerSubclass(User.class);
 
         // set applicationId, and server server based on the values in the Heroku settings.
         // clientKey is not needed unless explicitly configured

@@ -20,6 +20,7 @@ import com.example.freefood.R;
 import com.example.freefood.SettingsActivity;
 import com.example.freefood.databinding.FragmentProfileBinding;
 import com.example.freefood.models.Post;
+import com.example.freefood.models.User;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -66,11 +67,11 @@ public class ProfileFragment extends Fragment {
                 startActivity(i);
             }
         });
-        final ParseUser user = ParseUser.getCurrentUser();
-        binding.tvName.setText(user.getString("name"));
+        final User user = (User) ParseUser.getCurrentUser();
+        binding.tvName.setText(user.getName());
         binding.tvUsername.setText("@" + user.getUsername());
         Glide.with(getContext())
-                .load(user.getParseFile("profileImage").getUrl())
+                .load(user.getProfileImage().getUrl())
                 .circleCrop()
                 .into(binding.ivProfile);
 
@@ -89,7 +90,7 @@ public class ProfileFragment extends Fragment {
                 queryPosts(adapter, ParseUser.getCurrentUser());
                 // reload profile image
                 Glide.with(getContext())
-                        .load(user.getParseFile("profileImage").getUrl())
+                        .load(user.getProfileImage().getUrl())
                         .circleCrop()
                         .into(binding.ivProfile);
                 binding.swipeContainer.setRefreshing(false);

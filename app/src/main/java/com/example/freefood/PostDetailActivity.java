@@ -1,7 +1,9 @@
 package com.example.freefood;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
 import com.example.freefood.models.Post;
+import com.example.freefood.models.User;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -39,6 +42,7 @@ public class PostDetailActivity extends AppCompatActivity {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.getInBackground(object_id, new GetCallback<Post>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void done(Post post, ParseException e) {
                 if (e != null) {
@@ -73,7 +77,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 } else {
                     binding.ivImage.setPadding(64, 64, 64, 64);
                 }
-                ParseFile profileImage = post.getAuthor().getParseFile("profileImage");
+                ParseFile profileImage = ((User)post.getAuthor()).getProfileImage();
                 Glide.with(PostDetailActivity.this)
                         .load(profileImage.getUrl())
                         .circleCrop()

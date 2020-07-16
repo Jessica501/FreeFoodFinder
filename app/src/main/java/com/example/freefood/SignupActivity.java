@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.freefood.databinding.ActivitySignupBinding;
+import com.example.freefood.models.User;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -46,11 +47,11 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signUpUser(String username, String password, String name) {
-        ParseUser parseUser = new ParseUser();
-        parseUser.setUsername(username);
-        parseUser.setPassword(password);
-        parseUser.put("name", name);
-        parseUser.signUpInBackground(new SignUpCallback() {
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setName(name);
+        user.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {

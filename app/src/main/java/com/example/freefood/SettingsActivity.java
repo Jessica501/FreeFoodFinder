@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivitySettingsBinding;
+import com.example.freefood.models.User;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -37,11 +38,11 @@ public class SettingsActivity extends AppCompatActivity {
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        ParseUser user = ParseUser.getCurrentUser();
-        binding.tvName.setText(user.getString("name"));
+        User user = (User) ParseUser.getCurrentUser();
+        binding.tvName.setText(user.getName());
         binding.tvUsername.setText("@"+user.getUsername());
         Glide.with(SettingsActivity.this)
-                .load(user.getParseFile("profileImage").getUrl())
+                .load(user.getProfileImage().getUrl())
                 .circleCrop()
                 .into(binding.ivProfile);
 
@@ -82,8 +83,8 @@ public class SettingsActivity extends AppCompatActivity {
             final ParseFile parseFile = new ParseFile(photoBytes);
 
             // save profile image to Parse
-            final ParseUser user = ParseUser.getCurrentUser();
-            user.put("profileImage", parseFile);
+            final User user = (User) ParseUser.getCurrentUser();
+            user.setProfileImage(parseFile);
             user.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
@@ -93,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity {
                         Log.i(TAG, "Successfully saved profile image");
                         // load image into profile imageView
                         Glide.with(SettingsActivity.this)
-                                .load(user.getParseFile("profileImage").getUrl())
+                                .load(user.getProfileImage().getUrl())
                                 .circleCrop()
                                 .into(binding.ivProfile);
                     }
