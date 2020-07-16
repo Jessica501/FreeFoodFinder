@@ -14,6 +14,7 @@ public class User extends ParseUser {
     public String getName() { return getString(KEY_NAME); }
     public void setName(String name) { put(KEY_NAME, name); }
 
-    public ParseFile getProfileImage() { return getParseFile(KEY_PROFILE_IMAGE); }
+    public ParseFile getProfileImage() {
+        return getParseFile(KEY_PROFILE_IMAGE); }
     public void setProfileImage(ParseFile parseFile) { put(KEY_PROFILE_IMAGE, parseFile); }
 }

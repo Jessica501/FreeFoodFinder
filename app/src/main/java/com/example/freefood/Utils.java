@@ -12,8 +12,11 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 
+import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.models.Post;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,12 +31,20 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import permissions.dispatcher.PermissionUtils;
+
 
 public class Utils {
 
 
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1;
-    public static final int PICK_PHOTO_CODE = 2;
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 11;
+    public static final int PICK_PHOTO_CODE = 21;
+
+    private static final int REQUEST_GETMYLOCATION = 0;
+    private static final String[] PERMISSION_GETMYLOCATION = new String[] {"android.permission.ACCESS_FINE_LOCATION","android.permission.ACCESS_COARSE_LOCATION"};
+    private static final int REQUEST_STARTLOCATIONUPDATES = 1;
+    private static final String[] PERMISSION_STARTLOCATIONUPDATES = new String[] {"android.permission.ACCESS_FINE_LOCATION","android.permission.ACCESS_COARSE_LOCATION"};
+
 
     // converts the contains JSONObject to a String
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -102,5 +113,21 @@ public class Utils {
             Log.e("Utils.loadFromUri", "Error loading image", e);
         }
         return image;
+    }
+
+    public static void getMyLocationWithPermissionCheck(@NonNull MapFragment target) {
+        if (PermissionUtils.hasSelfPermissions(target.getContext(), PERMISSION_GETMYLOCATION)) {
+            target.getMyLocation();
+        } else {
+            ActivityCompat.requestPermissions(target.getActivity(), PERMISSION_GETMYLOCATION, REQUEST_GETMYLOCATION);
+        }
+    }
+
+    public static void startLocationUpdatesWithPermissionCheck(@NonNull MapFragment target) {
+        if (PermissionUtils.hasSelfPermissions(target.getContext(), PERMISSION_STARTLOCATIONUPDATES)) {
+            target.startLocationUpdates();
+        } else {
+            ActivityCompat.requestPermissions(target.getActivity(), PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
+        }
     }
 }
