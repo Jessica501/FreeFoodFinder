@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.freefood.R;
 import com.example.freefood.Utils;
@@ -83,6 +82,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public void getMyLocation() {
+        Log.i(TAG, "in get my location");
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
 
@@ -149,5 +149,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     }
                 },
                 Looper.myLooper());
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Utils.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }

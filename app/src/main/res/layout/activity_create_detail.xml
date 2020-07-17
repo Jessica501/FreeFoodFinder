@@ -35,11 +35,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Location"
-        android:inputType="textPersonName"
+        android:inputType="textPostalAddress"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+
+    <CheckBox
+        android:id="@+id/cbCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Use Current Location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLocation" />
 
     <EditText
         android:id="@+id/etDescription"
@@ -52,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tvAllergens"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/cbCurrentLocation" />
 
     <TextView
         android:id="@+id/tvAllergens"

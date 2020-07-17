@@ -11,10 +11,12 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.models.Post;
@@ -128,6 +130,61 @@ public class Utils {
             target.startLocationUpdates();
         } else {
             ActivityCompat.requestPermissions(target.getActivity(), PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
+        }
+    }
+
+    public static void onRequestPermissionsResult(@NonNull MapFragment target, int requestCode,
+                                                  int[] grantResults) {
+        Log.i("Utils.onRequestPerm", "we out here"+ requestCode);
+        switch (requestCode) {
+            case REQUEST_GETMYLOCATION:
+                if (PermissionUtils.verifyPermissions(grantResults)) {
+                    target.getMyLocation();
+                }
+                break;
+            case REQUEST_STARTLOCATIONUPDATES:
+                if (PermissionUtils.verifyPermissions(grantResults)) {
+                    target.startLocationUpdates();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void getMyLocationWithPermissionCheck(CreateDetailActivity target) {
+        if (PermissionUtils.hasSelfPermissions(target, PERMISSION_GETMYLOCATION)) {
+            Log.i("Utils.getMyLocation", "hasSelfPermissions");
+            target.getMyLocation();
+        } else {
+            Log.i("Utils.getMyLocation", "requestPermissions");
+            ActivityCompat.requestPermissions(target, PERMISSION_GETMYLOCATION, REQUEST_GETMYLOCATION);
+        }
+    }
+
+    public static void startLocationUpdatesWithPermissionCheck(@NonNull CreateDetailActivity target) {
+        if (PermissionUtils.hasSelfPermissions(target, PERMISSION_STARTLOCATIONUPDATES)) {
+            target.startLocationUpdates();
+        } else {
+            ActivityCompat.requestPermissions(target, PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
+        }
+    }
+
+    static void onRequestPermissionsResult(@NonNull CreateDetailActivity target, int requestCode,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_GETMYLOCATION:
+                if (PermissionUtils.verifyPermissions(grantResults)) {
+                    target.getMyLocation();
+                }
+                break;
+            case REQUEST_STARTLOCATIONUPDATES:
+                if (PermissionUtils.verifyPermissions(grantResults)) {
+                    target.startLocationUpdates();
+                }
+                break;
+            default:
+                break;
         }
     }
 }
