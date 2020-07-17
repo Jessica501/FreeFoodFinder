@@ -18,7 +18,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.freefood.LocationUtils;
+import com.example.freefood.MainActivity;
 import com.example.freefood.R;
+import com.example.freefood.UsesLocation;
 import com.example.freefood.Utils;
 import com.example.freefood.databinding.FragmentMapBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -39,7 +42,7 @@ import permissions.dispatcher.PermissionUtils;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback, UsesLocation {
     public static final String TAG = "MapFragment";
     FragmentMapBinding binding;
 
@@ -75,8 +78,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
         map = googleMap;
-        Utils.getMyLocationWithPermissionCheck(this);
-        Utils.startLocationUpdatesWithPermissionCheck(this);
+        LocationUtils.getMyLocationWithPermissionCheck(this, getActivity());
+        LocationUtils.startLocationUpdatesWithPermissionCheck(this, getActivity());
     }
 
     @SuppressLint("MissingPermission")
@@ -152,8 +155,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.i(TAG, "onRequestPermissionsResult in MapFragment called");
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Utils.onRequestPermissionsResult(this, requestCode, grantResults);
+        LocationUtils.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }

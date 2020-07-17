@@ -44,7 +44,7 @@ import permissions.dispatcher.NeedsPermission;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class CreateDetailActivity extends AppCompatActivity implements LocationListener {
+public class CreateDetailActivity extends AppCompatActivity implements LocationListener, UsesLocation {
 
     public static final String TAG = "CreateDetailActivity";
 
@@ -92,8 +92,8 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
                 if (b) {
                     binding.etLocation.setText("");
                     binding.etLocation.setEnabled(false);
-                    Utils.getMyLocationWithPermissionCheck(CreateDetailActivity.this);
-                    Utils.startLocationUpdatesWithPermissionCheck(CreateDetailActivity.this);
+                    LocationUtils.getMyLocationWithPermissionCheck(CreateDetailActivity.this, CreateDetailActivity.this);
+                    LocationUtils.startLocationUpdatesWithPermissionCheck(CreateDetailActivity.this, CreateDetailActivity.this);
                 } else {
                     binding.etLocation.setEnabled(true);
                 }
@@ -109,7 +109,13 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
         post.setTitle(String.valueOf(binding.etTitle.getText()));
         // TODO: allow user to type in location
         if (binding.cbCurrentLocation.isChecked()) {
-            post.setLocation(new ParseGeoPoint(mLocation.getLatitude(), mLocation.getLongitude()));
+            if (mLocation != null) {
+                post.setLocation(new ParseGeoPoint(mLocation.getLatitude(), mLocation.getLongitude()));
+            }
+            else {
+                post.setLocation(new ParseGeoPoint(40, 40));
+                Log.e(TAG, "Error: current location is checked, but the location is null");
+            }
         } else {
             post.setLocation(new ParseGeoPoint(40, 40));
         }
@@ -223,6 +229,6 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
 
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Utils.onRequestPermissionsResult(this, requestCode, grantResults);
+        LocationUtils.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }
