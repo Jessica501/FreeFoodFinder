@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 
 import org.json.JSONException;
 
@@ -97,6 +98,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 binding.ivImage.setPadding(64, 64, 64, 64);
             }
 
+            ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
+            double relativeDistance = post.getLocation().distanceInMilesTo(currentLocation);
+            double roundedRelativeDistance = Math.round(relativeDistance*10.0)/10.0;
+
+            if (roundedRelativeDistance == 0) {
+                binding.tvDistance.setText("0 mi");
+            } else {
+                binding.tvDistance.setText(roundedRelativeDistance + " mi");
+            }
         }
 
         @Override
