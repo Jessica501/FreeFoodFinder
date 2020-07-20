@@ -31,7 +31,6 @@ import static com.example.freefood.Utils.queryPosts;
 public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding binding;
-    protected List<Post> allPosts;
     protected PostsAdapter adapter;
 
     public ProfileFragment() {
@@ -76,8 +75,7 @@ public class ProfileFragment extends Fragment {
                 .into(binding.ivProfile);
 
         // set adapter and layout manager for recycler view
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        adapter = new PostsAdapter(getContext());
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts(adapter, ParseUser.getCurrentUser());

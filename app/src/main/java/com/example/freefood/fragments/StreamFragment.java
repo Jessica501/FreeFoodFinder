@@ -34,7 +34,6 @@ public class StreamFragment extends Fragment {
     private static final String TAG = "StreamFragment";
     FragmentStreamBinding binding;
 
-    protected List<Post> allPosts;
     protected PostsAdapter adapter;
 
     public StreamFragment() {
@@ -51,10 +50,10 @@ public class StreamFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.i(TAG, "view created woo");
 
         // set adapter and layout manager for recycler view
-        allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(getContext(), allPosts);
+        adapter = new PostsAdapter(getContext());
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
         queryPosts(adapter);

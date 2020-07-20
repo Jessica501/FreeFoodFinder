@@ -18,6 +18,7 @@ import com.parse.ParseGeoPoint;
 
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.freefood.Utils.containsJsontoString;
@@ -29,9 +30,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private List<Post> posts;
     private Context context;
 
-    public PostsAdapter(Context context, List<Post> posts) {
+    public PostsAdapter(Context context) {
         this.context = context;
-        this.posts = posts;
+        this.posts = new ArrayList<>();
     }
 
     @NonNull
