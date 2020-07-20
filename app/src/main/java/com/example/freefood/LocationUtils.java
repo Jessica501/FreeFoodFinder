@@ -1,12 +1,9 @@
 package com.example.freefood;
 
-import android.app.Activity;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-
-import com.example.freefood.fragments.MapFragment;
 
 import permissions.dispatcher.PermissionUtils;
 
@@ -18,22 +15,22 @@ public class LocationUtils {
     private static final String[] PERMISSION_STARTLOCATIONUPDATES = new String[] {"android.permission.ACCESS_FINE_LOCATION","android.permission.ACCESS_COARSE_LOCATION"};
 
 
-    public static void getMyLocationWithPermissionCheck(@NonNull UsesLocation target, Activity activity) {
-        if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_GETMYLOCATION)) {
+    public static void getMyLocationWithPermissionCheck(@NonNull MainActivity target) {
+        if (PermissionUtils.hasSelfPermissions(target, PERMISSION_GETMYLOCATION)) {
             target.getMyLocation();
         } else {
-            ActivityCompat.requestPermissions(activity, PERMISSION_GETMYLOCATION, REQUEST_GETMYLOCATION);
+            ActivityCompat.requestPermissions(target, PERMISSION_GETMYLOCATION, REQUEST_GETMYLOCATION);
         }
     }
-    public static void startLocationUpdatesWithPermissionCheck(@NonNull UsesLocation target, Activity activity) {
-        if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_STARTLOCATIONUPDATES)) {
+    public static void startLocationUpdatesWithPermissionCheck(@NonNull MainActivity target) {
+        if (PermissionUtils.hasSelfPermissions(target, PERMISSION_STARTLOCATIONUPDATES)) {
             target.startLocationUpdates();
         } else {
-            ActivityCompat.requestPermissions(activity, PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
+            ActivityCompat.requestPermissions(target, PERMISSION_STARTLOCATIONUPDATES, REQUEST_STARTLOCATIONUPDATES);
         }
     }
 
-    public static void onRequestPermissionsResult(@NonNull UsesLocation target, int requestCode,
+    public static void onRequestPermissionsResult(@NonNull MainActivity target, int requestCode,
                                                   int[] grantResults) {
         Log.i("Utils.onRequestPerm", "request code: "+ requestCode);
         switch (requestCode) {

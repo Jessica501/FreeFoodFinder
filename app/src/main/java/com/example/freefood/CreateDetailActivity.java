@@ -44,17 +44,13 @@ import permissions.dispatcher.NeedsPermission;
 
 import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
-public class CreateDetailActivity extends AppCompatActivity implements LocationListener, UsesLocation {
+public class CreateDetailActivity extends AppCompatActivity{
 
     public static final String TAG = "CreateDetailActivity";
 
     ActivityCreateDetailBinding binding;
     ParseFile image;
-    private Location mLocation;
-    private LocationRequest mLocationRequest;
 
-    private long UPDATE_INTERVAL = 60000;  /* 60 secs */
-    private long FASTEST_INTERVAL = 100; /* 0.1 secs */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +72,8 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
                     Toast.makeText(CreateDetailActivity.this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (binding.cbCurrentLocation.isChecked() && mLocation == null) {
-                    Log.d(TAG, "mLocation is null, going to getMyLocation()");
-                    getMyLocation();
+                if (binding.cbCurrentLocation.isChecked() && MainActivity.mLocation == null) {
+                    Log.e(TAG, "mLocation is null, but current location is checked");
                 }
                 // TODO: add a check for location
                 savePost();
@@ -92,8 +87,6 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
                 if (b) {
                     binding.etLocation.setText("");
                     binding.etLocation.setEnabled(false);
-                    LocationUtils.getMyLocationWithPermissionCheck(CreateDetailActivity.this, CreateDetailActivity.this);
-                    LocationUtils.startLocationUpdatesWithPermissionCheck(CreateDetailActivity.this, CreateDetailActivity.this);
                 } else {
                     binding.etLocation.setEnabled(true);
                 }
@@ -109,8 +102,9 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
         post.setTitle(String.valueOf(binding.etTitle.getText()));
         // TODO: allow user to type in location
         if (binding.cbCurrentLocation.isChecked()) {
-            if (mLocation != null) {
-                post.setLocation(new ParseGeoPoint(mLocation.getLatitude(), mLocation.getLongitude()));
+            Location location = MainActivity.mLocation;
+            if (location != null) {
+                post.setLocation(new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
             }
             else {
                 post.setLocation(new ParseGeoPoint(40, 40));
@@ -152,83 +146,5 @@ public class CreateDetailActivity extends AppCompatActivity implements LocationL
         contains.put("shellfish", binding.cbShellfish.isChecked());
         contains.put("fish", binding.cbFish.isChecked());
         return contains;
-    }
-
-
-    @SuppressLint("MissingPermission")
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    public void getMyLocation() {
-
-        Log.d(TAG, "in getMyLocation()");
-        FusedLocationProviderClient locationClient = getFusedLocationProviderClient(this);
-        locationClient.getLastLocation()
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        Log.i(TAG, "Successfully got last GPS location");
-                        if (location != null) {
-                            mLocation = location;
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Error trying to get last GPS location", e);
-                    }
-                });
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        // GPS may be turned off
-        if (location == null) {
-            return;
-        }
-
-        // Report to the UI that the location was updated
-        mLocation = location;
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        Log.i(TAG, msg);
-    }
-
-    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
-    public void startLocationUpdates() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-        settingsClient.checkLocationSettings(locationSettingsRequest);
-        //noinspection MissingPermission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        onLocationChanged(locationResult.getLastLocation());
-                    }
-                },
-                Looper.myLooper());
-    }
-
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        LocationUtils.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 }
