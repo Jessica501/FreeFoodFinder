@@ -17,7 +17,7 @@ import com.parse.SignUpCallback;
 public class SignupActivity extends AppCompatActivity {
 
     ActivitySignupBinding binding;
-    public static final String TAG = "SignupActivity";
+    private static final String TAG = "SignupActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +38,35 @@ public class SignupActivity extends AppCompatActivity {
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = String.valueOf(binding.etName.getText());
                 String username = String.valueOf(binding.etUsername.getText());
                 String password = String.valueOf(binding.etPassword.getText());
-                String name = String.valueOf(binding.etName.getText());
-                signUpUser(username, password, name);
+                String confirmPassword = String.valueOf(binding.etConfirmPassword.getText());
+                if (validateUser(name, username, password, confirmPassword)) {
+                    signUpUser(name, username, password);
+                }
             }
         });
     }
 
-    private void signUpUser(String username, String password, String name) {
+    private boolean validateUser(String name, String username, String password, String confirmPassword) {
+        if (name.trim().isEmpty()) {
+            Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } if (username.trim().isEmpty()) {
+            Toast.makeText(this, "Username cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } if (password.trim().isEmpty()) {
+            Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
+            return false;
+        } if (!password.equals(confirmPassword)) {
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void signUpUser(String name, String username, String password) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
