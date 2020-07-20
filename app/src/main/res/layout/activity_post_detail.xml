@@ -50,7 +50,7 @@
         android:layout_marginTop="16dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvMap"
+        app:layout_constraintEnd_toStartOf="@+id/map"
         app:layout_constraintHeight_percent="0.27"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,12 +58,12 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_baseline_fastfood_24" />
 
-    <TextView
-        android:id="@+id/tvMap"
+    <fragment
+        android:id="@+id/map"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text="MapView (TODO)"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         app:layout_constraintBottom_toBottomOf="@+id/ivImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

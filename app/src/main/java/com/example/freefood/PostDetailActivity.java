@@ -3,6 +3,7 @@ package com.example.freefood;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,16 @@ import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -31,6 +42,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "PostDetailActivity";
     ActivityPostDetailBinding binding;
+    private GoogleMap map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +56,7 @@ public class PostDetailActivity extends AppCompatActivity {
         query.getInBackground(object_id, new GetCallback<Post>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void done(Post post, ParseException e) {
+            public void done(final Post post, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error querying post", e);
                     return;
@@ -78,12 +90,25 @@ public class PostDetailActivity extends AppCompatActivity {
                 } else {
                     binding.ivImage.setPadding(64, 64, 64, 64);
                 }
-                ParseFile profileImage = ((User)post.getAuthor()).getProfileImage();
+                ParseFile profileImage = ((User) post.getAuthor()).getProfileImage();
                 Glide.with(PostDetailActivity.this)
                         .load(profileImage.getUrl())
                         .circleCrop()
                         .into(binding.ivProfile);
 
+                SupportMapFragment mapFragment;
+                mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                mapFragment.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        map = googleMap;
+                        // move map camera to location of food and add marker to that location
+                        LatLng latLng = new LatLng(post.getLocation().getLatitude(), post.getLocation().getLongitude());
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                        Marker marker = map.addMarker(new MarkerOptions()
+                                .position(latLng));
+                    }
+                });
             }
         });
     }
