@@ -48,7 +48,7 @@ import static com.example.freefood.Utils.PICK_PHOTO_CODE;
 @RuntimePermissions
 public class ComposeFragment extends Fragment {
 
-    public static final String TAG = "ComposeFragment";
+    private static final String TAG = "ComposeFragment";
 
     FragmentComposeBinding binding;
     public String photoFileName = "photo.jpg";

@@ -16,7 +16,7 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
 
     ActivityLoginBinding binding;
-    public static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

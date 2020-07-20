@@ -29,7 +29,7 @@ import static com.example.freefood.Utils.containsJsontoString;
 
 public class PostDetailActivity extends AppCompatActivity {
 
-    public static final String TAG = "PostDetailActivity";
+    private static final String TAG = "PostDetailActivity";
     ActivityPostDetailBinding binding;
 
     @Override
@@ -49,10 +49,11 @@ public class PostDetailActivity extends AppCompatActivity {
                     Log.e(TAG, "Error querying post", e);
                     return;
                 }
-                if (!ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
-                    binding.btnClaimed.setVisibility(View.INVISIBLE);
-                } else {
+                // only show the claimed button if the post was by the current user
+                if (ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
                     binding.btnClaimed.setVisibility(View.VISIBLE);
+                } else {
+                    binding.btnClaimed.setVisibility(View.INVISIBLE);
                 }
 
                 binding.tvTitle.setText(post.getTitle());

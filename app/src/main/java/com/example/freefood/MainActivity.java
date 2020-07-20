@@ -20,7 +20,6 @@ import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.fragments.ProfileFragment;
 import com.example.freefood.fragments.StreamFragment;
-import com.example.freefood.models.Post;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,12 +30,6 @@ import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 import permissions.dispatcher.NeedsPermission;
 
@@ -45,7 +38,7 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
-    public static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     protected static Location mLocation;
 
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */

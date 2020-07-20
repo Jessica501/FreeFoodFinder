@@ -1,18 +1,9 @@
 package com.example.freefood;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -21,15 +12,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityCreateDetailBinding;
 import com.example.freefood.models.Post;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -40,16 +22,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
-import permissions.dispatcher.NeedsPermission;
-
-import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
-
 public class CreateDetailActivity extends AppCompatActivity{
 
-    public static final String TAG = "CreateDetailActivity";
+    private static final String TAG = "CreateDetailActivity";
 
     ActivityCreateDetailBinding binding;
-    ParseFile image;
 
 
     @Override
@@ -58,7 +35,7 @@ public class CreateDetailActivity extends AppCompatActivity{
         binding = ActivityCreateDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
+        final ParseFile image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
         Glide.with(CreateDetailActivity.this)
                 .load(image.getUrl())
                 .into(binding.ivImage);
@@ -76,7 +53,7 @@ public class CreateDetailActivity extends AppCompatActivity{
                     Log.e(TAG, "mLocation is null, but current location is checked");
                 }
                 // TODO: add a check for location
-                savePost();
+                savePost(image);
             }
         });
 
@@ -95,7 +72,7 @@ public class CreateDetailActivity extends AppCompatActivity{
     }
 
     // save the post to parse using the entered data
-    private void savePost() {
+    private void savePost(ParseFile image) {
         Post post = new Post();
         post.setImage(image);
         post.setAuthor(ParseUser.getCurrentUser());
@@ -117,21 +94,23 @@ public class CreateDetailActivity extends AppCompatActivity{
         try {
             post.setContains(createContainsJson());
             Log.i(TAG, "Successfully created JSONObject for allergen information");
+
+            post.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error while saving post", e);
+                        return;
+                    }
+                    Log.i(TAG, "Post save was successful");
+                    Intent i = new Intent(CreateDetailActivity.this, MainActivity.class);
+                    startActivity(i);
+                }
+            });
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSONObject for allergen information", e);
         }
-        post.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error while saving post", e);
-                    return;
-                }
-                Log.i(TAG, "Post save was successful");
-                Intent i = new Intent(CreateDetailActivity.this, MainActivity.class);
-                startActivity(i);
-            }
-        });
+
     }
 
     // creates a contains JSONObject using the checkboxes for the various allergens

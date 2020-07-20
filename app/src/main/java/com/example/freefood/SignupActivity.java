@@ -17,7 +17,7 @@ import com.parse.SignUpCallback;
 public class SignupActivity extends AppCompatActivity {
 
     ActivitySignupBinding binding;
-    private static final String TAG = "SignupActivity";
+     = "SignupActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -29,7 +29,7 @@ import static com.example.freefood.Utils.PICK_PHOTO_CODE;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    public static final String TAG = "SettingsActivity";
+    private static final String TAG = "SettingsActivity";
     ActivitySettingsBinding binding;
 
     @Override

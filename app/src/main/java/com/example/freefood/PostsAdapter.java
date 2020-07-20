@@ -23,7 +23,7 @@ import static com.example.freefood.Utils.containsJsontoString;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
-    public static final String TAG = "PostsAdapter";
+    private static final String TAG = "PostsAdapter";
 
     private List<Post> posts;
     private Context context;

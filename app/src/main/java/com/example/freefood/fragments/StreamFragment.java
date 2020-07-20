@@ -31,7 +31,7 @@ import static com.example.freefood.Utils.queryPosts;
 
 public class StreamFragment extends Fragment {
 
-    public static final String TAG = "StreamFragment";
+    private static final String TAG = "StreamFragment";
     FragmentStreamBinding binding;
 
     protected List<Post> allPosts;
