@@ -11,11 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.freefood.MainActivity;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentMapBinding;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback{
@@ -53,5 +56,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         map = googleMap;
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
+
+        LatLng latLng = new LatLng(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 }

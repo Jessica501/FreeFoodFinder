@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private static final String TAG = "MainActivity";
-    protected static Location mLocation;
+    public static Location mLocation;
 
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 500; /* 0.5 secs */
