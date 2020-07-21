@@ -39,6 +39,7 @@ public class PostInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View getInfoContents(Marker marker) {
 
@@ -48,7 +49,12 @@ public class PostInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
         } else {
             binding.tvTitle.setText(post.getTitle());
         }
-        binding.tvDescription.setText(post.getDescription());
+        if (post.getDescription().trim().isEmpty()) {
+            binding.tvDescription.setVisibility(View.GONE);
+        } else {
+            binding.tvDescription.setVisibility(View.VISIBLE);
+            binding.tvDescription.setText(post.getDescription());
+        }
         try {
             binding.tvContains.setText(containsJsontoString(post.getContains()));
         } catch (JSONException e) {

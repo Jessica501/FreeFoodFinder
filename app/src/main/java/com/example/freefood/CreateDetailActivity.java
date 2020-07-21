@@ -84,11 +84,11 @@ public class CreateDetailActivity extends AppCompatActivity{
                 post.setLocation(new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
             }
             else {
-                post.setLocation(new ParseGeoPoint(40, 40));
+                post.setLocation(new ParseGeoPoint(30, -120));
                 Log.e(TAG, "Error: current location is checked, but the location is null");
             }
         } else {
-            post.setLocation(new ParseGeoPoint(40, 40));
+            post.setLocation(new ParseGeoPoint(30, -120));
         }
         post.setDescription(String.valueOf(binding.etDescription.getText()));
         try {

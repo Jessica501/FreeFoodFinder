@@ -72,6 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.d(TAG, "onMapReady");
 
         map = googleMap;
         map.setMyLocationEnabled(true);
@@ -82,7 +83,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         LatLng latLng = new LatLng(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
 
-        queryMapPosts(posts, map);
+        queryMapPosts();
 
         map.setOnInfoWindowClickListener(this);
     }
@@ -97,7 +98,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     }
 
     // query all unclaimed posts and add markers to the map
-    public void queryMapPosts(final List<Post> list, final GoogleMap map) {
+    public void queryMapPosts() {
+        map.clear();
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -113,8 +115,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                     Log.i("Utils.queryPosts", "Post: " + post.getTitle() + ", username: " + post.getAuthor().getUsername() + ", description: " + post.getDescription());
                     addMarker(post);
                 }
-                list.clear();
-                list.addAll(posts);
             }
         });
     }
@@ -127,5 +127,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         Intent i = new Intent(getContext(), PostDetailActivity.class);
         i.putExtra("post_id", postId);
         startActivity(i);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        if (map != null) {
+            map.setInfoWindowAdapter(new PostInfoWindowAdapter(getContext()));
+            queryMapPosts();
+        }
     }
 }

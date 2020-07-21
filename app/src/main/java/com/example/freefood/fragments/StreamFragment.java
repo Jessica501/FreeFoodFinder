@@ -71,7 +71,12 @@ public class StreamFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        queryPosts(adapter);
+    }
 }
