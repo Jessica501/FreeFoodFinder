@@ -1,25 +1,20 @@
 package com.example.freefood;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.CompoundButton;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
-import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.models.Post;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -32,8 +27,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import permissions.dispatcher.PermissionUtils;
 
 
 public class Utils {
@@ -65,6 +58,7 @@ public class Utils {
         }
     }
 
+    // query the first 20 posts by parseUser and add to adapter
     public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
@@ -89,10 +83,10 @@ public class Utils {
         });
     }
 
+    // query the first 20 posts and add to adapter
     public static void queryPosts(PostsAdapter adapter) {
         queryPosts(adapter, null);
     }
-
 
     // returns Bitmap from Uri for image selected from gallery
     public static Bitmap loadFromUri(Uri photoUri, Context context) {
@@ -112,6 +106,4 @@ public class Utils {
         }
         return image;
     }
-
-
 }
