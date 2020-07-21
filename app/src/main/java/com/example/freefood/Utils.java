@@ -6,6 +6,7 @@ import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -17,6 +18,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -24,9 +26,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Utils {
@@ -34,7 +39,6 @@ public class Utils {
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 11;
     public static final int PICK_PHOTO_CODE = 21;
-
 
 
     // converts the contains JSONObject to a String
@@ -77,7 +81,7 @@ public class Utils {
                     Log.e("Utils.queryPosts", "Issue with getting posts", e);
                     return;
                 }
-                for (Post post: posts) {
+                for (Post post : posts) {
                     Log.i("Utils.queryPosts", "Post: " + post.getTitle() + ", username: " + post.getAuthor().getUsername() + ", description: " + post.getDescription());
                 }
                 adapter.clear();
@@ -113,5 +117,30 @@ public class Utils {
             Log.e("Utils.loadFromUri", "Error loading image", e);
         }
         return image;
+    }
+
+    public static String getRelativeDistanceString(Post post) {
+        ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
+        double relativeDistance = post.getLocation().distanceInMilesTo(currentLocation);
+        double roundedRelativeDistance = Math.round(relativeDistance * 10.0) / 10.0;
+
+        if (roundedRelativeDistance == 0) {
+            return ("0 mi");
+        } else {
+            return (roundedRelativeDistance + " mi");
+        }
+    }
+
+    public static String getRelativeTimeAgo(Date date) {
+        long dateMillis = date.getTime();
+        String relativeDate = "";
+        relativeDate = reformatRelativeTime(String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)));
+        return relativeDate;
+    }
+
+    private static String reformatRelativeTime(String s) {
+        int spaceIndex = s.indexOf(" ");
+        return s.substring(0, spaceIndex) + s.substring(spaceIndex + 1, spaceIndex + 2);
     }
 }

@@ -34,11 +34,15 @@ import com.parse.SaveCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.annotation.Target;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.example.freefood.Utils.containsJsontoString;
+import static com.example.freefood.Utils.getRelativeDistanceString;
+import static com.example.freefood.Utils.getRelativeTimeAgo;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -79,8 +83,6 @@ public class PostDetailActivity extends AppCompatActivity {
                             Log.e(TAG, "Error saving post after setting claimed to false");
                         }
                         finish();
-//                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-//                        startActivity(i);
                     }
                 });
             }
@@ -90,10 +92,10 @@ public class PostDetailActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setFields() {
         // only show the claimed button if the post was by the current user
-        if (ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
+        if (ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId()) && !post.getClaimed()) {
             binding.btnClaimed.setVisibility(View.VISIBLE);
         } else {
-            binding.btnClaimed.setVisibility(View.INVISIBLE);
+            binding.btnClaimed.setVisibility(View.GONE);
         }
 
         if (post.getClaimed()) {
@@ -101,6 +103,7 @@ public class PostDetailActivity extends AppCompatActivity {
         } else {
             binding.tvTitle.setText(post.getTitle());
         }
+        binding.tvRelativeDistance.setText(getRelativeDistanceString(post));
         binding.tvLocation.setText(String.valueOf(post.getLocation()));
         binding.tvUsername.setText("@" + post.getAuthor().getUsername());
         String description = post.getDescription().trim();
@@ -115,6 +118,8 @@ public class PostDetailActivity extends AppCompatActivity {
         } catch (JSONException ex) {
             Log.e(TAG, "Error converting contains JSONObject to String", ex);
         }
+        String relativeTime = getRelativeTimeAgo(post.getCreatedAt());
+        binding.tvRelatieTime.setText(relativeTime + " ago");
         if (post.getImage() != null) {
             Glide.with(PostDetailActivity.this)
                     .load(post.getImage().getUrl())

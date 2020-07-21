@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.freefood.Utils.containsJsontoString;
+import static com.example.freefood.Utils.getRelativeDistanceString;
+import static com.example.freefood.Utils.getRelativeTimeAgo;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
@@ -103,16 +105,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 binding.ivImage.setPadding(64, 64, 64, 64);
             }
-
-            ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
-            double relativeDistance = post.getLocation().distanceInMilesTo(currentLocation);
-            double roundedRelativeDistance = Math.round(relativeDistance*10.0)/10.0;
-
-            if (roundedRelativeDistance == 0) {
-                binding.tvDistance.setText("0 mi");
-            } else {
-                binding.tvDistance.setText(roundedRelativeDistance + " mi");
-            }
+            binding.tvDistance.setText(getRelativeDistanceString(post));
+            binding.tvRelativeTime.setText(getRelativeTimeAgo(post.getCreatedAt()));
         }
 
         @Override
