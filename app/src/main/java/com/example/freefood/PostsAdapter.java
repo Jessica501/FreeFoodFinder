@@ -74,7 +74,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
 
         public void bind(Post post) {
-            binding.tvTitle.setText(post.getTitle());
+            if (post.getClaimed()) {
+                binding.tvTitle.setText("CLAIMED - " + post.getTitle());
+            } else {
+                binding.tvTitle.setText(post.getTitle());
+            }
+
             binding.tvLocation.setText(String.valueOf(post.getLocation()));
             String description = post.getDescription().trim();
             if (description.isEmpty()) {
@@ -117,6 +122,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Intent i = new Intent(context, PostDetailActivity.class);
                 Post post = posts.get(position);
                 i.putExtra("post_id", post.getObjectId());
+                Log.i(TAG, context.toString());
                 context.startActivity(i);
             }
         }

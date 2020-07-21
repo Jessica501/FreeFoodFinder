@@ -58,13 +58,16 @@ public class Utils {
         }
     }
 
-    // query the first 20 posts by parseUser and add to adapter
-    public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser) {
+    // query the first 20 posts by parseUser and add to adapter. Doesn't query claimed posts if ignoreClaimed is true.
+    public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser, boolean ignoreClaimed) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(20);
         if (parseUser != null) {
             query.whereEqualTo(Post.KEY_AUTHOR, parseUser);
+        }
+        if (ignoreClaimed) {
+            query.whereEqualTo(Post.KEY_CLAIMED, false);
         }
         query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
@@ -83,9 +86,14 @@ public class Utils {
         });
     }
 
-    // query the first 20 posts and add to adapter
+    // query the first 20 posts by parseUser and add to adapter. Doesn't ignore claimed by default
+    public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser) {
+        queryPosts(adapter, parseUser, false);
+    }
+
+    // query the first 20 posts and add to adapter. Ignores claimed by default
     public static void queryPosts(PostsAdapter adapter) {
-        queryPosts(adapter, null);
+        queryPosts(adapter, null, true);
     }
 
     // returns Bitmap from Uri for image selected from gallery

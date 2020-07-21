@@ -96,11 +96,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         marker.showInfoWindow();
     }
 
-    // query all posts and add markers to the map
+    // query all unclaimed posts and add markers to the map
     public void queryMapPosts(final List<Post> list, final GoogleMap map) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
+        query.whereEqualTo(Post.KEY_CLAIMED, false);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

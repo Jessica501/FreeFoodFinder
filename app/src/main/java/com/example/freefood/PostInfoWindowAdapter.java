@@ -43,7 +43,11 @@ public class PostInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
 
         Post post = (Post) marker.getTag();
-        binding.tvTitle.setText(post.getTitle());
+        if (post.getClaimed()) {
+            binding.tvTitle.setText("CLAIMED - " + post.getTitle());
+        } else {
+            binding.tvTitle.setText(post.getTitle());
+        }
         binding.tvDescription.setText(post.getDescription());
         try {
             binding.tvContains.setText(containsJsontoString(post.getContains()));
