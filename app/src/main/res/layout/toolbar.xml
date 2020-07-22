@@ -4,4 +4,5 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#ECECEC"
-    app:title="@string/app_name" />
+    app:title="@string/app_name"
+    android:elevation="2dp"/>

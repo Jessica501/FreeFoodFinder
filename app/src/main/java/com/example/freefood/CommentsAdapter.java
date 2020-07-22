@@ -71,6 +71,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
             binding.tvUsername.setText("@" + author.getUsername());
             binding.tvDescription.setText(comment.getDescrption());
+            binding.tvRelativeTime.setText(Utils.getRelativeTimeAgo(comment.getCreatedAt()));
             Glide.with(context)
                     .load(author.getProfileImage().getUrl())
                     .circleCrop()

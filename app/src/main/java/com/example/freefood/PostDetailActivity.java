@@ -247,7 +247,7 @@ public class PostDetailActivity extends AppCompatActivity {
             Log.e(TAG, "Error converting contains JSONObject to String", ex);
         }
         String relativeTime = getRelativeTimeAgo(post.getCreatedAt());
-        binding.tvRelativeTime.setText(relativeTime + " ago");
+        binding.tvRelativeTime.setText(relativeTime);
         if (post.getImage() != null) {
             Glide.with(PostDetailActivity.this)
                     .load(post.getImage().getUrl())

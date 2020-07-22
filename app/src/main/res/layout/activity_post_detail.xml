@@ -12,152 +12,160 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/ivProfile"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:textColor="#1E1E1E"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/ivProfile"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        tools:text="Title" />
-
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        tools:text="Location" />
-
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvLocation"
-        tools:text="username" />
-
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:scaleType="centerCrop"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/map"
-        app:layout_constraintHeight_percent="0.27"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfile"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_baseline_fastfood_24" />
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/ivImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/ivImage"
-        app:layout_constraintTop_toTopOf="@+id/ivImage"
-        app:layout_constraintVertical_bias="0.0" />
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/tvDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivImage"
-        tools:text="Description" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textColor="#1E1E1E"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
 
-    <TextView
-        android:id="@+id/tvAllergens"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-        tools:text="Allergens" />
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            tools:text="Location" />
 
-    <Button
-        android:id="@+id/btnClaimed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Claimed"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/tvLocation"
+            tools:text="username" />
 
-    <TextView
-        android:id="@+id/tvRelativeDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnClaimed"
-        tools:text="relative distance" />
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/map"
+            app:layout_constraintHeight_percent="0.27"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfile"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/ic_baseline_fastfood_24" />
 
-    <TextView
-        android:id="@+id/tvRelativeTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="relative time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAllergens" />
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/ivImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/ivImage"
+            app:layout_constraintTop_toTopOf="@+id/ivImage"
+            app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/etComment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:hint="write a comment..."
-        android:imeOptions="actionDone"
-        android:inputType="textMultiLine|textPersonName"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
-        app:layout_constraintEnd_toStartOf="@+id/btnComment"
-        app:layout_constraintStart_toEndOf="@+id/ivCamera"
-        app:layout_constraintTop_toTopOf="@+id/ivCamera" />
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivImage"
+            tools:text="Description" />
 
-    <Button
-        android:id="@+id/btnComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etComment" />
+        <TextView
+            android:id="@+id/tvAllergens"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
+            tools:text="Allergens" />
 
-    <ImageView
-        android:id="@+id/ivCamera"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRelativeTime"
-        app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+        <Button
+            android:id="@+id/btnClaimed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Claimed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvComments"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
+        <TextView
+            android:id="@+id/tvRelativeDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnClaimed"
+            tools:text="relative distance" />
+
+        <TextView
+            android:id="@+id/tvRelativeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="relative time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAllergens" />
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:hint="write a comment..."
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine|textPersonName"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
+            app:layout_constraintEnd_toStartOf="@+id/btnComment"
+            app:layout_constraintStart_toEndOf="@+id/ivCamera"
+            app:layout_constraintTop_toTopOf="@+id/ivCamera" />
+
+        <Button
+            android:id="@+id/btnComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etComment" />
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvRelativeTime"
+            app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvComments"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

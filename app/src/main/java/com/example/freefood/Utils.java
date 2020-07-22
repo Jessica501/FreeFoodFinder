@@ -35,6 +35,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import static android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE;
+
 
 public class Utils {
 
@@ -155,16 +157,8 @@ public class Utils {
     public static String getRelativeTimeAgo(Date date) {
         long dateMillis = date.getTime();
         String relativeDate = "";
-        relativeDate = reformatRelativeTime(String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
-                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS)));
+        relativeDate = String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
+                System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, FORMAT_ABBREV_RELATIVE));
         return relativeDate;
-    }
-
-    private static String reformatRelativeTime(String s) {
-        int spaceIndex = s.indexOf(" ");
-        if (spaceIndex < 0) {
-            return s;
-        }
-        return s.substring(0, spaceIndex) + s.substring(spaceIndex + 1, spaceIndex + 2);
     }
 }
