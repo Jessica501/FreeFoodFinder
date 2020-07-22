@@ -44,7 +44,7 @@
     <CheckBox
         android:id="@+id/cbCurrentLocation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:text="Use Current Location"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etLocation" />
@@ -89,10 +89,12 @@
 
             <CheckBox
                 android:id="@+id/cbMilk"
+                android:layout_height="32dp"
                 android:text="Milk" />
 
             <CheckBox
                 android:id="@+id/cbEggs"
+                android:layout_height="32dp"
                 android:text="Eggs" />
         </TableRow>
 
@@ -102,10 +104,12 @@
 
             <CheckBox
                 android:id="@+id/cbTreeNuts"
+                android:layout_height="32dp"
                 android:text="Tree Nuts" />
 
             <CheckBox
                 android:id="@+id/cbPeanuts"
+                android:layout_height="32dp"
                 android:text="Peanuts" />
         </TableRow>
 
@@ -115,10 +119,12 @@
 
             <CheckBox
                 android:id="@+id/cbSoy"
+                android:layout_height="32dp"
                 android:text="Soy" />
 
             <CheckBox
                 android:id="@+id/cbWheat"
+                android:layout_height="32dp"
                 android:text="Wheat" />
         </TableRow>
 
@@ -128,10 +134,12 @@
 
             <CheckBox
                 android:id="@+id/cbShellfish"
+                android:layout_height="32dp"
                 android:text="Shellfish" />
 
             <CheckBox
                 android:id="@+id/cbFish"
+                android:layout_height="32dp"
                 android:text="Fish" />
         </TableRow>
     </TableLayout>

@@ -162,6 +162,9 @@ public class Utils {
 
     private static String reformatRelativeTime(String s) {
         int spaceIndex = s.indexOf(" ");
+        if (spaceIndex < 0) {
+            return s;
+        }
         return s.substring(0, spaceIndex) + s.substring(spaceIndex + 1, spaceIndex + 2);
     }
 }
