@@ -4,6 +4,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import org.json.JSONObject;
@@ -18,6 +19,7 @@ public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_CONTAINS = "contains";
     public static final String KEY_CLAIMED = "claimed";
+    public static final String KEY_COMMENTS = "comments";
     
     public Post() { super(); }
 
@@ -41,4 +43,6 @@ public class Post extends ParseObject {
 
     public void setClaimed(boolean claimed) { put(KEY_CLAIMED, claimed); }
     public boolean getClaimed() { return getBoolean(KEY_CLAIMED); }
+
+    public ParseRelation<Comment> getComments() { return getRelation(KEY_COMMENTS); }
 }

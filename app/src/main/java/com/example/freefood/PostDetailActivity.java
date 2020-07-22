@@ -2,6 +2,7 @@ package com.example.freefood;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
+import com.example.freefood.models.Comment;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
 import com.google.android.gms.maps.CameraUpdate;
@@ -24,10 +26,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -43,6 +47,7 @@ import java.util.List;
 import static com.example.freefood.Utils.containsJsontoString;
 import static com.example.freefood.Utils.getRelativeDistanceString;
 import static com.example.freefood.Utils.getRelativeTimeAgo;
+import static com.example.freefood.Utils.queryPosts;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -50,6 +55,7 @@ public class PostDetailActivity extends AppCompatActivity {
     ActivityPostDetailBinding binding;
     Post post;
     private GoogleMap map;
+    protected CommentsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 post = queriedPost;
                 setFields();
+                queryComments();
             }
         });
         binding.btnClaimed.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +92,32 @@ public class PostDetailActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+            }
+        });
+
+        adapter = new CommentsAdapter(PostDetailActivity.this);
+        binding.rvComments.setAdapter(adapter);
+        binding.rvComments.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
+    }
+
+    private void queryComments() {
+        ParseRelation relation = post.getComments();
+        ParseQuery<Comment> query = relation.getQuery();
+        query.include(Comment.KEY_AUTHOR);
+        query.setLimit(20);
+        query.addDescendingOrder(Comment.KEY_CREATED_AT);
+        query.findInBackground(new FindCallback<Comment>() {
+            @Override
+            public void done(List<Comment> comments, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with querying comments", e);
+                    return;
+                }
+                for (Comment comment: comments) {
+                    Log.i(TAG, "Comment: " + comment.getDescrption() + ", username: " + comment.getAuthor().getUsername());
+                }
+                adapter.clear();
+                adapter.addAll(comments);
             }
         });
     }
@@ -119,7 +152,7 @@ public class PostDetailActivity extends AppCompatActivity {
             Log.e(TAG, "Error converting contains JSONObject to String", ex);
         }
         String relativeTime = getRelativeTimeAgo(post.getCreatedAt());
-        binding.tvRelatieTime.setText(relativeTime + " ago");
+        binding.tvRelativeTime.setText(relativeTime + " ago");
         if (post.getImage() != null) {
             Glide.with(PostDetailActivity.this)
                     .load(post.getImage().getUrl())
