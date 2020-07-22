@@ -123,7 +123,12 @@ public class PostDetailActivity extends AppCompatActivity {
         binding.btnComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveComment();
+                String description = String.valueOf(binding.etComment.getText());
+                if (description.trim().isEmpty() && parseFile == null) {
+                    Toast.makeText(PostDetailActivity.this, "Cannot submit empty comment", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                saveComment(description);
             }
         });
     }
@@ -147,8 +152,7 @@ public class PostDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void saveComment() {
-        String description = String.valueOf(binding.etComment.getText());
+    private void saveComment(String description) {
         final Comment comment = new Comment();
         comment.setAuthor(ParseUser.getCurrentUser());
         comment.setPost(post);
@@ -183,6 +187,7 @@ public class PostDetailActivity extends AppCompatActivity {
                         binding.etComment.setText("");
                         binding.etComment.clearFocus();
                         binding.ivCamera.setImageResource(R.drawable.ic_baseline_photo_camera_24);
+                        parseFile = null;
                         queryComments();
                     }
                 });
