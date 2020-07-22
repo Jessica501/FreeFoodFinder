@@ -116,6 +116,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAllergens" />
 
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:hint="write a comment..."
+        android:imeOptions="actionDone"
+        android:inputType="textMultiLine|textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivCamera"
+        app:layout_constraintEnd_toStartOf="@+id/btnComment"
+        app:layout_constraintStart_toEndOf="@+id/ivCamera"
+        app:layout_constraintTop_toTopOf="@+id/ivCamera" />
+
+    <Button
+        android:id="@+id/btnComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etComment" />
+
+    <ImageView
+        android:id="@+id/ivCamera"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRelativeTime"
+        app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvComments"
         android:layout_width="0dp"
@@ -123,6 +152,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRelativeTime" />
+        app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

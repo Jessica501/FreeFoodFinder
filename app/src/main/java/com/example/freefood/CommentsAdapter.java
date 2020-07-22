@@ -2,6 +2,7 @@ package com.example.freefood;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -74,7 +75,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                     .load(author.getProfileImage().getUrl())
                     .circleCrop()
                     .into(binding.ivProfile);
-            if (image != null) {
+            if (image == null) {
+                binding.ivImage.setVisibility(View.GONE);
+            } else {
                 Glide.with(context)
                         .load(image.getUrl())
                         .into(binding.ivImage);

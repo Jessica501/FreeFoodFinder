@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
@@ -54,6 +55,7 @@ public class PostDetailActivity extends AppCompatActivity {
     private static final String TAG = "PostDetailActivity";
     ActivityPostDetailBinding binding;
     Post post;
+    ParseRelation relation;
     private GoogleMap map;
     protected CommentsAdapter adapter;
 
@@ -79,6 +81,11 @@ public class PostDetailActivity extends AppCompatActivity {
                 queryComments();
             }
         });
+
+        adapter = new CommentsAdapter(PostDetailActivity.this);
+        binding.rvComments.setAdapter(adapter);
+        binding.rvComments.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
+
         binding.btnClaimed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,13 +102,55 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         });
 
-        adapter = new CommentsAdapter(PostDetailActivity.this);
-        binding.rvComments.setAdapter(adapter);
-        binding.rvComments.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
+        binding.btnComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveComment();
+            }
+        });
+    }
+
+    private void saveComment() {
+        String description = String.valueOf(binding.etComment.getText());
+        final Comment comment = new Comment();
+        comment.setAuthor(ParseUser.getCurrentUser());
+        comment.setPost(post);
+        comment.setDescription(description);
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error saving comment", e);
+                    return;
+                }
+                if (relation == null) {
+                    relation = post.getComments();
+                }
+                relation.add(comment);
+                post.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Error saving comment", e);
+                            return;
+                        }
+
+                        // hide keyboard and clear edit text after submitting comment
+                        InputMethodManager inputManager = (InputMethodManager)
+                                getSystemService(INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        binding.etComment.setText("");
+                        binding.etComment.clearFocus();
+                        queryComments();
+                    }
+                });
+            }
+        });
     }
 
     private void queryComments() {
-        ParseRelation relation = post.getComments();
+        relation = post.getComments();
         ParseQuery<Comment> query = relation.getQuery();
         query.include(Comment.KEY_AUTHOR);
         query.setLimit(20);
