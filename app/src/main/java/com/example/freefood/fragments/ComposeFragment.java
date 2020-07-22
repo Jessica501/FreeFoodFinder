@@ -110,7 +110,7 @@ public class ComposeFragment extends Fragment {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(photoFileName);
+        photoFile = Utils.getPhotoFileUri(photoFileName, getContext());
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -123,25 +123,6 @@ public class ComposeFragment extends Fragment {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
-    }
-
-
-    // Returns the File for a photo stored on disk given the fileName (for using camera)
-    private File getPhotoFileUri(String fileName) {
-        // Get safe storage directory for photos
-        // Use `getExternalFilesDir` on Context to access package-specific directories.
-        // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(TAG, "failed to create directory");
-        }
-
-        // Return the file target for the photo based on filename
-        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
-
-        return file;
     }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)

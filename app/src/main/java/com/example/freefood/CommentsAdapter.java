@@ -78,6 +78,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             if (image == null) {
                 binding.ivImage.setVisibility(View.GONE);
             } else {
+                binding.ivImage.setVisibility(View.VISIBLE);
                 Glide.with(context)
                         .load(image.getUrl())
                         .into(binding.ivImage);

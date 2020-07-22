@@ -141,6 +141,7 @@
         android:id="@+id/ivCamera"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRelativeTime"
         app:srcCompat="@drawable/ic_baseline_photo_camera_24" />

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -98,6 +100,25 @@ public class Utils {
     // query the first 20 posts and add to adapter. Ignores claimed by default
     public static void queryPosts(PostsAdapter adapter) {
         queryPosts(adapter, null, true);
+    }
+
+
+    // Returns the File for a photo stored on disk given the fileName (for using camera)
+    public static File getPhotoFileUri(String fileName, Context context) {
+        // Get safe storage directory for photos
+        // Use `getExternalFilesDir` on Context to access package-specific directories.
+        // This way, we don't need to request external read/write runtime permissions.
+        File mediaStorageDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Utils.getPhotoFileUri");
+
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d("Utils.getPhotoFileUri", "failed to create directory");
+        }
+
+        // Return the file target for the photo based on filename
+        File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
+
+        return file;
     }
 
     // returns Bitmap from Uri for image selected from gallery
