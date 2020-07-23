@@ -87,7 +87,10 @@ public class CreateDetailActivity extends AppCompatActivity{
                 if (binding.cbCurrentLocation.isChecked() && MainActivity.mLocation == null) {
                     Log.e(TAG, "mLocation is null, but current location is checked");
                 }
-                // TODO: add a check for location
+                if (!binding.cbCurrentLocation.isChecked() && parseGeoPoint == null) {
+                    Toast.makeText(CreateDetailActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 savePost(image);
             }
         });
@@ -99,6 +102,7 @@ public class CreateDetailActivity extends AppCompatActivity{
                 if (b) {
                     autocompleteFragment.getView().setEnabled(false);
                     autocompleteFragment.setText("");
+                    parseGeoPoint = null;
 
                 } else {
                     autocompleteFragment.getView().setEnabled(true);
