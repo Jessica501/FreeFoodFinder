@@ -2,12 +2,14 @@ package com.example.freefood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -17,8 +19,11 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.example.freefood.Utils.containsJsontoString;
@@ -30,11 +35,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private static final String TAG = "PostsAdapter";
 
     private List<Post> posts;
+    private List<Post> allPosts;
     private Context context;
+    private HashSet<String> filter;
 
     public PostsAdapter(Context context) {
         this.context = context;
         this.posts = new ArrayList<>();
+        this.allPosts = new ArrayList<>();
+        this.filter = new HashSet<>();
     }
 
     @NonNull
@@ -50,19 +59,55 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     }
 
+
     @Override
     public int getItemCount() {
         return posts.size();
     }
 
     public void clear() {
+        this.allPosts.clear();
         this.posts.clear();
         notifyDataSetChanged();
     }
 
     public void addAll(List<Post> posts) {
+        this.allPosts.addAll(posts);
         this.posts.addAll(posts);
         notifyDataSetChanged();
+    }
+
+    public void filter(HashSet<String> filter) throws JSONException {
+        if (filter.size() == 0) {
+            return;
+        }
+        List<Post> filteredPosts = new ArrayList<>();
+        this.filter = filter;
+        for (Post post: allPosts) {
+            boolean allergenFree = true;
+            JSONObject jsonObject = post.getContains();
+            Iterator<String> allergens = jsonObject.keys();
+            while (allergens.hasNext() && allergenFree) {
+                String allergen = allergens.next();
+                if (jsonObject.getBoolean(allergen) && filter.contains(allergen)) {
+                    allergenFree = false;
+                    break;
+                }
+            }
+            if (allergenFree) {
+                filteredPosts.add(post);
+                Log.i(TAG, post + " has no allergens");
+            } else {
+                Log.i(TAG, post + " has allergens");
+            }
+        }
+        this.posts.clear();
+        this.posts.addAll(filteredPosts);
+        notifyDataSetChanged();
+    }
+
+    public void filter() throws JSONException {
+        filter(this.filter);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,6 +120,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public void bind(Post post) {
             if (post.getClaimed()) {
                 binding.tvTitle.setText("CLAIMED - " + post.getTitle());

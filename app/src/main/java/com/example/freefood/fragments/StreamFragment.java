@@ -13,17 +13,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.example.freefood.PostsAdapter;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentStreamBinding;
 import com.example.freefood.models.Post;
+import com.google.android.material.chip.Chip;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.example.freefood.Utils.queryPosts;
@@ -50,7 +57,6 @@ public class StreamFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.i(TAG, "view created woo");
 
         // set adapter and layout manager for recycler view
         adapter = new PostsAdapter(getContext());
@@ -72,6 +78,24 @@ public class StreamFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        binding.btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                HashSet<String> filter = new HashSet<>();
+                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+                    if (chip.isChecked()) {
+                        filter.add(String.valueOf(chip.getText()).toLowerCase());
+                    }
+                }
+                Log.i(TAG, String.valueOf(filter));
+                try {
+                    adapter.filter(filter);
+                } catch (JSONException e) {
+                    Log.e(TAG, "error filtering posts", e);
+                }
+            }
+        });
     }
 
     @Override

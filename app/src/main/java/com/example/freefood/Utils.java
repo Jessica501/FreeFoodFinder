@@ -90,6 +90,11 @@ public class Utils {
                 }
                 adapter.clear();
                 adapter.addAll(posts);
+                try {
+                    adapter.filter();
+                } catch (JSONException ex) {
+                    Log.e("Utils.queryPosts", "Error filtering posts", e);
+                }
             }
         });
     }
