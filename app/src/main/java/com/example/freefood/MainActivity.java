@@ -29,6 +29,7 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import permissions.dispatcher.NeedsPermission;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
         });
         // default selected is stream
         binding.bottomNavigation.setSelectedItemId(R.id.action_stream);
+
+        Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
+        Log.i(TAG, getString(R.string.google_maps_api_key));
 
         LocationUtils.getMyLocationWithPermissionCheck(MainActivity.this);
         LocationUtils.startLocationUpdatesWithPermissionCheck(MainActivity.this);

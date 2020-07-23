@@ -30,16 +30,32 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivImage" />
 
-    <EditText
-        android:id="@+id/etLocation"
-        android:layout_width="0dp"
+<!--    <EditText-->
+<!--        android:id="@+id/etLocation"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:hint="Location"-->
+<!--        android:inputType="textPostalAddress"-->
+<!--        android:textSize="16sp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/etTitle" />-->
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/autocompleteCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Location"
-        android:inputType="textPostalAddress"
-        android:textSize="16sp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/etTitle">
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="24dp" />
+    </com.google.android.material.card.MaterialCardView>
 
     <CheckBox
         android:id="@+id/cbCurrentLocation"
@@ -47,7 +63,7 @@
         android:layout_height="32dp"
         android:text="Use Current Location"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etLocation" />
+        app:layout_constraintTop_toBottomOf="@+id/autocompleteCard" />
 
     <EditText
         android:id="@+id/etDescription"

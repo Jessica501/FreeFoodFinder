@@ -19,6 +19,7 @@ import com.example.freefood.PostInfoWindowAdapter;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentMapBinding;
 import com.example.freefood.models.Post;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,13 +27,20 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import org.jetbrains.annotations.NotNull;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -42,6 +50,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     private GoogleMap map;
     private List<Post> posts;
+    private Place place;
 
 
     public MapFragment() {
@@ -64,8 +73,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         SupportMapFragment mapFragment;
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-//        addMarkers();
     }
 
 
@@ -86,6 +93,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         queryMapPosts();
 
         map.setOnInfoWindowClickListener(this);
+
+        PlacesClient placesClient = Places.createClient(getContext());
+
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                this.getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NotNull Place place) {
+                map.animateCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+            }
+
+
+            @Override
+            public void onError(@NotNull Status status) {
+                Log.e(TAG, "An error occurred: " + status);
+            }
+        });
     }
 
     private void addMarker(Post post) {
