@@ -19,12 +19,20 @@
             app:singleLine="true">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chipDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="Within x miles"/>
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/chipMilk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO MILK"/>
+                android:text="No Milk"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipEggs"
@@ -32,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO EGGS"/>
+                android:text="No Eggs"/>
 
 
             <com.google.android.material.chip.Chip
@@ -41,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO TREE NUTS" />
+                android:text="No Tree Nuts" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipPeanuts"
@@ -49,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO PEANUTS" />
+                android:text="No Peanuts" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipSoy"
@@ -57,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO SOY" />
+                android:text="No Soy" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipWheat"
@@ -65,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO WHEAT" />
+                android:text="No Wheat" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipShellfish"
@@ -73,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO SHELLFISH" />
+                android:text="No Shellfish" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipFish"
@@ -81,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:clickable="false"
-                android:text="NO FISH" />
+                android:text="No Fish" />
 
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>

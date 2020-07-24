@@ -111,21 +111,36 @@ public class StreamFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e(TAG, "error filtering posts", e);
                 }
-                toggleChipVisibility(filter);
+                toggleChipVisibility(filter, maxDistance);
             }
         }
     }
 
-    private void toggleChipVisibility(HashSet<String> filter) {
+    private void toggleChipVisibility(HashSet<String> filter, double maxDistance) {
+        Log.i(TAG, String.valueOf(maxDistance));
         for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-            String allergen = String.valueOf(chip.getText()).toLowerCase().substring(3);
-            if (filter.contains(allergen)) {
-                chip.setVisibility(View.VISIBLE);
-                Log.i(TAG, allergen + " is visible");
-            } else {
-                chip.setVisibility(View.GONE);
-                Log.i(TAG, allergen + " is not visible");
+            String text = String.valueOf(chip.getText()).toLowerCase();
+            // allergen chip
+            if ("no".equals(text.substring(0, 2))) {
+                String allergen = text.substring(3);
+                if (filter.contains(allergen)) {
+                    chip.setVisibility(View.VISIBLE);
+                    Log.i(TAG, allergen + " is visible");
+                } else {
+                    chip.setVisibility(View.GONE);
+                    Log.i(TAG, allergen + " is not visible");
+                }
+            }
+            // distance chip
+            else {
+                if (maxDistance > 0) {
+                    chip.setVisibility(View.VISIBLE);
+                    double roundedMaxDistance = Math.round(maxDistance * 10.0) / 10.0;
+                    chip.setText("Within " + roundedMaxDistance + " miles");
+                } else {
+                    chip.setVisibility(View.GONE);
+                }
             }
         }
     }
