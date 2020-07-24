@@ -51,5 +51,15 @@ public class FilterActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        binding.btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+                    chip.setChecked(false);
+                }
+            }
+        });
     }
 }

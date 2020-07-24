@@ -108,6 +108,21 @@ public class StreamFragment extends Fragment {
                 } catch (JSONException e) {
                     Log.e(TAG, "error filtering posts", e);
                 }
+                toggleChipVisibility(filter);
+            }
+        }
+    }
+
+    private void toggleChipVisibility(HashSet<String> filter) {
+        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+            String allergen = String.valueOf(chip.getText()).toLowerCase().substring(3);
+            if (filter.contains(allergen)) {
+                chip.setVisibility(View.VISIBLE);
+                Log.i(TAG, allergen + " is visible");
+            } else {
+                chip.setVisibility(View.GONE);
+                Log.i(TAG, allergen + " is not visible");
             }
         }
     }

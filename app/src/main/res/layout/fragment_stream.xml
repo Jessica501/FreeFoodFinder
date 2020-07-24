@@ -6,6 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".fragments.StreamFragment">
 
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMilk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO MILK"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEggs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO EGGS"/>
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipTreeNuts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO TREE NUTS" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipPeanuts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO PEANUTS" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipSoy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO SOY" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipWheat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO WHEAT" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipShellfish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO SHELLFISH" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="NO FISH" />
+
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabFilter"
         android:layout_width="wrap_content"
@@ -21,7 +101,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnFilter">
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPosts"
