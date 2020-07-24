@@ -40,12 +40,14 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private List<Post> allPosts;
     private Context context;
     private HashSet<String> filter;
+    private double maxDistance;
 
     public PostsAdapter(Context context) {
         this.context = context;
         this.posts = new ArrayList<>();
         this.allPosts = new ArrayList<>();
         this.filter = new HashSet<>();
+        maxDistance = 0;
     }
 
     @NonNull
@@ -78,22 +80,40 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public void sort() {
+        Collections.sort(this.posts);
+        Collections.sort(this.allPosts);
+    }
+
     public HashSet<String> getFilter() {
         return filter;
     }
 
-    public void filter(HashSet<String> filter) throws JSONException {
+    public double getMaxDistance() {
+        return this.maxDistance;
+    }
+
+    public void filter(HashSet<String> filter, double maxDistance) throws JSONException {
         List<Post> filteredPosts = new ArrayList<>();
         this.filter = filter;
+        this.maxDistance = maxDistance;
 
-        if (filter.size() == 0) {
+        // no allergens and no maximum distance set
+        if (filter.size() == 0 && maxDistance <= 0) {
             this.posts.clear();
             this.posts.addAll(allPosts);
             notifyDataSetChanged();
             return;
         }
 
+        // loop through each post and check if it satisfies the requirements
         for (Post post: allPosts) {
+            // if a max distance was set and the relative distance is greater than the max, don't add the post
+            if (maxDistance > 0 && Utils.getRelativeDistance(post) > maxDistance) {
+                continue;
+            }
+
+            // loop through the 8 allergens and checks if any are in the food and need to be filtered out
             boolean allergenFree = true;
             JSONObject jsonObject = post.getContains();
             Iterator<String> allergens = jsonObject.keys();
@@ -106,9 +126,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
             if (allergenFree) {
                 filteredPosts.add(post);
-                Log.i(TAG, post + " has no allergens");
-            } else {
-                Log.i(TAG, post + " has allergens");
             }
         }
         this.posts.clear();
@@ -116,12 +133,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void sort() {
-        Collections.sort(this.posts);
-        Collections.sort(this.allPosts);
-    }
+    // filter using the saved attributes
     public void filter() throws JSONException {
-        filter(this.filter);
+        filter(this.filter, this.maxDistance);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

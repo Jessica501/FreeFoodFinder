@@ -86,6 +86,7 @@ public class StreamFragment extends Fragment {
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), FilterActivity.class);
                 i.putExtra("currentFilter", adapter.getFilter());
+                i.putExtra("currentMaxDistance", adapter.getMaxDistance());
                 startActivityForResult(i, FILTER_REQUEST_CODE);
             }
         });
@@ -103,8 +104,10 @@ public class StreamFragment extends Fragment {
         if (requestCode == FILTER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 HashSet<String> filter = (HashSet<String>) data.getExtras().getSerializable("filter");
+                double maxDistance = data.getExtras().getDouble("maxDistance");
+
                 try {
-                    adapter.filter(filter);
+                    adapter.filter(filter, maxDistance);
                 } catch (JSONException e) {
                     Log.e(TAG, "error filtering posts", e);
                 }

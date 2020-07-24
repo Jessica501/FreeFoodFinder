@@ -10,7 +10,7 @@
         android:id="@+id/horizontalScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        app:layout_constraintTop_toBottomOf="@+id/tvAllergens">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroup"

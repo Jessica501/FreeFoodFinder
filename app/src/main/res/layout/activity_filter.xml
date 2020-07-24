@@ -14,7 +14,7 @@
 
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvAllergens"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hide foods that contain:"
@@ -31,7 +31,7 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintTop_toBottomOf="@id/tvAllergens"
         app:singleLine="false">
 
         <com.google.android.material.chip.Chip
@@ -99,14 +99,35 @@
         android:layout_height="wrap_content"
         android:text="Filter"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/slider" />
 
     <Button
-        android:id="@+id/btnClear"
+        android:id="@+id/btnClearAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear"
+        android:text="Clear All"
         app:layout_constraintEnd_toStartOf="@+id/btnFilter"
         app:layout_constraintTop_toTopOf="@+id/btnFilter" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:stepSize="0.1"
+        android:valueFrom="0.0"
+        android:valueTo="10.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDistance" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Set maximum distance for food (miles)"
+        android:textColor="#202020"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
