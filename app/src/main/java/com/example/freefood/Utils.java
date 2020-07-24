@@ -90,6 +90,7 @@ public class Utils {
                 }
                 adapter.clear();
                 adapter.addAll(posts);
+                adapter.sort();
                 try {
                     adapter.filter();
                 } catch (JSONException ex) {
@@ -148,8 +149,7 @@ public class Utils {
     }
 
     public static String getRelativeDistanceString(Post post) {
-        ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
-        double relativeDistance = post.getLocation().distanceInMilesTo(currentLocation);
+        double relativeDistance = getRelativeDistance(post);
         double roundedRelativeDistance = Math.round(relativeDistance * 10.0) / 10.0;
 
         if (roundedRelativeDistance == 0) {
@@ -157,6 +157,11 @@ public class Utils {
         } else {
             return (roundedRelativeDistance + " mi");
         }
+    }
+
+    public static double getRelativeDistance(Post post) {
+        ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
+        return post.getLocation().distanceInMilesTo(currentLocation);
     }
 
     public static String getRelativeTimeAgo(Date date) {

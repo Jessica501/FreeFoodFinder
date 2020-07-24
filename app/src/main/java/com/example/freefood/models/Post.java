@@ -1,5 +1,6 @@
 package com.example.freefood.models;
 
+import com.example.freefood.Utils;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -10,7 +11,7 @@ import com.parse.ParseUser;
 import org.json.JSONObject;
 
 @ParseClassName("Post")
-public class Post extends ParseObject {
+public class Post extends ParseObject implements Comparable<Post> {
 
     public static final String KEY_AUTHOR = "author";
     public static final String KEY_IMAGE = "image";
@@ -45,4 +46,12 @@ public class Post extends ParseObject {
     public boolean getClaimed() { return getBoolean(KEY_CLAIMED); }
 
     public ParseRelation<Comment> getComments() { return getRelation(KEY_COMMENTS); }
+
+    @Override
+    public int compareTo(Post post) {
+        double myRelativeDistance = Utils.getRelativeDistance(this);
+        double otherRelativeDistance = Utils.getRelativeDistance(post);
+        return (int)(myRelativeDistance - otherRelativeDistance);
+
+    }
 }
