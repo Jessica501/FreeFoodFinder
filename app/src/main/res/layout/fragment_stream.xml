@@ -6,94 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".fragments.StreamFragment">
 
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:singleLine="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipMilk"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MILK" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipEggs"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EGGS" />
-
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipTreeNuts"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TREE NUTS" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipPeanuts"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PEANUTS" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipSoy"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SOY" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipWheat"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="WHEAT" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipShellfish"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SHELLFISH" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipFish"
-                style="@style/Widget.MaterialComponents.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FISH" />
-
-        </com.google.android.material.chip.ChipGroup>
-    </HorizontalScrollView>
-
-    <TextView
-        android:id="@+id/textView"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFilter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CONTAINS NO:"
-        android:textColor="#202020"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Filter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_baseline_filter_list_24"
+        app:backgroundTint="#FF8A80"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"

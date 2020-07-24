@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.example.freefood.FilterActivity;
 import com.example.freefood.PostsAdapter;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentStreamBinding;
@@ -33,12 +34,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.freefood.Utils.queryPosts;
 
 
 public class StreamFragment extends Fragment {
 
     private static final String TAG = "StreamFragment";
+    private static final int FILTER_REQUEST_CODE = 609;
     FragmentStreamBinding binding;
 
     protected PostsAdapter adapter;
@@ -78,22 +81,12 @@ public class StreamFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        binding.btnFilter.setOnClickListener(new View.OnClickListener() {
+        binding.fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashSet<String> filter = new HashSet<>();
-                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-                    if (chip.isChecked()) {
-                        filter.add(String.valueOf(chip.getText()).toLowerCase());
-                    }
-                }
-                Log.i(TAG, String.valueOf(filter));
-                try {
-                    adapter.filter(filter);
-                } catch (JSONException e) {
-                    Log.e(TAG, "error filtering posts", e);
-                }
+                Intent i = new Intent(getContext(), FilterActivity.class);
+                i.putExtra("currentFilter", adapter.getFilter());
+                startActivityForResult(i, FILTER_REQUEST_CODE);
             }
         });
     }
@@ -102,5 +95,20 @@ public class StreamFragment extends Fragment {
     public void onResume() {
         super.onResume();
         queryPosts(adapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILTER_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                HashSet<String> filter = (HashSet<String>) data.getExtras().getSerializable("filter");
+                try {
+                    adapter.filter(filter);
+                } catch (JSONException e) {
+                    Log.e(TAG, "error filtering posts", e);
+                }
+            }
+        }
     }
 }

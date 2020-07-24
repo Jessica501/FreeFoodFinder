@@ -77,12 +77,21 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
+    public HashSet<String> getFilter() {
+        return filter;
+    }
+
     public void filter(HashSet<String> filter) throws JSONException {
-        if (filter.size() == 0) {
-            return;
-        }
         List<Post> filteredPosts = new ArrayList<>();
         this.filter = filter;
+
+        if (filter.size() == 0) {
+            this.posts.clear();
+            this.posts.addAll(allPosts);
+            notifyDataSetChanged();
+            return;
+        }
+
         for (Post post: allPosts) {
             boolean allergenFree = true;
             JSONObject jsonObject = post.getContains();

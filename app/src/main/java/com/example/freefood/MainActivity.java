@@ -62,19 +62,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_stream:
                         fragment = new StreamFragment();
-                        findViewById(R.id.action_search).setVisibility(View.VISIBLE);
                         break;
                     case R.id.action_map:
                         fragment = new MapFragment();
-                        findViewById(R.id.action_search).setVisibility(View.GONE);
                         break;
                     case R.id.action_compose:
                         fragment = new ComposeFragment();
-                        findViewById(R.id.action_search).setVisibility(View.GONE);
                         break;
                     case R.id.action_profile:
                         fragment = new ProfileFragment();
-                        findViewById(R.id.action_search).setVisibility(View.GONE);
                         break;
                     default:
                         fragment = new StreamFragment();
