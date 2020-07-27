@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".FilterActivity" />
-        <activity android:name=".PostDetailActivity" />
+        <activity android:name=".PostDetailActivity"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

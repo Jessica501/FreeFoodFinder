@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +33,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -123,6 +126,22 @@ public class PostDetailActivity extends AppCompatActivity {
                 i.putExtra("edit", true);
                 i.putExtra("post", post);
                 startActivity(i);
+                finish();
+            }
+        });
+        
+        binding.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deletePost();
+            }
+        });
+    }
+
+    private void deletePost() {
+        post.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
                 finish();
             }
         });
