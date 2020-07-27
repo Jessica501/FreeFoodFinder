@@ -99,6 +99,7 @@ public class ComposeFragment extends Fragment {
                         // go to PostDetailActivity with the parseFile
                         Intent i = new Intent(getContext(), CreateDetailActivity.class);
                         i.putExtra("image", Parcels.wrap(parseFile));
+                        i.putExtra("edit", false);
                         startActivity(i);
                     }
                 });

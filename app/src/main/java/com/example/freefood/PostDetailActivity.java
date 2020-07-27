@@ -97,22 +97,6 @@ public class PostDetailActivity extends AppCompatActivity {
         binding.rvComments.setAdapter(adapter);
         binding.rvComments.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
 
-        binding.btnClaimed.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                post.setClaimed(true);
-                post.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Error saving post after setting claimed to false");
-                        }
-                        finish();
-                    }
-                });
-            }
-        });
-
         binding.ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +113,17 @@ public class PostDetailActivity extends AppCompatActivity {
                     return;
                 }
                 saveComment(description);
+            }
+        });
+
+        binding.ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(PostDetailActivity.this, CreateDetailActivity.class);
+                i.putExtra("edit", true);
+                i.putExtra("post", post);
+                startActivity(i);
+                finish();
             }
         });
     }
@@ -219,11 +214,23 @@ public class PostDetailActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setFields() {
-        // only show the claimed button if the post was by the current user
-        if (ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId()) && !post.getClaimed()) {
-            binding.btnClaimed.setVisibility(View.VISIBLE);
-        } else {
-            binding.btnClaimed.setVisibility(View.GONE);
+        // check if author of post is the current user
+        if (ParseUser.getCurrentUser().getObjectId().equals(post.getAuthor().getObjectId())) {
+            // if post has been claimed, make ivEdit gone
+            if (post.getClaimed()) {
+                binding.ivEdit.setVisibility(View.GONE);
+            }
+            // if post hasn't been claimed, make both buttons visible
+            else {
+                binding.ivEdit.setVisibility(View.VISIBLE);
+            }
+            binding.ivDelete.setVisibility(View.VISIBLE);
+
+        }
+        // if post author isn't current user, set both buttons gone
+        else {
+            binding.ivEdit.setVisibility(View.GONE);
+            binding.ivDelete.setVisibility(View.GONE);
         }
 
         if (post.getClaimed()) {
