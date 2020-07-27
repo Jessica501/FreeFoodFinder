@@ -13,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.freefood.FilterActivity;
 import com.example.freefood.MainActivity;
 import com.example.freefood.PostDetailActivity;
 import com.example.freefood.PostInfoWindowAdapter;
 import com.example.freefood.R;
+import com.example.freefood.Utils;
 import com.example.freefood.databinding.FragmentMapBinding;
 import com.example.freefood.models.Post;
 import com.google.android.gms.common.api.Status;
@@ -37,18 +39,27 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final String TAG = "MapFragment";
+    private int FILTER_REQUEST_CODE = 617;
     FragmentMapBinding binding;
 
     private GoogleMap map;
+    private HashSet<String> filter;
+    private double maxDistance;
     private List<Post> posts;
     private Place place;
 
@@ -73,6 +84,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         SupportMapFragment mapFragment;
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        filter = new HashSet<>();
+        maxDistance = 0;
+        binding.fabFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), FilterActivity.class);
+                i.putExtra("currentFilter", filter);
+                i.putExtra("currentMaxDistance", maxDistance);
+                startActivityForResult(i, FILTER_REQUEST_CODE);
+            }
+        });
     }
 
 
@@ -84,7 +108,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map = googleMap;
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
+        map.getUiSettings().setZoomGesturesEnabled(true);
         map.getUiSettings().setZoomControlsEnabled(true);
+        map.setPadding(0, 0, 0, binding.fabFilter.getHeight() + 16);
         map.setInfoWindowAdapter(new PostInfoWindowAdapter(getContext()));
 
         LatLng latLng = new LatLng(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
@@ -111,25 +137,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
             }
 
-
             @Override
             public void onError(@NotNull Status status) {
                 Log.e(TAG, "An error occurred: " + status);
             }
         });
+
     }
 
-    private void addMarker(Post post) {
-        LatLng latLng = new LatLng(post.getLocation().getLatitude(), post.getLocation().getLongitude());
-        Marker marker = map.addMarker(new MarkerOptions()
-                .title(post.getTitle())
-                .position(latLng));
-        marker.setTag(post);
-        marker.showInfoWindow();
-    }
 
     // query all unclaimed posts and add markers to the map
     public void queryMapPosts() {
+        Log.i(TAG, "querying map posts");
         map.clear();
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
@@ -144,10 +163,45 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 }
                 for (Post post : posts) {
                     Log.i("Utils.queryPosts", "Post: " + post.getTitle() + ", username: " + post.getAuthor().getUsername() + ", description: " + post.getDescription());
-                    addMarker(post);
+                    try {
+                        filter(post);
+                    } catch (JSONException ex) {
+                        Log.e(TAG, "Error filtering posts", e);
+                    }
                 }
             }
         });
+    }
+
+    // checks whether one post fulfills the requirements. If so, add marker. Else, return (don't add marker)
+    private void filter(Post post) throws JSONException {
+        if (maxDistance > 0 && Utils.getRelativeDistance(post) > maxDistance) {
+            return;
+        }
+
+        if (filter.size() > 0) {
+            // loop through the 8 allergens and checks if any are in the food and need to be filtered out
+            JSONObject jsonObject = post.getContains();
+            Iterator<String> allergens = jsonObject.keys();
+            while (allergens.hasNext()) {
+                String allergen = allergens.next();
+                if (jsonObject.getBoolean(allergen) && filter.contains(allergen)) {
+                    return;
+                }
+            }
+        }
+
+        // if not yet returned (passed through filter), then add it to the map
+        addMarker(post);
+    }
+
+    private void addMarker(Post post) {
+        LatLng latLng = new LatLng(post.getLocation().getLatitude(), post.getLocation().getLongitude());
+        Marker marker = map.addMarker(new MarkerOptions()
+                .title(post.getTitle())
+                .position(latLng));
+        marker.setTag(post);
+        marker.showInfoWindow();
     }
 
     // go to PostDetailActivity when info window is clicked
@@ -167,6 +221,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         if (map != null) {
             map.setInfoWindowAdapter(new PostInfoWindowAdapter(getContext()));
             queryMapPosts();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FILTER_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                HashSet<String> filter = (HashSet<String>) data.getExtras().getSerializable("filter");
+                double maxDistance = data.getExtras().getDouble("maxDistance");
+                this.filter = filter;
+                this.maxDistance = maxDistance;
+                queryMapPosts();
+
+//                toggleChipVisibility(filter, maxDistance);
+            }
         }
     }
 }
