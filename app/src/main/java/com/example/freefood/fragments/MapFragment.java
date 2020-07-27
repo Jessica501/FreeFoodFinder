@@ -34,6 +34,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.chip.Chip;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -98,7 +99,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             }
         });
     }
-
 
     @SuppressLint("MissingPermission")
     @Override
@@ -235,7 +235,36 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 this.maxDistance = maxDistance;
                 queryMapPosts();
 
-//                toggleChipVisibility(filter, maxDistance);
+                toggleChipVisibility(filter, maxDistance);
+            }
+        }
+    }
+
+    private void toggleChipVisibility(HashSet<String> filter, double maxDistance) {
+        Log.i(TAG, String.valueOf(maxDistance));
+        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+            String text = String.valueOf(chip.getText()).toLowerCase();
+            // allergen chip
+            if ("no".equals(text.substring(0, 2))) {
+                String allergen = text.substring(3);
+                if (filter.contains(allergen)) {
+                    chip.setVisibility(View.VISIBLE);
+                    Log.i(TAG, allergen + " is visible");
+                } else {
+                    chip.setVisibility(View.GONE);
+                    Log.i(TAG, allergen + " is not visible");
+                }
+            }
+            // distance chip
+            else {
+                if (maxDistance > 0) {
+                    chip.setVisibility(View.VISIBLE);
+                    double roundedMaxDistance = Math.round(maxDistance * 10.0) / 10.0;
+                    chip.setText("Within " + roundedMaxDistance + " miles");
+                } else {
+                    chip.setVisibility(View.GONE);
+                }
             }
         }
     }
