@@ -28,68 +28,62 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvAllergens"
         app:singleLine="false">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipMilk"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MILK" />
+            android:text="Milk" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipEggs"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EGGS" />
+            android:text="Eggs" />
 
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTreeNuts"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TREE NUTS" />
+            android:text="Tree Nuts" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPeanuts"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PEANUTS" />
+            android:text="Peanuts" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipSoy"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SOY" />
+            android:text="Soy" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipWheat"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="WHEAT" />
+            android:text="Wheat" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipShellfish"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SHELLFISH" />
+            android:text="Shellfish" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipFish"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FISH" />
+            android:text="Fish" />
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -103,6 +97,7 @@
 
     <Button
         android:id="@+id/btnClearAll"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear All"
