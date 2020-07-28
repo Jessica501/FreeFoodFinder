@@ -188,4 +188,5 @@ public class Utils {
             return "(" + location.getLatitude() + ", " + location.getLongitude() + ")";
         }
     }
+
 }

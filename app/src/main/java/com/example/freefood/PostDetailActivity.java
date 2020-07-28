@@ -3,6 +3,7 @@ package com.example.freefood;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.DialogInterface;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
+import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.models.Comment;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
@@ -122,8 +124,8 @@ public class PostDetailActivity extends AppCompatActivity {
         binding.ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(PostDetailActivity.this, CreateDetailActivity.class);
-                i.putExtra("edit", true);
+                Intent i = new Intent(PostDetailActivity.this, EditDetailActivity.class);
+//                i.putExtra("edit", true);
                 i.putExtra("post", post);
                 startActivity(i);
                 finish();

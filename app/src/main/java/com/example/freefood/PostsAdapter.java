@@ -180,6 +180,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         .load(image.getUrl())
                         .into(binding.ivImage);
             } else {
+                binding.ivImage.setImageResource(R.drawable.ic_baseline_fastfood_24);
                 binding.ivImage.setPadding(64, 64, 64, 64);
             }
             binding.tvDistance.setText(getRelativeDistanceString(post));

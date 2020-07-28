@@ -12,7 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.freefood.databinding.ActivityCreateDetailBinding;
+import com.example.freefood.databinding.ActivityEditDetailBinding;
 import com.example.freefood.models.Post;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -35,42 +35,42 @@ import org.parceler.Parcels;
 
 import java.util.Arrays;
 
-public class CreateDetailActivity extends AppCompatActivity {
+public class EditDetailActivity extends AppCompatActivity {
 
-    private static final String TAG = "CreateDetailActivity";
+    private static final String TAG = "EditDetailActivity";
 
     private Place place;
     private ParseGeoPoint parseGeoPoint;
-    private boolean edit;
+//    private boolean edit;
     private Post editPost;
     private AutocompleteSupportFragment autocompleteFragment;
     private ParseFile image;
 
-    ActivityCreateDetailBinding binding;
+    ActivityEditDetailBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCreateDetailBinding.inflate(getLayoutInflater());
+        binding = ActivityEditDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        edit = getIntent().getBooleanExtra("edit", false);
-        if (edit) {
-            editPost = getIntent().getExtras().getParcelable("post");
-            try {
-                loadInitialFields(editPost);
-            } catch (JSONException e) {
-                Log.e(TAG, "Error loading contains json information into checkboxes", e);
-            }
-            binding.btnClaimed.setVisibility(View.VISIBLE);
-        } else {
-            image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
-            Glide.with(CreateDetailActivity.this)
-                    .load(image.getUrl())
-                    .into(binding.ivImage);
-            binding.btnClaimed.setVisibility(View.GONE);
+//        edit = getIntent().getBooleanExtra("edit", false);
+//        if (edit) {
+        editPost = getIntent().getExtras().getParcelable("post");
+        try {
+            loadInitialFields(editPost);
+        } catch (JSONException e) {
+            Log.e(TAG, "Error loading contains json information into checkboxes", e);
         }
+        binding.btnClaimed.setVisibility(View.VISIBLE);
+//        } else {
+//            image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
+//            Glide.with(EditDetailActivity.this)
+//                    .load(image.getUrl())
+//                    .into(binding.ivImage);
+//            binding.btnClaimed.setVisibility(View.GONE);
+//        }
 
         PlacesClient placesClient = Places.createClient(this);
 
@@ -97,26 +97,26 @@ public class CreateDetailActivity extends AppCompatActivity {
         });
 
         // save post to parse when submit is clicked
-        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // error handling: make sure title isn't empty
                 if (String.valueOf(binding.etTitle.getText()).trim().isEmpty()) {
-                    Toast.makeText(CreateDetailActivity.this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditDetailActivity.this, "Title cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (binding.cbCurrentLocation.isChecked() && MainActivity.mLocation == null) {
                     Log.e(TAG, "mLocation is null, but current location is checked");
                 }
                 if (!binding.cbCurrentLocation.isChecked() && parseGeoPoint == null) {
-                    Toast.makeText(CreateDetailActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditDetailActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (edit) {
+//                if (edit) {
                     updatePost();
-                } else {
-                    savePost(null);
-                }
+//                } else {
+//                    savePost(null);
+//                }
             }
         });
 
@@ -189,12 +189,12 @@ public class CreateDetailActivity extends AppCompatActivity {
                     }
                     Log.i(TAG, "Post save was successful");
                     Intent i;
-                    if (edit) {
-                        i = new Intent(CreateDetailActivity.this, PostDetailActivity.class);
+//                    if (edit) {
+                        i = new Intent(EditDetailActivity.this, PostDetailActivity.class);
                         i.putExtra("post_id", editPost.getObjectId());
-                    } else {
-                        i = new Intent(CreateDetailActivity.this, MainActivity.class);
-                    }
+//                    } else {
+//                        i = new Intent(EditDetailActivity.this, MainActivity.class);
+//                    }
                     startActivity(i);
                     finish();
                 }

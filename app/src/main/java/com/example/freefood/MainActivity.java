@@ -21,6 +21,7 @@ import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.fragments.ProfileFragment;
 import com.example.freefood.fragments.StreamFragment;
+import com.example.freefood.models.Post;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         final FragmentManager fragmentManager = getSupportFragmentManager();
+
         // handle navigation selection
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -84,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         binding.bottomNavigation.setSelectedItemId(R.id.action_stream);
 
         Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
-        Log.i(TAG, getString(R.string.google_maps_api_key));
 
         LocationUtils.getMyLocationWithPermissionCheck(MainActivity.this);
         LocationUtils.startLocationUpdatesWithPermissionCheck(MainActivity.this);
