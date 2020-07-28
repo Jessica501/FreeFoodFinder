@@ -3,6 +3,8 @@ package com.example.freefood;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -170,5 +172,20 @@ public class Utils {
         relativeDate = String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, FORMAT_ABBREV_RELATIVE));
         return relativeDate;
+    }
+
+    public static String reverseGeocode(Context context, ParseGeoPoint location) {
+        Geocoder geocoder = new Geocoder(context);
+        List<Address> addresses = null;
+        try {
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 2);
+        } catch (IOException e) {
+            Log.e("Utils.reverseGeocode", "Error getting addresses from location", e);
+        }
+        if (addresses.size()>0) {
+            return addresses.get(0).getAddressLine(0);
+        } else {
+            return "(" + location.getLatitude() + ", " + location.getLongitude() + ")";
+        }
     }
 }

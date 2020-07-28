@@ -2,6 +2,8 @@ package com.example.freefood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import com.parse.ParseGeoPoint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,6 +59,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         return new ViewHolder(ItemPostBinding.inflate(LayoutInflater.from(context), parent, false));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Post post = posts.get(position);
@@ -155,8 +159,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 binding.tvTitle.setText(post.getTitle());
             }
-
-            binding.tvLocation.setText(String.valueOf(post.getLocation()));
+            binding.tvLocation.setText(Utils.reverseGeocode(context, post.getLocation()));
             String description = post.getDescription().trim();
             if (description.isEmpty()) {
                 binding.tvDescription.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 package com.example.freefood;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ import org.parceler.Parcels;
 
 import java.util.Arrays;
 
-public class CreateDetailActivity extends AppCompatActivity{
+public class CreateDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "CreateDetailActivity";
 
@@ -88,6 +89,7 @@ public class CreateDetailActivity extends AppCompatActivity{
                 setPlace(place);
                 Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
             }
+
             @Override
             public void onError(@NotNull Status status) {
                 Log.e(TAG, "An error occurred: " + status);
@@ -166,8 +168,7 @@ public class CreateDetailActivity extends AppCompatActivity{
             Location location = MainActivity.mLocation;
             if (location != null) {
                 post.setLocation(new ParseGeoPoint(location.getLatitude(), location.getLongitude()));
-            }
-            else {
+            } else {
                 post.setLocation(new ParseGeoPoint(30, -120));
                 Log.e(TAG, "Error: current location is checked, but the location is null");
             }
@@ -235,12 +236,13 @@ public class CreateDetailActivity extends AppCompatActivity{
                 .into(binding.ivImage);
         binding.etTitle.setText(post.getTitle());
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteFragment.setText(String.valueOf(post.getLocation()));
+        String address = Utils.reverseGeocode(this, post.getLocation());
+        autocompleteFragment.setText(address);
         this.parseGeoPoint = post.getLocation();
         binding.etDescription.setText(post.getDescription());
         JSONObject jsonObject = post.getContains();
 
-        CheckBox[] checkBoxes = new CheckBox[] {binding.cbMilk, binding.cbEggs, binding.cbPeanuts, binding.cbTreeNuts, binding.cbSoy, binding.cbWheat, binding.cbFish, binding.cbShellfish};
+        CheckBox[] checkBoxes = new CheckBox[]{binding.cbMilk, binding.cbEggs, binding.cbPeanuts, binding.cbTreeNuts, binding.cbSoy, binding.cbWheat, binding.cbFish, binding.cbShellfish};
         for (int i = 0; i < 8; i++) {
             CheckBox checkBox = checkBoxes[i];
             String allergen = String.valueOf(checkBox.getText()).toLowerCase();

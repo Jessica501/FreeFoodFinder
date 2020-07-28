@@ -258,7 +258,7 @@ public class PostDetailActivity extends AppCompatActivity {
             binding.tvTitle.setText(post.getTitle());
         }
         binding.tvRelativeDistance.setText(getRelativeDistanceString(post));
-        binding.tvLocation.setText(String.valueOf(post.getLocation()));
+        binding.tvLocation.setText(Utils.reverseGeocode(this, post.getLocation()));
         binding.tvUsername.setText("@" + post.getAuthor().getUsername());
         String description = post.getDescription().trim();
         if (description.isEmpty()) {
