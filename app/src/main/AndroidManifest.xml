@@ -28,9 +28,10 @@
         </provider>
 
         <activity android:name=".SettingsActivity" />
-        <activity android:name=".CreateDetailActivity" />
+        <activity android:name=".EditDetailActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
