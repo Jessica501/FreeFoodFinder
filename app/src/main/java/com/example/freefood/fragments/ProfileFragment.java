@@ -1,12 +1,17 @@
 package com.example.freefood.fragments;
 
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
@@ -25,6 +30,8 @@ import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static com.example.freefood.Utils.queryPosts;
 
@@ -78,6 +85,7 @@ public class ProfileFragment extends Fragment {
         adapter = new PostsAdapter(getContext());
         binding.rvPosts.setAdapter(adapter);
         binding.rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        new ItemTouchHelper(itemTouchHelpeerCallback).attachToRecyclerView(binding.rvPosts);
         queryPosts(adapter, ParseUser.getCurrentUser());
 
         // add refresh listener to swipe container
@@ -106,4 +114,26 @@ public class ProfileFragment extends Fragment {
         super.onResume();
         queryPosts(adapter, ParseUser.getCurrentUser());
     }
+
+    ItemTouchHelper.SimpleCallback itemTouchHelpeerCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            ((PostsAdapter.ViewHolder)viewHolder).markClaimed();
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    .addBackgroundColor(ContextCompat.getColor(getContext(), R.color.secondaryColor))
+                    .addActionIcon(R.drawable.ic_baseline_check_24)
+                    .create()
+                    .decorate();
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+        }
+    };
 }

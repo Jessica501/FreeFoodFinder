@@ -7,8 +7,10 @@ import android.location.Geocoder;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,8 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -145,6 +150,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ItemPostBinding binding;
+        Post post;
 
         public ViewHolder(ItemPostBinding b) {
             super(b.getRoot());
@@ -154,6 +160,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void bind(Post post) {
+            this.post = post;
             if (post.getClaimed()) {
                 binding.tvTitle.setText("CLAIMED - " + post.getTitle());
             } else {
@@ -197,6 +204,31 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 Log.i(TAG, context.toString());
                 context.startActivity(i);
             }
+        }
+
+        public void markClaimed() {
+            if (post.getAuthor().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
+                if (post.getClaimed()) {
+                    Toast.makeText(context, "Post is already marked as claimed", Toast.LENGTH_SHORT).show();
+                } else {
+                    post.setClaimed(true);
+                    post.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "Error saving post after setting claimed to false", e);
+                                return;
+                            }
+                            Log.i(TAG, "Successfully marked post as claimed and saved");
+                            Toast.makeText(context, "Post marked as claimed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            } else {
+                Toast.makeText(context, "You are not authorized to mark this post as claimed", Toast.LENGTH_SHORT).show();
+            }
+            notifyItemChanged(getAdapterPosition());
         }
     }
 }
