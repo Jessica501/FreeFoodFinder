@@ -1,6 +1,9 @@
 package com.example.freefood;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +70,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         public void bind(Comment comment) {
             User author = (User) comment.getAuthor();
-            ParseFile image = comment.getImage();
+            final ParseFile image = comment.getImage();
 
             binding.tvUsername.setText("@" + author.getUsername());
             binding.tvDescription.setText(comment.getDescrption());
@@ -84,6 +87,19 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
                         .load(image.getUrl())
                         .into(binding.ivImage);
             }
+
+            binding.ivImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, ExpandedImageActivity.class);
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                            (Activity)context,
+                            binding.ivImage,
+                            "shared_element_container");
+                    i.putExtra("imageUrl", image.getUrl());
+                    context.startActivity(i, options.toBundle());
+                }
+            });
         }
     }
 }

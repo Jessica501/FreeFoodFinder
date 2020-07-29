@@ -14,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ExpandedImageActivity"></activity>
         <activity android:name=".FilterActivity" />
-        <activity android:name=".PostDetailActivity"/>
+        <activity android:name=".PostDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -30,8 +31,9 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".EditDetailActivity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".MainActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

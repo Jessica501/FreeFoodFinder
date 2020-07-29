@@ -18,9 +18,10 @@
         android:id="@+id/ivImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:transitionName="shared_element_container"
         android:layout_marginStart="8dp"
-        android:padding="4dp"
         android:scaleType="centerCrop"
+        android:padding="4dp"
         app:layout_constraintStart_toEndOf="@+id/ivProfile"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_fastfood_24" />

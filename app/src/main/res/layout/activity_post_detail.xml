@@ -64,6 +64,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             android:scaleType="centerCrop"
+            android:transitionName="shared_element_container"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/map"
             app:layout_constraintHeight_percent="0.27"
@@ -177,6 +178,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ivExpandedCommentImage"
+            android:visibility="invisible"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

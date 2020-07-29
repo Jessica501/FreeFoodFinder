@@ -6,6 +6,8 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,7 +18,9 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -73,10 +78,16 @@ public class PostDetailActivity extends AppCompatActivity {
     private File photoFile;
     private String photoFileName = "photo.jpg";
     public ParseFile parseFile;
-
+    private String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Window window = getWindow();
+
+        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
+        window.setSharedElementsUseOverlay(false);
+
         super.onCreate(savedInstanceState);
         binding = ActivityPostDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -131,13 +142,29 @@ public class PostDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-        
+
         binding.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deletePost();
             }
         });
+
+        binding.ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (imageUrl != null) {
+                    Intent i = new Intent(PostDetailActivity.this, ExpandedImageActivity.class);
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(
+                            PostDetailActivity.this,
+                            binding.ivImage,
+                            "shared_element_container");
+                    i.putExtra("imageUrl", imageUrl);
+                    startActivity(i, options.toBundle());
+                }
+            }
+        });
+
     }
 
     private void deletePost() {
@@ -198,8 +225,10 @@ public class PostDetailActivity extends AppCompatActivity {
                         // hide keyboard and clear edit text and image after submitting comment
                         InputMethodManager inputManager = (InputMethodManager)
                                 getSystemService(INPUT_METHOD_SERVICE);
-                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
-                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        if (getCurrentFocus() != null) {
+                            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                                    InputMethodManager.HIDE_NOT_ALWAYS);
+                        }
                         binding.etComment.setText("");
                         binding.etComment.clearFocus();
                         binding.ivCamera.setImageResource(R.drawable.ic_baseline_photo_camera_24);
@@ -277,8 +306,9 @@ public class PostDetailActivity extends AppCompatActivity {
         String relativeTime = getRelativeTimeAgo(post.getCreatedAt());
         binding.tvRelativeTime.setText(relativeTime);
         if (post.getImage() != null) {
+            imageUrl = post.getImage().getUrl();
             Glide.with(PostDetailActivity.this)
-                    .load(post.getImage().getUrl())
+                    .load(imageUrl)
                     .into(binding.ivImage);
         } else {
             binding.ivImage.setPadding(64, 64, 64, 64);
