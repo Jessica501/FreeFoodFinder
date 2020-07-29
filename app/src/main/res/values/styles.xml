@@ -17,6 +17,7 @@
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
         <item name="chipStyle">@style/MaterialChips</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
+        <item name="imageButtonStyle">@style/ImageButton</item>
 
     </style>
 
@@ -56,6 +57,11 @@
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="iconTint">@color/material_icon_tint_selector</item>
         <item name="colorPrimary">@color/primaryLightColor</item>
+    </style>
+
+    <style name="ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="backgroundTint">@color/primaryDarkColor</item>
+        <item name="tint">@color/white</item>
     </style>
 
 </resources>

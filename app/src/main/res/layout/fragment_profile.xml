@@ -44,20 +44,16 @@
 
     <ImageButton
         android:id="@+id/btnSettings"
-        style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
         android:src="@drawable/ic_baseline_settings_24"
         app:layout_constraintStart_toEndOf="@+id/ivProfile"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
 
     <ImageButton
         android:id="@+id/btnLogOut"
-        style="@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="4dp"
         android:src="@drawable/ic_baseline_exit_to_app_24"
         app:layout_constraintStart_toEndOf="@+id/btnSettings"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
