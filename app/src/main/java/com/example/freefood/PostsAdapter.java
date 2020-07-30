@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
 import com.parse.ParseException;
@@ -166,7 +167,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 binding.tvTitle.setText(post.getTitle());
             }
-            binding.tvLocation.setText(Utils.reverseGeocode(context, post.getLocation()));
+            binding.tvLocation.setText(Utils.shortenedReverseGeocode(context, post.getLocation()));
             String description = post.getDescription().trim();
             if (description.isEmpty()) {
                 binding.tvDescription.setVisibility(View.GONE);

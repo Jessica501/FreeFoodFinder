@@ -103,10 +103,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        binding.swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        binding.swipeContainer.setColorSchemeResources(R.color.secondaryColor,
+                R.color.secondaryDarkColor,
+                R.color.secondaryLightColor);
     }
 
     @Override

@@ -73,7 +73,12 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             final ParseFile image = comment.getImage();
 
             binding.tvUsername.setText("@" + author.getUsername());
-            binding.tvDescription.setText(comment.getDescrption());
+            if (comment.getDescrption().trim().isEmpty()) {
+                binding.tvDescription.setVisibility(View.GONE);
+            } else {
+                binding.tvDescription.setVisibility(View.VISIBLE);
+                binding.tvDescription.setText(comment.getDescrption());
+            }
             binding.tvRelativeTime.setText(Utils.getRelativeTimeAgo(comment.getCreatedAt()));
             Glide.with(context)
                     .load(author.getProfileImage().getUrl())

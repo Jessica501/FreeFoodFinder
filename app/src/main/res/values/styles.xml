@@ -18,7 +18,7 @@
         <item name="chipStyle">@style/MaterialChips</item>
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="imageButtonStyle">@style/ImageButton</item>
-
+        <item name="sliderStyle">@style/Widget.App.Slider</item>
     </style>
 
 
@@ -64,4 +64,18 @@
         <item name="tint">@color/white</item>
     </style>
 
+    <style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>
+        <item name="labelStyle">@style/Widget.App.Tooltip</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Slider" parent="">
+        <item name="colorPrimary">@color/secondaryColor</item>
+        <item name="colorOnPrimary">@color/secondaryTextColor</item>
+        <item name="colorOnSurface">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+    <item name="backgroundTint">@color/secondaryLightColor</item>
+</style>
 </resources>

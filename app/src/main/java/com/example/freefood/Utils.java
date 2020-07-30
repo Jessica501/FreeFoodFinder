@@ -182,11 +182,23 @@ public class Utils {
         } catch (IOException e) {
             Log.e("Utils.reverseGeocode", "Error getting addresses from location", e);
         }
-        if (addresses.size()>0) {
+        if (addresses.size() > 0) {
             return addresses.get(0).getAddressLine(0);
         } else {
             return "(" + location.getLatitude() + ", " + location.getLongitude() + ")";
         }
+    }
+
+    public static String shortenedReverseGeocode(Context context, ParseGeoPoint location) {
+        String original = reverseGeocode(context, location);
+        if (")".equals(original.charAt(0))) {
+            return original;
+        }
+        if (original.indexOf(",") < 0) {
+            return original;
+        }
+        int stop = original.indexOf(",");
+        return original.substring(0, stop);
     }
 
 }

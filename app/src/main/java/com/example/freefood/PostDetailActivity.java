@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Activity;
@@ -112,6 +113,9 @@ public class PostDetailActivity extends AppCompatActivity {
         adapter = new CommentsAdapter(PostDetailActivity.this);
         binding.rvComments.setAdapter(adapter);
         binding.rvComments.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL);
+        binding.rvComments.addItemDecoration(dividerItemDecoration);
 
         binding.ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override

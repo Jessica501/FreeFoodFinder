@@ -20,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/titillium_web_bold"
         android:text="Title"
         android:textColor="#222222"
         android:textSize="18sp"
@@ -31,7 +32,10 @@
         android:id="@+id/tvDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="3"
         android:text="Description"
+        android:textColor="#444444"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -42,9 +46,9 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="Contains"
-        android:textStyle="bold"
+        android:textColor="#555555"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
+        app:layout_constraintStart_toStartOf="@+id/tvTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
