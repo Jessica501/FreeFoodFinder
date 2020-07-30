@@ -1,10 +1,17 @@
 package com.example.freefood;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -12,7 +19,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.freefood.databinding.ActivityEditDetailBinding;
+import com.example.freefood.databinding.FragmentComposeBinding;
 import com.example.freefood.models.Post;
 import com.google.android.gms.common.api.Status;
 import com.google.android.libraries.places.api.Places;
@@ -33,7 +40,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Arrays;
+
+import permissions.dispatcher.NeedsPermission;
+
+import static com.example.freefood.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.freefood.Utils.PICK_PHOTO_CODE;
 
 public class EditDetailActivity extends AppCompatActivity {
 
@@ -46,13 +60,16 @@ public class EditDetailActivity extends AppCompatActivity {
     private AutocompleteSupportFragment autocompleteFragment;
     private ParseFile image;
 
-    ActivityEditDetailBinding binding;
+    FragmentComposeBinding binding;
+    private File photoFile;
+    private String photoFileName = "photo.jpg";
+    private byte[] photoBytes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEditDetailBinding.inflate(getLayoutInflater());
+        binding = FragmentComposeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
 //        edit = getIntent().getBooleanExtra("edit", false);
@@ -97,7 +114,7 @@ public class EditDetailActivity extends AppCompatActivity {
         });
 
         // save post to parse when submit is clicked
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+        binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // error handling: make sure title isn't empty
@@ -149,11 +166,59 @@ public class EditDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        binding.btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLaunchCamera(view);
+            }
+        });
+
+        binding.btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPickPhoto(view);
+            }
+        });
     }
 
     private void setPlace(Place place) {
         this.place = place;
         this.parseGeoPoint = new ParseGeoPoint(place.getLatLng().latitude, place.getLatLng().longitude);
+    }
+
+    public void onLaunchCamera(View view) {
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Create a File reference for future access
+        photoFile = Utils.getPhotoFileUri(photoFileName, this);
+
+        // wrap File object into a content provider
+        // required for API >= 24
+        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+        Uri fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider.FreeFoodFinder", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            // Start the image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    public void onPickPhoto(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            // Bring up gallery to select a photo
+            startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
     }
 
     // save the post to parse using the entered data
@@ -249,6 +314,40 @@ public class EditDetailActivity extends AppCompatActivity {
             if (jsonObject.getBoolean(allergen)) {
                 checkBox.setChecked(true);
             }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Result from camera
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // by this point we have the camera photo on disk
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                // create parseFile
+                image = new ParseFile(photoFile);
+                // Load the taken image into a preview
+                binding.ivImage.setImageBitmap(takenImage);
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Result from gallery
+        else if ((data != null) && requestCode == PICK_PHOTO_CODE) {
+            Uri photoUri = data.getData();
+
+            // Load the image located at photoUri into selectedImage
+            Bitmap selectedImage = Utils.loadFromUri(photoUri, this);
+
+            // convert Bitmap to byte[], then create parseFile
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            photoBytes = stream.toByteArray();
+            image = new ParseFile(photoBytes);
+
+            // Load the selected image into a preview
+            binding.ivImage.setImageBitmap(selectedImage);
         }
     }
 }

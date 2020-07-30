@@ -177,6 +177,8 @@ public class ComposeFragment extends Fragment {
             }
         });
 
+        binding.btnClaimed.setVisibility(View.GONE);
+
 //        binding.btnClaimed.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
