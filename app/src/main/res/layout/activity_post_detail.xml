@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_post_detail_scene"
     tools:context=".PostDetailActivity">
 
     <include
@@ -13,14 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/postContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="1.0"
-        tools:layout_editor_absoluteX="-38dp">
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <ImageView
             android:id="@+id/ivProfile"
@@ -73,13 +73,11 @@
             android:layout_marginTop="8dp"
             android:scaleType="centerCrop"
             android:transitionName="shared_element_container"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/map"
-            app:layout_constraintHeight_percent="0.27"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivProfile"
-            app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/ic_baseline_fastfood_24" />
 
         <fragment
@@ -136,6 +134,36 @@
             app:layout_constraintTop_toBottomOf="@+id/tvRelativeDistance"
             tools:text="relative time" />
 
+        <ImageView
+            android:id="@+id/ivEdit"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
+            app:layout_constraintTop_toTopOf="@+id/ivDelete"
+            app:srcCompat="@drawable/ic_baseline_edit_24" />
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_delete_24" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/commentsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postContainer">
+
         <EditText
             android:id="@+id/etComment"
             android:layout_width="0dp"
@@ -164,7 +192,7 @@
             android:padding="2dp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvAllergens"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -174,24 +202,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivCamera" />
-
-        <ImageView
-            android:id="@+id/ivEdit"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:layout_constraintEnd_toStartOf="@+id/ivDelete"
-            app:layout_constraintTop_toTopOf="@+id/ivDelete"
-            app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-        <ImageView
-            android:id="@+id/ivDelete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_delete_24" />
-
+            app:layout_constraintTop_toBottomOf="@+id/etComment" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
