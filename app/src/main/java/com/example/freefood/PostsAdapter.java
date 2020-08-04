@@ -50,14 +50,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private List<Post> posts;
     private List<Post> allPosts;
     private Context context;
-    private HashSet<String> filter;
+    private HashSet<String> allergens;
     private double maxDistance;
+    private HashSet<String> tags;
 
     public PostsAdapter(Context context) {
         this.context = context;
         this.posts = new ArrayList<>();
         this.allPosts = new ArrayList<>();
-        this.filter = new HashSet<>();
+        this.allergens = new HashSet<>();
+        this.tags = new HashSet<>();
         maxDistance = 0;
     }
 
@@ -97,21 +99,25 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         Collections.sort(this.allPosts);
     }
 
-    public HashSet<String> getFilter() {
-        return filter;
+    public HashSet<String> getAllergens() {
+        return this.allergens;
     }
 
     public double getMaxDistance() {
         return this.maxDistance;
     }
 
-    public void filter(HashSet<String> filter, double maxDistance) throws JSONException {
-        List<Post> filteredPosts = new ArrayList<>();
-        this.filter = filter;
-        this.maxDistance = maxDistance;
 
-        // no allergens and no maximum distance set
-        if (filter.size() == 0 && maxDistance <= 0) {
+    public HashSet<String> getTags() { return this.tags; }
+
+    public void filter(HashSet<String> allergens, double maxDistance, HashSet<String> tags) throws JSONException {
+        List<Post> filteredPosts = new ArrayList<>();
+        this.allergens = allergens;
+        this.maxDistance = maxDistance;
+        this.tags = tags;
+
+        // no allergens, tags and no maximum distance set
+        if (allergens.size() == 0 && maxDistance <= 0 && tags.size() == 0) {
             this.posts.clear();
             this.posts.addAll(allPosts);
             notifyDataSetChanged();
@@ -125,18 +131,29 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                 continue;
             }
 
+            // for all tags in this.tags, if post doesn't contain the tag, don't add the post
+            JSONObject postTags = post.getTags();
+            boolean satisfiesTags = true;
+            for (String tag: tags) {
+                if (postTags == null || !postTags.getBoolean(tag)) {
+                    satisfiesTags = false;
+                    break;
+                }
+            }
+
             // loop through the 8 allergens and checks if any are in the food and need to be filtered out
             boolean allergenFree = true;
-            JSONObject jsonObject = post.getContains();
-            Iterator<String> allergens = jsonObject.keys();
-            while (allergens.hasNext() && allergenFree) {
-                String allergen = allergens.next();
-                if (jsonObject.getBoolean(allergen) && filter.contains(allergen)) {
+            JSONObject postAllergens = post.getContains();
+            Iterator<String> iterator = postAllergens.keys();
+            while (iterator.hasNext() && allergenFree) {
+                String allergen = iterator.next();
+                if (postAllergens.getBoolean(allergen) && allergens.contains(allergen)) {
                     allergenFree = false;
                     break;
                 }
             }
-            if (allergenFree) {
+
+            if (allergenFree && satisfiesTags) {
                 filteredPosts.add(post);
             }
         }
@@ -147,8 +164,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     // filter using the saved attributes
     public void filter() throws JSONException {
-        filter(this.filter, this.maxDistance);
+        filter(this.allergens, this.maxDistance, this.tags);
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

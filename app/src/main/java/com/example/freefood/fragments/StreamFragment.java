@@ -86,8 +86,9 @@ public class StreamFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), FilterActivity.class);
-                i.putExtra("currentFilter", adapter.getFilter());
+                i.putExtra("currentAllergens", adapter.getAllergens());
                 i.putExtra("currentMaxDistance", adapter.getMaxDistance());
+                i.putExtra("currentTags", adapter.getTags());
                 startActivityForResult(i, FILTER_REQUEST_CODE);
             }
         });
@@ -104,28 +105,30 @@ public class StreamFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILTER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                HashSet<String> filter = (HashSet<String>) data.getExtras().getSerializable("filter");
+                HashSet<String> allergens = (HashSet<String>) data.getExtras().getSerializable("allergens");
                 double maxDistance = data.getExtras().getDouble("maxDistance");
+                HashSet<String> tags = (HashSet<String>) data.getExtras().getSerializable("tags");
+
 
                 try {
-                    adapter.filter(filter, maxDistance);
+                    adapter.filter(allergens, maxDistance, tags);
                 } catch (JSONException e) {
                     Log.e(TAG, "error filtering posts", e);
                 }
-                toggleChipVisibility(filter, maxDistance);
+                toggleChipVisibility(allergens, maxDistance, tags);
             }
         }
     }
 
-    private void toggleChipVisibility(HashSet<String> filter, double maxDistance) {
+    private void toggleChipVisibility(HashSet<String> allergens, double maxDistance, HashSet<String> tags) {
         Log.i(TAG, String.valueOf(maxDistance));
         for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-            String text = String.valueOf(chip.getText()).toLowerCase();
+            String chipText = String.valueOf(chip.getText()).toLowerCase();
             // allergen chip
-            if ("no".equals(text.substring(0, 2))) {
-                String allergen = text.substring(3);
-                if (filter.contains(allergen)) {
+            if (chipText.startsWith("no")) {
+                String allergen = chipText.substring(3);
+                if (allergens.contains(allergen)) {
                     chip.setVisibility(View.VISIBLE);
                     Log.i(TAG, allergen + " is visible");
                 } else {
@@ -134,11 +137,20 @@ public class StreamFragment extends Fragment {
                 }
             }
             // distance chip
-            else {
+            else if (chipText.startsWith("within")){
                 if (maxDistance > 0) {
                     chip.setVisibility(View.VISIBLE);
                     double roundedMaxDistance = Math.round(maxDistance * 10.0) / 10.0;
                     chip.setText("Within " + roundedMaxDistance + " miles");
+                } else {
+                    chip.setVisibility(View.GONE);
+                }
+            }
+
+            // tag chip
+            else {
+                if (tags.contains(chipText)) {
+                    chip.setVisibility(View.VISIBLE);
                 } else {
                     chip.setVisibility(View.GONE);
                 }

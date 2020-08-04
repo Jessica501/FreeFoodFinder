@@ -32,8 +32,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
+        <TextView
+            android:id="@+id/tvTags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/titillium_web_semibold"
+            android:text="Only include foods with tags:"
+            android:textColor="#202020"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/slider" />
+
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+            android:id="@+id/cgAllergens"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -100,9 +112,10 @@
             android:id="@+id/btnFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Filter"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/slider" />
+            app:layout_constraintTop_toBottomOf="@+id/cgTags" />
 
         <Button
             android:id="@+id/btnClearAll"
@@ -134,11 +147,45 @@
             android:textColor="#202020"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
+            app:layout_constraintTop_toBottomOf="@+id/cgAllergens" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgTags"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTags">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipVegetarian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegetarian" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipVegan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vegan" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipKosher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kosher" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHalal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Halal" />
+        </com.google.android.material.chip.ChipGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

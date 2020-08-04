@@ -174,14 +174,14 @@ public class PostDetailActivity extends AppCompatActivity {
     private void setTagVisibility() throws JSONException {
         JSONObject tags = post.getTags();
         if (tags == null) {
-            for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-                Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+            for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+                Chip chip = (Chip) binding.cgTags.getChildAt(i);
                 chip.setVisibility(View.GONE);
             }
             return;
         }
-        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+        for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgTags.getChildAt(i);
             String tag = String.valueOf(chip.getText()).toLowerCase();
             if (tags.getBoolean(tag)) {
                 chip.setVisibility(View.VISIBLE);

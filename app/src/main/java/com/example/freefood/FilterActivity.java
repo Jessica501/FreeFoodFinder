@@ -32,39 +32,12 @@ public class FilterActivity extends AppCompatActivity {
         binding = ActivityFilterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        HashSet<String> initialFilter = (HashSet<String>) getIntent().getExtras().getSerializable("currentFilter");
-        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-            String allergen = String.valueOf(chip.getText()).toLowerCase();
-            if (initialFilter.contains(allergen)) {
-                chip.setChecked(true);
-            }
-        }
-
-        double initialMaxDistance = getIntent().getExtras().getDouble("currentMaxDistance");
-        binding.slider.setValue((float) initialMaxDistance);
-        toggleSliderHighlight();
-        toggleChipHighlight();
+        initializeFilters();
 
         binding.btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashSet<String> filter = new HashSet<>();
-                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-                    if (chip.isChecked()) {
-                        filter.add(String.valueOf(chip.getText()).toLowerCase());
-                    }
-                }
-                Log.i(TAG, String.valueOf(filter));
-
-                double maxDistance = binding.slider.getValue();
-
-                Intent data = new Intent();
-                data.putExtra("filter", filter);
-                data.putExtra("maxDistance",maxDistance);
-                setResult(RESULT_OK, data);
-                finish();
+                passFiltersToActivityResult();
             }
         });
 
@@ -79,36 +52,105 @@ public class FilterActivity extends AppCompatActivity {
         binding.btnClearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-                    chip.setChecked(false);
-                }
-                toggleChipHighlight();
-
-                binding.slider.setValue(0);
-                toggleSliderHighlight();
+                clearFilters();
             }
         });
-        View.OnClickListener chipClickListener = new View.OnClickListener() {
+
+        View.OnClickListener allergenChipClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toggleChipHighlight();
+                toggleAllergenChipHighlight();
             }
         };
-        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-            chip.setOnClickListener(chipClickListener);
+        for (int i = 0; i < binding.cgAllergens.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgAllergens.getChildAt(i);
+            chip.setOnClickListener(allergenChipClickListener);
         }
-        binding.chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+
+        View.OnClickListener tagChipClickListener = new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(ChipGroup group, int checkedId) {
-                Toast.makeText(FilterActivity.this, "woo", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                toggleTagChipHighlight();
             }
-        });
+        };
+        for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgTags.getChildAt(i);
+            chip.setOnClickListener(tagChipClickListener);
+        }
     }
 
-    private void toggleChipHighlight() {
-        List<Integer> checkedChipIds = binding.chipGroup.getCheckedChipIds();
+    private void clearFilters() {
+        for (int i = 0; i < binding.cgAllergens.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgAllergens.getChildAt(i);
+            chip.setChecked(false);
+        }
+        toggleAllergenChipHighlight();
+
+        binding.slider.setValue(0);
+        toggleSliderHighlight();
+
+        for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgTags.getChildAt(i);
+            chip.setChecked(false);
+        }
+        toggleTagChipHighlight();
+    }
+
+    private void passFiltersToActivityResult() {
+        HashSet<String> allergens = new HashSet<>();
+        for (int i = 0; i < binding.cgAllergens.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgAllergens.getChildAt(i);
+            if (chip.isChecked()) {
+                allergens.add(String.valueOf(chip.getText()).toLowerCase());
+            }
+        }
+        Log.i(TAG, String.valueOf(allergens));
+
+        double maxDistance = binding.slider.getValue();
+
+        HashSet<String> tags = new HashSet<>();
+        for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgTags.getChildAt(i);
+            if (chip.isChecked()) {
+                tags.add(String.valueOf(chip.getText()).toLowerCase());
+            }
+        }
+
+        Intent data = new Intent();
+        data.putExtra("allergens", allergens);
+        data.putExtra("maxDistance",maxDistance);
+        data.putExtra("tags", tags);
+        setResult(RESULT_OK, data);
+        finish();
+    }
+
+    private void initializeFilters() {
+        HashSet<String> initialAllergenFilter = (HashSet<String>) getIntent().getExtras().getSerializable("currentAllergens");
+        for (int i = 0; i < binding.cgAllergens.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgAllergens.getChildAt(i);
+            String allergen = String.valueOf(chip.getText()).toLowerCase();
+            if (initialAllergenFilter.contains(allergen)) {
+                chip.setChecked(true);
+            }
+        }
+
+        double initialMaxDistance = getIntent().getExtras().getDouble("currentMaxDistance");
+        binding.slider.setValue((float) initialMaxDistance);
+        toggleSliderHighlight();
+        toggleAllergenChipHighlight();
+
+        HashSet<String> initialTagFilter = (HashSet<String>) getIntent().getExtras().getSerializable("currentTags");
+        for (int i = 0; i < binding.cgTags.getChildCount(); i++) {
+            Chip chip = (Chip) binding.cgTags.getChildAt(i);
+            String tag = String.valueOf(chip.getText()).toLowerCase();
+            if (initialTagFilter.contains(tag)) {
+                chip.setChecked(true);
+            }
+        }
+    }
+
+    private void toggleAllergenChipHighlight() {
+        List<Integer> checkedChipIds = binding.cgAllergens.getCheckedChipIds();
 
         if (checkedChipIds.size() > 0) {
             binding.tvAllergens.setTextColor(getResources().getColor(R.color.primaryTextColor));
@@ -122,6 +164,16 @@ public class FilterActivity extends AppCompatActivity {
             binding.tvDistance.setTextColor(getResources().getColor(R.color.primaryTextColor));
         } else {
             binding.tvDistance.setTextColor(getResources().getColor(R.color.gray));
+        }
+    }
+
+    private void toggleTagChipHighlight() {
+        List<Integer> checkedChipIds = binding.cgTags.getCheckedChipIds();
+
+        if (checkedChipIds.size() > 0) {
+            binding.tvTags.setTextColor(getResources().getColor(R.color.primaryTextColor));
+        } else {
+            binding.tvTags.setTextColor(getResources().getColor(R.color.gray));
         }
     }
 }
