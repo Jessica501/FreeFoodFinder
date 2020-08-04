@@ -52,6 +52,16 @@
         <item name="chipMinTouchTargetSize">40dp</item>
     </style>
 
+    <style name="TagChips" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="android:textAppearance">@style/TextAppearance.TagChips</item>
+        <item name="chipMinTouchTargetSize">0dp</item>
+        <item name="chipMinHeight">20dp</item>
+    </style>
+
+    <style name="TextAppearance.TagChips" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">10dp</item>
+    </style>
+
     <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
@@ -90,4 +100,5 @@
         <item name="fontFamily">@font/titillium_web_semibold</item>
         <item name="android:textSize">22dp</item>
     </style>
+
 </resources>

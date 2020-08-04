@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -168,7 +169,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 binding.tvTitle.setText(post.getTitle());
             }
-            binding.tvLocation.setText(Utils.shortenedReverseGeocode(context, post.getLocation()));
+//            binding.tvLocation.setText(Utils.shortenedReverseGeocode(context, post.getLocation()));
             String description = post.getDescription().trim();
             if (description.isEmpty()) {
                 binding.tvDescription.setVisibility(View.GONE);
@@ -194,6 +195,32 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             }
             binding.tvDistance.setText(getRelativeDistanceString(post));
             binding.tvRelativeTime.setText(getRelativeTimeAgo(post.getCreatedAt()));
+
+            try {
+                setTagVisibility(post);
+            } catch (JSONException e) {
+                Log.e(TAG, "Error setting tag chip visibility", e);
+            }
+        }
+
+        private void setTagVisibility(Post post) throws JSONException {
+            JSONObject tags = post.getTags();
+            if (tags == null) {
+                for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+                    Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+                    chip.setVisibility(View.GONE);
+                }
+                return;
+            }
+            for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+                String tag = String.valueOf(chip.getText()).toLowerCase();
+                if (tags.getBoolean(tag)) {
+                    chip.setVisibility(View.VISIBLE);
+                } else {
+                    chip.setVisibility(View.GONE);
+                }
+            }
         }
 
         @Override

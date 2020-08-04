@@ -226,7 +226,9 @@ public class EditDetailActivity extends AppCompatActivity {
         if (post == null) {
             post = new Post();
         }
-        post.setImage(image);
+        if (image != null) {
+            post.setImage(image);
+        }
         post.setAuthor(ParseUser.getCurrentUser());
         post.setTitle(String.valueOf(binding.etTitle.getText()));
         if (binding.cbCurrentLocation.isChecked()) {
@@ -296,9 +298,11 @@ public class EditDetailActivity extends AppCompatActivity {
     // load initial fields if post is being edited
     private void loadInitialFields(Post post) throws JSONException {
         image = post.getImage();
-        Glide.with(this)
-                .load(post.getImage().getUrl())
-                .into(binding.ivImage);
+        if (post.getImage() != null) {
+            Glide.with(this)
+                    .load(post.getImage().getUrl())
+                    .into(binding.ivImage);
+        }
         binding.etTitle.setText(post.getTitle());
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         String address = Utils.reverseGeocode(this, post.getLocation());
