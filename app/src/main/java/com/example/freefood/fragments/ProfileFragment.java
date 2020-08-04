@@ -26,6 +26,7 @@ import com.example.freefood.SettingsActivity;
 import com.example.freefood.databinding.FragmentProfileBinding;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding binding;
     protected PostsAdapter adapter;
+    Snackbar snackbar;
 
     public ProfileFragment() {
         // Required empty public constructor
