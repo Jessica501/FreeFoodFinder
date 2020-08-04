@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.chip.Chip;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import com.parse.DeleteCallback;
@@ -168,7 +169,26 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setTagVisibility() throws JSONException {
+        JSONObject tags = post.getTags();
+        if (tags == null) {
+            for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+                Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+                chip.setVisibility(View.GONE);
+            }
+            return;
+        }
+        for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) binding.chipGroup.getChildAt(i);
+            String tag = String.valueOf(chip.getText()).toLowerCase();
+            if (tags.getBoolean(tag)) {
+                chip.setVisibility(View.VISIBLE);
+            } else {
+                chip.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void deletePost() {
@@ -355,6 +375,12 @@ public class PostDetailActivity extends AppCompatActivity {
                         .position(latLng));
             }
         });
+
+        try {
+            setTagVisibility();
+        } catch (JSONException e) {
+            Log.e(TAG, "Error setting tag chip visibility", e);
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

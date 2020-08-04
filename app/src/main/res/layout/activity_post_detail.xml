@@ -120,7 +120,7 @@
             android:id="@+id/tvRelativeDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivDelete"
             tools:text="relative distance" />
@@ -129,7 +129,7 @@
             android:id="@+id/tvRelativeTime"
             android:layout_width="wrap_content"
             android:layout_height="15dp"
-            android:textSize="12sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvRelativeDistance"
             tools:text="relative time" />
@@ -151,6 +151,64 @@
             app:srcCompat="@drawable/ic_baseline_delete_24" />
 
 
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvAllergens">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                style="@style/TagChips"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/tvContains"
+                app:layout_constraintTop_toBottomOf="@+id/tvContains"
+                app:layout_constraintVertical_bias="0.625">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipVegetarian"
+                    style="@style/TagChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegetarian"
+                    app:chipBackgroundColor="#B9F6CA" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipVegan"
+                    style="@style/TagChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vegan"
+                    app:chipBackgroundColor="#CCFF90" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipKosher"
+                    style="@style/TagChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kosher"
+                    app:chipBackgroundColor="#FFFF8D" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipHalal"
+                    style="@style/TagChips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Halal"
+                    app:chipBackgroundColor="#FFD180" />
+
+
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -158,6 +216,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/white"
+        android:elevation="4dp"
         android:padding="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

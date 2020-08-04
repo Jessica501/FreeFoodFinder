@@ -125,7 +125,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vegetarian"
-                    android:textSize="12sp"
                     app:chipBackgroundColor="#B9F6CA" />
 
                 <com.google.android.material.chip.Chip
@@ -134,7 +133,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Vegan"
-                    android:textSize="12sp"
                     app:chipBackgroundColor="#CCFF90" />
 
                 <com.google.android.material.chip.Chip
@@ -143,7 +141,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kosher"
-                    android:textSize="12sp"
                     app:chipBackgroundColor="#FFFF8D" />
 
                 <com.google.android.material.chip.Chip
@@ -152,7 +149,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Halal"
-                    android:textSize="12sp"
                     app:chipBackgroundColor="#FFD180" />
 
 
