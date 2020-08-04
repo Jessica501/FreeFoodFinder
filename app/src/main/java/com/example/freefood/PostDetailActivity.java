@@ -172,12 +172,31 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void deletePost() {
-        post.deleteInBackground(new DeleteCallback() {
-            @Override
-            public void done(ParseException e) {
-                finish();
-            }
-        });
+        new MaterialAlertDialogBuilder(PostDetailActivity.this)
+                .setTitle("Delete post?")
+                .setMessage("This action cannot be undone.")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        post.deleteInBackground(new DeleteCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Log.e("TAG", "Error deleting post");
+                                }
+                                finish();
+                            }
+                        });
+
+                    }
+                })
+                .show();
     }
 
     public void onLaunchCamera(View view) {

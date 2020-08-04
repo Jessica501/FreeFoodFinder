@@ -19,6 +19,7 @@
         <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
         <item name="imageButtonStyle">@style/ImageButton</item>
         <item name="sliderStyle">@style/Widget.App.Slider</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
     </style>
 
 
@@ -50,6 +51,7 @@
         <item name="checkedIcon">@null</item>
         <item name="chipMinTouchTargetSize">40dp</item>
     </style>
+
     <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
@@ -76,6 +78,16 @@
     </style>
 
     <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
-    <item name="backgroundTint">@color/secondaryLightColor</item>
-</style>
+        <item name="backgroundTint">@color/secondaryLightColor</item>
+    </style>
+
+    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text
+        </item>
+    </style>
+
+    <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="fontFamily">@font/titillium_web_semibold</item>
+        <item name="android:textSize">22dp</item>
+    </style>
 </resources>
