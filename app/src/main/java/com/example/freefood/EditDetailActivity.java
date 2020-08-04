@@ -246,29 +246,36 @@ public class EditDetailActivity extends AppCompatActivity {
         try {
             post.setContains(createContainsJson());
             Log.i(TAG, "Successfully created JSONObject for allergen information");
-
-            post.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error while saving post", e);
-                        return;
-                    }
-                    Log.i(TAG, "Post save was successful");
-                    Intent i;
-//                    if (edit) {
-                        i = new Intent(EditDetailActivity.this, PostDetailActivity.class);
-                        i.putExtra("post_id", editPost.getObjectId());
-//                    } else {
-//                        i = new Intent(EditDetailActivity.this, MainActivity.class);
-//                    }
-                    startActivity(i);
-                    finish();
-                }
-            });
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSONObject for allergen information", e);
         }
+
+        try {
+            post.setTags(createTagsJson());
+            Log.i(TAG, "Successfully created JSONObject for tags information");
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creating JSONObject for tags information", e);
+        }
+
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving post", e);
+                    return;
+                }
+                Log.i(TAG, "Post save was successful");
+                Intent i;
+//                    if (edit) {
+                i = new Intent(EditDetailActivity.this, PostDetailActivity.class);
+                i.putExtra("post_id", editPost.getObjectId());
+//                    } else {
+//                        i = new Intent(EditDetailActivity.this, MainActivity.class);
+//                    }
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     private void updatePost() {
@@ -295,6 +302,15 @@ public class EditDetailActivity extends AppCompatActivity {
         return contains;
     }
 
+    private JSONObject createTagsJson() throws JSONException {
+        JSONObject tags = new JSONObject();
+        tags.put("vegetarian", binding.cbVegetarian.isChecked());
+        tags.put("vegan", binding.cbVegan.isChecked());
+        tags.put("kosher", binding.cbKosher.isChecked());
+        tags.put("halal", binding.cbHalal.isChecked());
+        return tags;
+    }
+
     // load initial fields if post is being edited
     private void loadInitialFields(Post post) throws JSONException {
         image = post.getImage();
@@ -309,14 +325,28 @@ public class EditDetailActivity extends AppCompatActivity {
         autocompleteFragment.setText(address);
         this.parseGeoPoint = post.getLocation();
         binding.etDescription.setText(post.getDescription());
-        JSONObject jsonObject = post.getContains();
+        JSONObject containsJsonObject = post.getContains();
+        JSONObject tagsJsonObject = post.getTags();
 
-        CheckBox[] checkBoxes = new CheckBox[]{binding.cbMilk, binding.cbEggs, binding.cbPeanuts, binding.cbTreeNuts, binding.cbSoy, binding.cbWheat, binding.cbFish, binding.cbShellfish};
-        for (int i = 0; i < 8; i++) {
-            CheckBox checkBox = checkBoxes[i];
-            String allergen = String.valueOf(checkBox.getText()).toLowerCase();
-            if (jsonObject.getBoolean(allergen)) {
-                checkBox.setChecked(true);
+        if (containsJsonObject != null) {
+            CheckBox[] checkBoxes = new CheckBox[]{binding.cbMilk, binding.cbEggs, binding.cbPeanuts, binding.cbTreeNuts, binding.cbSoy, binding.cbWheat, binding.cbFish, binding.cbShellfish};
+            for (int i = 0; i < checkBoxes.length; i++) {
+                CheckBox checkBox = checkBoxes[i];
+                String allergen = String.valueOf(checkBox.getText()).toLowerCase();
+                if (containsJsonObject.getBoolean(allergen)) {
+                    checkBox.setChecked(true);
+                }
+            }
+        }
+
+        if (tagsJsonObject != null) {
+            CheckBox[] checkBoxes = new CheckBox[]{binding.cbVegetarian, binding.cbVegan, binding.cbKosher, binding.cbHalal};
+            for (int i = 0; i < checkBoxes.length; i++) {
+                CheckBox checkBox = checkBoxes[i];
+                String tag = String.valueOf(checkBox.getText()).toLowerCase();
+                if (tagsJsonObject.getBoolean(tag)) {
+                    checkBox.setChecked(true);
+                }
             }
         }
     }
