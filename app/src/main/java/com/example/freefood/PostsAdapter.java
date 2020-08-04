@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -117,7 +118,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         }
 
         // loop through each post and check if it satisfies the requirements
-        for (Post post: allPosts) {
+        for (Post post : allPosts) {
             // if a max distance was set and the relative distance is greater than the max, don't add the post
             if (maxDistance > 0 && Utils.getRelativeDistance(post) > maxDistance) {
                 continue;
@@ -211,17 +212,27 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (post.getAuthor().getObjectId().equals(ParseUser.getCurrentUser().getObjectId())) {
                 if (post.getClaimed()) {
                     Toast.makeText(context, "Post is already marked as claimed", Toast.LENGTH_SHORT).show();
+                    notifyItemChanged(getAdapterPosition());
                 } else {
                     post.setClaimed(true);
                     post.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
                             if (e != null) {
-                                Log.e(TAG, "Error saving post after setting claimed to false", e);
+                                Log.e(TAG, "Error saving post after setting claimed to true", e);
                                 return;
                             }
                             Log.i(TAG, "Successfully marked post as claimed and saved");
-                            Toast.makeText(context, "Post marked as claimed", Toast.LENGTH_SHORT).show();
+                            notifyItemChanged(getAdapterPosition());
+
+                            final Snackbar snackbar = Snackbar.make(binding.getRoot(), "Post marked as claimed", Snackbar.LENGTH_SHORT);
+                            snackbar.setAction("Undo", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    snackbar.dismiss();
+                                    undoMarkClaimed(view);
+                                }
+                            }).show();
                         }
                     });
                 }
@@ -229,7 +240,26 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             } else {
                 Toast.makeText(context, "You are not authorized to mark this post as claimed", Toast.LENGTH_SHORT).show();
             }
-            notifyItemChanged(getAdapterPosition());
+        }
+
+        private void undoMarkClaimed(final View view) {
+            post.setClaimed(false);
+            post.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null) {
+                        Log.e(TAG, "Error saving post after setting claimed to false", e);
+                        return;
+                    }
+                    Log.i(TAG, "Successfully marked post as not claimed and saved");
+                    notifyDataSetChanged();
+                    Snackbar.make(view, "Post marked as not claimed", Snackbar.LENGTH_SHORT).show();
+
+                }
+            });
+
         }
     }
+
+
 }

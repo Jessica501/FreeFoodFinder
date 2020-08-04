@@ -106,6 +106,7 @@ public class ProfileFragment extends Fragment {
         binding.swipeContainer.setColorSchemeResources(R.color.secondaryColor,
                 R.color.secondaryDarkColor,
                 R.color.secondaryLightColor);
+
     }
 
     @Override
