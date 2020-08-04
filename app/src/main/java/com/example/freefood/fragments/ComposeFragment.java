@@ -305,27 +305,45 @@ public class ComposeFragment extends Fragment {
             post.setContains(createContainsJson());
             Log.i(TAG, "Successfully created JSONObject for allergen information");
 
-            post.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error while saving post", e);
-                        return;
-                    }
-                    Log.i(TAG, "Post save was successful");
-                    Intent i;
-                    if (edit) {
-                        i = new Intent(getContext(), PostDetailActivity.class);
-                        i.putExtra("post_id", editPost.getObjectId());
-                    } else {
-                        i = new Intent(getContext(), MainActivity.class);
-                    }
-                    startActivity(i);
-                }
-            });
+
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSONObject for allergen information", e);
         }
+
+        try {
+            post.setTags(createTagsJson());
+            Log.i(TAG, "Successfully created JSONObject for tags information");
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creating JSONObject for tags information", e);
+        }
+
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving post", e);
+                    return;
+                }
+                Log.i(TAG, "Post save was successful");
+                Intent i;
+                if (edit) {
+                    i = new Intent(getContext(), PostDetailActivity.class);
+                    i.putExtra("post_id", editPost.getObjectId());
+                } else {
+                    i = new Intent(getContext(), MainActivity.class);
+                }
+                startActivity(i);
+            }
+        });
+    }
+
+    private JSONObject createTagsJson() throws JSONException {
+        JSONObject tags = new JSONObject();
+        tags.put("vegetarian", binding.cbVegetarian.isChecked());
+        tags.put("vegan", binding.cbVegan.isChecked());
+        tags.put("kosher", binding.cbKosher.isChecked());
+        tags.put("halal", binding.cbHalal.isChecked());
+        return tags;
     }
 
 //    private void updatePost() {

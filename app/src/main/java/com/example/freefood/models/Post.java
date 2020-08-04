@@ -21,6 +21,7 @@ public class Post extends ParseObject implements Comparable<Post> {
     public static final String KEY_CONTAINS = "contains";
     public static final String KEY_CLAIMED = "claimed";
     public static final String KEY_COMMENTS = "comments";
+    public static final String KEY_TAGS = "tags";
     
     public Post() { super(); }
 
@@ -41,6 +42,9 @@ public class Post extends ParseObject implements Comparable<Post> {
 
     public void setContains(JSONObject jsonObject) { put(KEY_CONTAINS, jsonObject); }
     public JSONObject getContains() { return getJSONObject(KEY_CONTAINS); }
+
+    public void setTags(JSONObject jsonObject) { put(KEY_TAGS, jsonObject); }
+    public JSONObject getTags() { return getJSONObject(KEY_TAGS); }
 
     public void setClaimed(boolean claimed) { put(KEY_CLAIMED, claimed); }
     public boolean getClaimed() { return getBoolean(KEY_CLAIMED); }
