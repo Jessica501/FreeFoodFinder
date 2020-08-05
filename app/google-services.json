@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "601600151541",
+    "firebase_url": "https://freefood-283517.firebaseio.com",
+    "project_id": "freefood-283517",
+    "storage_bucket": "freefood-283517.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601600151541:android:f820b56d27f9407dc11abc",
+        "android_client_info": {
+          "package_name": "com.example.freefood"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601600151541-avflceftr0cgubr9fdehh2o1cvttql9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.freefood",
+            "certificate_hash": "f53e101921467dc75a7ec84fe8e0f335cb57822f"
+          }
+        },
+        {
+          "client_id": "601600151541-pivt05i1qp0vd6ht5sm640c1323mcfmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgHcTg07mQrwkBlaavCzKlHZNdKXpBwlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601600151541-pivt05i1qp0vd6ht5sm640c1323mcfmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

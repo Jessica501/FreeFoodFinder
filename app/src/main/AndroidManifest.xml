@@ -14,7 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ExpandedImageActivity"></activity>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".ExpandedImageActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".PostDetailActivity" />
 
