@@ -26,8 +26,13 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
 import com.example.freefood.MainActivity;
+import com.example.freefood.MySingleton;
 import com.example.freefood.PostDetailActivity;
 import com.example.freefood.R;
 import com.example.freefood.Utils;
@@ -57,6 +62,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -64,11 +71,14 @@ import permissions.dispatcher.RuntimePermissions;
 import static android.app.Activity.RESULT_OK;
 import static com.example.freefood.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.freefood.Utils.PICK_PHOTO_CODE;
+import static com.parse.Parse.getApplicationContext;
 
 @RuntimePermissions
 public class ComposeFragment extends Fragment {
 
     private static final String TAG = "ComposeFragment";
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String contentType = "application/json";
 
     FragmentComposeBinding binding;
     public String photoFileName = "photo.jpg";
@@ -172,7 +182,7 @@ public class ComposeFragment extends Fragment {
 //                if (edit) {
 //                    updatePost();
 //                } else {
-                    savePost(null);
+                savePost(null);
 //                }
             }
         });
@@ -317,6 +327,7 @@ public class ComposeFragment extends Fragment {
             Log.e(TAG, "Error creating JSONObject for tags information", e);
         }
 
+        final Post finalPost = post;
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -325,17 +336,71 @@ public class ComposeFragment extends Fragment {
                     return;
                 }
                 Log.i(TAG, "Post save was successful");
+                createNotification(finalPost);
+
                 Intent i;
-                if (edit) {
-                    i = new Intent(getContext(), PostDetailActivity.class);
-                    i.putExtra("post_id", editPost.getObjectId());
-                } else {
+//                if (edit) {
+//                    i = new Intent(getContext(), PostDetailActivity.class);
+//                    i.putExtra("post_id", editPost.getObjectId());
+//                } else {
                     i = new Intent(getContext(), MainActivity.class);
-                }
+//                }
                 startActivity(i);
             }
         });
     }
+
+
+    private void createNotification(Post post) {
+        String topic = "/topics/all"; //topic must match with what the receiver subscribed to
+        String notificationTitle = String.valueOf(post.getTitle());
+        String notificationMessage = post.getDescription();
+
+        JSONObject notification = new JSONObject();
+        JSONObject notificationBody = new JSONObject();
+        try {
+            notificationBody.put("title", notificationTitle);
+            notificationBody.put("message", notificationMessage);
+            notificationBody.put("latitude", post.getLocation().getLatitude());
+            notificationBody.put("longitude", post.getLocation().getLongitude());
+            notificationBody.put("userId", post.getAuthor().getObjectId());
+
+            notification.put("to", topic);
+            notification.put("data", notificationBody);
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creating notification JSONObject" + e.getMessage() );
+        }
+        // Send the notification
+        sendNotification(notification);
+
+    }
+
+    private void sendNotification(JSONObject notification) {
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.i(TAG, "onResponse: " + response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), "Request error", Toast.LENGTH_LONG).show();
+                        Log.i(TAG, "onErrorResponse: Didn't work");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", "key=" + getString(R.string.firebase_server_key));
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
 
     private JSONObject createTagsJson() throws JSONException {
         JSONObject tags = new JSONObject();
