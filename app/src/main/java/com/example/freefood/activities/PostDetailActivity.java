@@ -78,7 +78,8 @@ public class PostDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Window window = getWindow();
 
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        postponeEnterTransition();
+
         setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
         window.setSharedElementsUseOverlay(false);
 
@@ -99,6 +100,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 post = queriedPost;
                 setFields();
+                startPostponedEnterTransition();
+
                 queryComments();
             }
         });
@@ -390,5 +393,10 @@ public class PostDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        supportFinishAfterTransition();
     }
 }

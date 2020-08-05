@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
+
+        <item name="android:windowContentTransitions">true</item>
+
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
@@ -11,7 +14,6 @@
         <item name="background">@color/white</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
-
         <item name="borderlessButtonStyle">@style/Widget.App.Button.TextButton</item>
         <item name="materialButtonOutlinedStyle">@style/Widget.App.Button.OutlinedButton</item>
         <item name="materialButtonStyle">@style/Widget.App.Button</item>

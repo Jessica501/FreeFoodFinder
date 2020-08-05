@@ -28,6 +28,7 @@
 
             <ImageView
                 android:id="@+id/ivImage"
+                android:transitionName="shared_element_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:cropToPadding="false"

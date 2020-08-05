@@ -20,8 +20,8 @@ public class ExpandedImageActivity extends AppCompatActivity {
         binding = ActivityExpandedImageBinding.inflate(getLayoutInflater());
         view = binding.getRoot();
 
+        postponeEnterTransition();
         Window window = getWindow();
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         view.setTransitionName("shared_element_container");
 
         setEnterSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
@@ -40,6 +40,7 @@ public class ExpandedImageActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imageUrl)
                 .into(binding.ivExpandedImage);
+        startPostponedEnterTransition();
 
         binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override

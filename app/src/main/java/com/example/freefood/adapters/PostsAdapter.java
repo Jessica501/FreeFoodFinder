@@ -1,5 +1,6 @@
 package com.example.freefood.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -242,10 +244,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Intent i = new Intent(context, PostDetailActivity.class);
+
                 Post post = posts.get(position);
                 i.putExtra("post_id", post.getObjectId());
-                Log.i(TAG, context.toString());
-                context.startActivity(i);
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation((Activity)context, (View)binding.ivImage, "shared_element_container");
+
+                context.startActivity(i, options.toBundle());
             }
         }
 
