@@ -1,13 +1,11 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,22 +19,20 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.adapters.CommentsAdapter;
+import com.example.freefood.R;
+import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.ActivityPostDetailBinding;
-import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.models.Comment;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,17 +53,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.annotation.Target;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import static com.example.freefood.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-import static com.example.freefood.Utils.containsJsontoString;
-import static com.example.freefood.Utils.getRelativeDistanceString;
-import static com.example.freefood.Utils.getRelativeTimeAgo;
-import static com.example.freefood.Utils.queryPosts;
+import static com.example.freefood.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.freefood.utils.Utils.containsJsontoString;
+import static com.example.freefood.utils.Utils.getRelativeDistanceString;
+import static com.example.freefood.utils.Utils.getRelativeTimeAgo;
+import static com.example.freefood.utils.Utils.queryPosts;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -86,7 +78,8 @@ public class PostDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Window window = getWindow();
 
-        window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
+        postponeEnterTransition();
+
         setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
         window.setSharedElementsUseOverlay(false);
 
@@ -107,6 +100,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
                 post = queriedPost;
                 setFields();
+                startPostponedEnterTransition();
+
                 queryComments();
             }
         });
@@ -141,7 +136,6 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(PostDetailActivity.this, EditDetailActivity.class);
-//                i.putExtra("edit", true);
                 i.putExtra("post", post);
                 startActivity(i);
                 finish();
@@ -398,5 +392,10 @@ public class PostDetailActivity extends AppCompatActivity {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        supportFinishAfterTransition();
     }
 }

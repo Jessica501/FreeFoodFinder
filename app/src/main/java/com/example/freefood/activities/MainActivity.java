@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +14,15 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.example.freefood.fragments.EmptyFragment;
+import com.example.freefood.utils.LocationUtils;
+import com.example.freefood.R;
 import com.example.freefood.databinding.ActivityMainBinding;
 import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.fragments.ProfileFragment;
 import com.example.freefood.fragments.StreamFragment;
-import com.example.freefood.models.Post;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -47,13 +48,15 @@ public class MainActivity extends AppCompatActivity {
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 500; /* 0.5 secs */
 
+    private FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         // handle navigation selection
         binding.bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,17 +77,15 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ProfileFragment();
                         break;
                     default:
-                        fragment = new StreamFragment();
+                        fragment = new EmptyFragment();
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;
             }
         });
-        // default selected is stream
-        binding.bottomNavigation.setSelectedItemId(R.id.action_stream);
 
-        Places.initialize(getApplicationContext(), getString(R.string.google_maps_api_key));
+        Places.initialize(getApplicationContext(), getString(R.string.api_key));
 
         LocationUtils.getMyLocationWithPermissionCheck(MainActivity.this);
         LocationUtils.startLocationUpdatesWithPermissionCheck(MainActivity.this);
@@ -102,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Location location) {
                         Log.i(TAG, "Successfully got last GPS location");
+                        fragmentManager.beginTransaction().replace(R.id.flContainer, new StreamFragment()).commit();
                         if (location != null) {
                             mLocation = location;
                         }

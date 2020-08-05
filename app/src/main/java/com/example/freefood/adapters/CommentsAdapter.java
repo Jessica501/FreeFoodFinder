@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.adapters;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.utils.Utils;
+import com.example.freefood.activities.ExpandedImageActivity;
 import com.example.freefood.databinding.ItemCommentBinding;
 import com.example.freefood.models.Comment;
 import com.example.freefood.models.User;

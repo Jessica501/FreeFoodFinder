@@ -13,12 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.freefood.FilterActivity;
-import com.example.freefood.MainActivity;
-import com.example.freefood.PostDetailActivity;
-import com.example.freefood.PostInfoWindowAdapter;
+import com.example.freefood.activities.FilterActivity;
+import com.example.freefood.activities.MainActivity;
+import com.example.freefood.activities.PostDetailActivity;
+import com.example.freefood.adapters.PostInfoWindowAdapter;
 import com.example.freefood.R;
-import com.example.freefood.Utils;
+import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.FragmentMapBinding;
 import com.example.freefood.models.Post;
 import com.google.android.gms.common.api.Status;
@@ -42,7 +42,6 @@ import com.parse.ParseQuery;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Arrays;

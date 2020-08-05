@@ -1,9 +1,11 @@
-package com.example.freefood;
+package com.example.freefood.utils;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+
+import com.example.freefood.activities.MainActivity;
 
 import permissions.dispatcher.PermissionUtils;
 
