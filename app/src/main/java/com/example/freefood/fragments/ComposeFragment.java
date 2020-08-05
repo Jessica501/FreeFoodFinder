@@ -352,7 +352,7 @@ public class ComposeFragment extends Fragment {
 
 
     private void createNotification(Post post) {
-        String topic = "/topics/userABC"; //topic must match with what the receiver subscribed to
+        String topic = "/topics/all"; //topic must match with what the receiver subscribed to
         String notificationTitle = String.valueOf(post.getTitle());
         String notificationMessage = post.getDescription();
 

@@ -29,14 +29,12 @@ import java.util.Random;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "mFCMService";
     private final String ADMIN_CHANNEL_ID ="admin_channel";
-    private static final String SUBSCRIBE_TO = "userABC";
+    private static final String SUBSCRIBE_TO = "all";
     private static final double NOTIFICATIONS_RADIUS = 5;
 
     @Override
     public void onNewToken (String token) {
         // Here you can include more complex logic for users to only be subscribed to certain topics
-        // For example, creating a container in your database for topics they are subscribed to,
-        // and then subscribing them to all of those topics upon app start
         FirebaseMessaging.getInstance().subscribeToTopic(SUBSCRIBE_TO);
         Log.i(TAG, "onTokenRefresh completed with token: " + token);
     }
