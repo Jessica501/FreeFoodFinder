@@ -166,6 +166,11 @@ public class Utils {
         return post.getLocation().distanceInMilesTo(currentLocation);
     }
 
+    public static double getRelativeDistance(ParseGeoPoint parseGeoPoint) {
+        ParseGeoPoint currentLocation = new ParseGeoPoint(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
+        return parseGeoPoint.distanceInMilesTo(currentLocation);
+    }
+
     public static String getRelativeTimeAgo(Date date) {
         long dateMillis = date.getTime();
         String relativeDate = "";

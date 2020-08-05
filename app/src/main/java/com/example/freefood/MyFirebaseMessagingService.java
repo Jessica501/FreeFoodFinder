@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.parse.ParseGeoPoint;
 
 import java.util.Random;
 
@@ -28,6 +29,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "mFCMService";
     private final String ADMIN_CHANNEL_ID ="admin_channel";
     private static final String SUBSCRIBE_TO = "userABC";
+    private static final double NOTIFICATIONS_RADIUS = 5;
 
     @Override
     public void onNewToken (String token) {
@@ -49,6 +51,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         */
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
+        }
+
+        // only displays notification if you are within NOTIIFICATIONS_RADIUS from the post location
+        double latitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
+        double longitude = Double.parseDouble(remoteMessage.getData().get("longitude"));
+
+        ParseGeoPoint postLocation = new ParseGeoPoint(latitude, longitude);
+        if (Utils.getRelativeDistance(postLocation) > NOTIFICATIONS_RADIUS) {
+            return;
         }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
