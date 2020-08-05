@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,14 +14,14 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.example.freefood.utils.LocationUtils;
+import com.example.freefood.R;
 import com.example.freefood.databinding.ActivityMainBinding;
 import com.example.freefood.fragments.ComposeFragment;
 import com.example.freefood.fragments.MapFragment;
 import com.example.freefood.fragments.ProfileFragment;
 import com.example.freefood.fragments.StreamFragment;
-import com.example.freefood.models.Post;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;

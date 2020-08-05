@@ -26,9 +26,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ExpandedImageActivity" />
-        <activity android:name=".FilterActivity" />
-        <activity android:name=".PostDetailActivity" />
+        <activity android:name=".activities.ExpandedImageActivity" />
+        <activity android:name=".activities.FilterActivity" />
+        <activity android:name=".activities.PostDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -40,13 +40,13 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".EditDetailActivity" />
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".activities.SettingsActivity" />
+        <activity android:name=".activities.EditDetailActivity" />
+        <activity android:name=".activities.SignupActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

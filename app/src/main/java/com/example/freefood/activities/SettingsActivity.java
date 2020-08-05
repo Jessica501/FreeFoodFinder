@@ -1,19 +1,18 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.ActivitySettingsBinding;
 import com.example.freefood.models.User;
 import com.parse.ParseException;
@@ -25,7 +24,7 @@ import java.io.ByteArrayOutputStream;
 
 import permissions.dispatcher.NeedsPermission;
 
-import static com.example.freefood.Utils.PICK_PHOTO_CODE;
+import static com.example.freefood.utils.Utils.PICK_PHOTO_CODE;
 
 public class SettingsActivity extends AppCompatActivity {
 

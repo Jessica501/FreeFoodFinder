@@ -1,13 +1,10 @@
-package com.example.freefood;
+package com.example.freefood.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -17,31 +14,30 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.freefood.R;
+import com.example.freefood.utils.Utils;
+import com.example.freefood.activities.PostDetailActivity;
 import com.example.freefood.databinding.ItemPostBinding;
 import com.example.freefood.models.Post;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.example.freefood.Utils.containsJsontoString;
-import static com.example.freefood.Utils.getRelativeDistanceString;
-import static com.example.freefood.Utils.getRelativeTimeAgo;
+import static com.example.freefood.utils.Utils.containsJsontoString;
+import static com.example.freefood.utils.Utils.getRelativeDistanceString;
+import static com.example.freefood.utils.Utils.getRelativeTimeAgo;
 
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 

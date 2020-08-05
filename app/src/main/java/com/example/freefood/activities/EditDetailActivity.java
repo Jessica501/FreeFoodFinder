@@ -1,10 +1,9 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +18,8 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.R;
+import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.FragmentComposeBinding;
 import com.example.freefood.models.Post;
 import com.google.android.gms.common.api.Status;
@@ -38,7 +39,6 @@ import com.parse.SaveCallback;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,8 +46,8 @@ import java.util.Arrays;
 
 import permissions.dispatcher.NeedsPermission;
 
-import static com.example.freefood.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
-import static com.example.freefood.Utils.PICK_PHOTO_CODE;
+import static com.example.freefood.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
+import static com.example.freefood.utils.Utils.PICK_PHOTO_CODE;
 
 public class EditDetailActivity extends AppCompatActivity {
 

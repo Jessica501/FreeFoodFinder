@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,6 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 
 public class ExpandedImageActivity extends AppCompatActivity {
-
     ActivityExpandedImageBinding binding;
     View view;
 

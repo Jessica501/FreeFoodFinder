@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutDescription="@xml/activity_post_detail_scene"
-    tools:context=".PostDetailActivity">
+    tools:context=".activities.PostDetailActivity">
 
     <include
         android:id="@+id/include"

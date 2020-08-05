@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,11 +14,9 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.freefood.activities.MainActivity;
+import com.example.freefood.adapters.PostsAdapter;
 import com.example.freefood.models.Post;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -30,12 +28,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import static android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE;
 
@@ -49,7 +45,7 @@ public class Utils {
 
     // converts the contains JSONObject to a String
     @RequiresApi(api = Build.VERSION_CODES.O)
-    protected static String containsJsontoString(JSONObject jsonObject) throws JSONException {
+    public static String containsJsontoString(JSONObject jsonObject) throws JSONException {
         if (jsonObject == null) {
             return "NO MAJOR ALLERGENS";
         }

@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.example.freefood.databinding.ActivitySignupBinding;
 import com.example.freefood.models.User;
 import com.parse.ParseException;
-import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class SignupActivity extends AppCompatActivity {

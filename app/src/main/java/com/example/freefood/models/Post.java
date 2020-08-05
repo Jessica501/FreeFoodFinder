@@ -1,6 +1,6 @@
 package com.example.freefood.models;
 
-import com.example.freefood.Utils;
+import com.example.freefood.utils.Utils;
 import com.parse.ParseClassName;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;

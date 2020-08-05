@@ -2,7 +2,6 @@ package com.example.freefood.fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,22 +18,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.example.freefood.LoginActivity;
-import com.example.freefood.PostsAdapter;
+import com.example.freefood.activities.LoginActivity;
+import com.example.freefood.adapters.PostsAdapter;
 import com.example.freefood.R;
-import com.example.freefood.SettingsActivity;
+import com.example.freefood.activities.SettingsActivity;
 import com.example.freefood.databinding.FragmentProfileBinding;
-import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-import static com.example.freefood.Utils.queryPosts;
+import static com.example.freefood.utils.Utils.queryPosts;
 
 public class ProfileFragment extends Fragment {
 

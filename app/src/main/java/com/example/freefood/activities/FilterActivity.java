@@ -1,4 +1,4 @@
-package com.example.freefood;
+package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.freefood.R;
 import com.example.freefood.databinding.ActivityFilterBinding;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;

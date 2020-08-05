@@ -6,38 +6,26 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
-import com.example.freefood.FilterActivity;
-import com.example.freefood.PostsAdapter;
+import com.example.freefood.activities.FilterActivity;
+import com.example.freefood.adapters.PostsAdapter;
 import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentStreamBinding;
-import com.example.freefood.models.Post;
 import com.google.android.material.chip.Chip;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-import static com.example.freefood.Utils.queryPosts;
+import static com.example.freefood.utils.Utils.queryPosts;
 
 
 public class StreamFragment extends Fragment {
