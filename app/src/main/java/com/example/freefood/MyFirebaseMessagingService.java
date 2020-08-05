@@ -22,6 +22,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 
 import java.util.Random;
 
@@ -51,6 +52,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         */
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             setupChannels(notificationManager);
+        }
+
+        // do not display notification if current user posted it
+        String postUserId = remoteMessage.getData().get("userId");
+        if (postUserId.equals(ParseUser.getCurrentUser().getObjectId())) {
+            return;
         }
 
         // only displays notification if you are within NOTIIFICATIONS_RADIUS from the post location

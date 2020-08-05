@@ -363,6 +363,7 @@ public class ComposeFragment extends Fragment {
             notificationBody.put("message", notificationMessage);
             notificationBody.put("latitude", post.getLocation().getLatitude());
             notificationBody.put("longitude", post.getLocation().getLongitude());
+            notificationBody.put("userId", post.getAuthor().getObjectId());
 
             notification.put("to", topic);
             notification.put("data", notificationBody);
