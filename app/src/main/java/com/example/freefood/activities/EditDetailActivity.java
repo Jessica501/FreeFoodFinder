@@ -72,8 +72,6 @@ public class EditDetailActivity extends AppCompatActivity {
         binding = FragmentComposeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        edit = getIntent().getBooleanExtra("edit", false);
-//        if (edit) {
         editPost = getIntent().getExtras().getParcelable("post");
         try {
             loadInitialFields(editPost);
@@ -81,13 +79,6 @@ public class EditDetailActivity extends AppCompatActivity {
             Log.e(TAG, "Error loading contains json information into checkboxes", e);
         }
         binding.btnClaimed.setVisibility(View.VISIBLE);
-//        } else {
-//            image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
-//            Glide.with(EditDetailActivity.this)
-//                    .load(image.getUrl())
-//                    .into(binding.ivImage);
-//            binding.btnClaimed.setVisibility(View.GONE);
-//        }
 
         PlacesClient placesClient = Places.createClient(this);
 

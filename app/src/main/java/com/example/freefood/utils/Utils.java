@@ -65,7 +65,7 @@ public class Utils {
     }
 
     // query the first 20 posts by parseUser and add to adapter. Doesn't query claimed posts if ignoreClaimed is true.
-    public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser, boolean ignoreClaimed) {
+    public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser, boolean ignoreClaimed, final boolean sort) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.include(Post.KEY_AUTHOR);
         query.setLimit(20);
@@ -88,7 +88,9 @@ public class Utils {
                 }
                 adapter.clear();
                 adapter.addAll(posts);
-                adapter.sort();
+                if (sort) {
+                    adapter.sort();
+                }
                 try {
                     adapter.filter();
                 } catch (JSONException ex) {
@@ -98,14 +100,16 @@ public class Utils {
         });
     }
 
-    // query the first 20 posts by parseUser and add to adapter. Doesn't ignore claimed by default
+    // for profile fragment: query the first 20 posts by parseUser and add to adapter.
+    // doesn't ignore claimed by default and doesn't sort by relative distance by default
     public static void queryPosts(final PostsAdapter adapter, ParseUser parseUser) {
-        queryPosts(adapter, parseUser, false);
+        queryPosts(adapter, parseUser, false, false);
     }
 
-    // query the first 20 posts and add to adapter. Ignores claimed by default
+    // for stream fragment: query the first 20 posts and add to adapter.
+    // ignores claimed by default and sorts by relative distance by default
     public static void queryPosts(PostsAdapter adapter) {
-        queryPosts(adapter, null, true);
+        queryPosts(adapter, null, true, true);
     }
 
 

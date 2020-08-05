@@ -136,7 +136,6 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(PostDetailActivity.this, EditDetailActivity.class);
-//                i.putExtra("edit", true);
                 i.putExtra("post", post);
                 startActivity(i);
                 finish();
