@@ -138,6 +138,7 @@ public class FilterActivity extends AppCompatActivity {
         binding.slider.setValue((float) initialMaxDistance);
         toggleSliderHighlight();
         toggleAllergenChipHighlight();
+        toggleTagChipHighlight();
 
         HashSet<String> initialTagFilter = (HashSet<String>) getIntent().getExtras().getSerializable("currentTags");
         for (int i = 0; i < binding.cgTags.getChildCount(); i++) {

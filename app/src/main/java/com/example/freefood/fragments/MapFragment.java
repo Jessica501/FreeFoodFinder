@@ -59,10 +59,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     FragmentMapBinding binding;
 
     private GoogleMap map;
-    private HashSet<String> filter;
+    private HashSet<String> allergens;
     private double maxDistance;
     private List<Post> posts;
     private Place place;
+    private HashSet<String> tags;
 
 
     public MapFragment() {
@@ -87,14 +88,16 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         mapFragment.getMapAsync(this);
 
 
-        filter = new HashSet<>();
+        allergens = new HashSet<>();
         maxDistance = 0;
+        tags = new HashSet<>();
         binding.fabFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), FilterActivity.class);
-                i.putExtra("currentFilter", filter);
+                i.putExtra("currentAllergens", allergens);
                 i.putExtra("currentMaxDistance", maxDistance);
+                i.putExtra("currentTags", tags);
                 startActivityForResult(i, FILTER_REQUEST_CODE);
             }
         });
@@ -179,15 +182,23 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             return;
         }
 
-        if (filter.size() > 0) {
+        if (allergens.size() > 0) {
             // loop through the 8 allergens and checks if any are in the food and need to be filtered out
             JSONObject jsonObject = post.getContains();
-            Iterator<String> allergens = jsonObject.keys();
-            while (allergens.hasNext()) {
-                String allergen = allergens.next();
-                if (jsonObject.getBoolean(allergen) && filter.contains(allergen)) {
+            Iterator<String> iterator = jsonObject.keys();
+            while (iterator.hasNext()) {
+                String allergen = iterator.next();
+                if (jsonObject.getBoolean(allergen) && allergens.contains(allergen)) {
                     return;
                 }
+            }
+        }
+
+        // loop through the tags and check whether the post has each tag. If not, return.
+        JSONObject postTags = post.getTags();
+        for (String tag : tags) {
+            if (postTags == null || !postTags.getBoolean(tag)) {
+                return;
             }
         }
 
@@ -229,26 +240,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == FILTER_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                HashSet<String> filter = (HashSet<String>) data.getExtras().getSerializable("filter");
+                HashSet<String> allergens = (HashSet<String>) data.getExtras().getSerializable("allergens");
                 double maxDistance = data.getExtras().getDouble("maxDistance");
-                this.filter = filter;
+                HashSet<String> tags = (HashSet<String>) data.getExtras().getSerializable("tags");
+                this.allergens = allergens;
                 this.maxDistance = maxDistance;
+                this.tags = tags;
                 queryMapPosts();
 
-                toggleChipVisibility(filter, maxDistance);
+                toggleChipVisibility();
             }
         }
     }
 
-    private void toggleChipVisibility(HashSet<String> filter, double maxDistance) {
+    private void toggleChipVisibility() {
         Log.i(TAG, String.valueOf(maxDistance));
         for (int i = 0; i < binding.chipGroup.getChildCount(); i++) {
             Chip chip = (Chip) binding.chipGroup.getChildAt(i);
-            String text = String.valueOf(chip.getText()).toLowerCase();
+            String chipText = String.valueOf(chip.getText()).toLowerCase();
             // allergen chip
-            if ("no".equals(text.substring(0, 2))) {
-                String allergen = text.substring(3);
-                if (filter.contains(allergen)) {
+            if (chipText.startsWith("no")) {
+                String allergen = chipText.substring(3);
+                if (allergens.contains(allergen)) {
                     chip.setVisibility(View.VISIBLE);
                     Log.i(TAG, allergen + " is visible");
                 } else {
@@ -257,11 +270,20 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
                 }
             }
             // distance chip
-            else {
+            else if (chipText.startsWith("within")){
                 if (maxDistance > 0) {
                     chip.setVisibility(View.VISIBLE);
                     double roundedMaxDistance = Math.round(maxDistance * 10.0) / 10.0;
                     chip.setText("Within " + roundedMaxDistance + " miles");
+                } else {
+                    chip.setVisibility(View.GONE);
+                }
+            }
+
+            // tag chip
+            else {
+                if (tags.contains(chipText)) {
+                    chip.setVisibility(View.VISIBLE);
                 } else {
                     chip.setVisibility(View.GONE);
                 }

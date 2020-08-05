@@ -41,6 +41,38 @@
                 android:text="Within x miles"/>
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chipVegetarian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="Vegetarian"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipVegan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="Vegan"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipKosher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="Kosher"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipHalal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:clickable="false"
+                android:text="Halal"/>
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/chipMilk"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
