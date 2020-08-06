@@ -1,6 +1,7 @@
 package com.example.freefood.activities;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,11 +16,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.transition.Fade;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -163,6 +167,8 @@ public class PostDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        setTagInformationListeners();
     }
 
     private void setTagVisibility() throws JSONException {
@@ -212,6 +218,54 @@ public class PostDetailActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+
+    private void setTagInformationListeners() {
+        binding.chipVegetarian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTagInformationDialog("Vegetarian", getString(R.string.vegetarian_information));
+            }
+        });
+
+        binding.chipVegan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTagInformationDialog("Vegan", getString(R.string.vegan_information));
+            }
+        });
+
+        binding.chipKosher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTagInformationDialog("Kosher", getString(R.string.kosher_information));
+            }
+        });
+
+        binding.chipHalal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createTagInformationDialog("Halal", getString(R.string.halal_information));
+            }
+        });
+    }
+
+    private void createTagInformationDialog(String title, String message) {
+        SpannableString s = new SpannableString(message);
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle(title)
+                .setMessage(s)
+                .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .show();
+        ((TextView)(dialog.findViewById(android.R.id.message))).setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
 
     public void onLaunchCamera(View view) {
         // create Intent to take a picture and return control to the calling application

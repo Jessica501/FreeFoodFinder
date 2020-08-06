@@ -1,6 +1,8 @@
 package com.example.freefood.fragments;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,15 +12,20 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,6 +35,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.freefood.activities.MainActivity;
 import com.example.freefood.MySingleton;
 import com.example.freefood.R;
+import com.example.freefood.activities.PostDetailActivity;
 import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.FragmentComposeBinding;
 import com.example.freefood.models.Post;
@@ -37,6 +45,8 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.parse.DeleteCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -108,6 +118,8 @@ public class ComposeFragment extends Fragment {
             }
         });
 
+        setTagInformationListeners();
+
         PlacesClient placesClient = Places.createClient(getContext());
 
         // Initialize the AutocompleteSupportFragment.
@@ -167,6 +179,56 @@ public class ComposeFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void setTagInformationListeners() {
+        binding.cbVegetarian.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Vegetarian", getString(R.string.vegetarian_information));
+                return false;
+            }
+        });
+
+        binding.cbVegan.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Vegan", getString(R.string.vegan_information));
+                return false;
+            }
+        });
+
+        binding.cbKosher.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Kosher", getString(R.string.kosher_information));
+                return false;
+            }
+        });
+
+        binding.cbHalal.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Halal", getString(R.string.halal_information));
+                return false;
+            }
+        });
+    }
+
+    private void createTagInformationDialog(String title, String message) {
+        SpannableString s = new SpannableString(message);
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        AlertDialog dialog = new MaterialAlertDialogBuilder(getContext())
+                .setTitle(title)
+                .setMessage(s)
+                .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .show();
+        ((TextView)(dialog.findViewById(android.R.id.message))).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void onLaunchCamera(View view) {
@@ -288,7 +350,7 @@ public class ComposeFragment extends Fragment {
                 createNotification(finalPost);
 
                 Intent i;
-                    i = new Intent(getContext(), MainActivity.class);
+                i = new Intent(getContext(), MainActivity.class);
                 startActivity(i);
             }
         });
@@ -311,7 +373,7 @@ public class ComposeFragment extends Fragment {
             notification.put("to", topic);
             notification.put("data", notificationBody);
         } catch (JSONException e) {
-            Log.e(TAG, "Error creating notification JSONObject" + e.getMessage() );
+            Log.e(TAG, "Error creating notification JSONObject" + e.getMessage());
         }
         // Send the notification
         sendNotification(notification);
@@ -332,7 +394,7 @@ public class ComposeFragment extends Fragment {
                         Toast.makeText(getContext(), "Request error", Toast.LENGTH_LONG).show();
                         Log.i(TAG, "onErrorResponse: Didn't work");
                     }
-                }){
+                }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();

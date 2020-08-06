@@ -1,9 +1,11 @@
 package com.example.freefood.activities;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,10 +13,14 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +34,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -120,11 +127,7 @@ public class EditDetailActivity extends AppCompatActivity {
                     Toast.makeText(EditDetailActivity.this, "Location cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                if (edit) {
                     updatePost();
-//                } else {
-//                    savePost(null);
-//                }
             }
         });
 
@@ -172,6 +175,8 @@ public class EditDetailActivity extends AppCompatActivity {
                 onPickPhoto(view);
             }
         });
+
+        setTagInformationListeners();
     }
 
     private void setPlace(Place place) {
@@ -257,12 +262,8 @@ public class EditDetailActivity extends AppCompatActivity {
                 }
                 Log.i(TAG, "Post save was successful");
                 Intent i;
-//                    if (edit) {
                 i = new Intent(EditDetailActivity.this, PostDetailActivity.class);
                 i.putExtra("post_id", editPost.getObjectId());
-//                    } else {
-//                        i = new Intent(EditDetailActivity.this, MainActivity.class);
-//                    }
                 startActivity(i);
                 finish();
             }
@@ -340,6 +341,56 @@ public class EditDetailActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void setTagInformationListeners() {
+        binding.cbVegetarian.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Vegetarian", getString(R.string.vegetarian_information));
+                return false;
+            }
+        });
+
+        binding.cbVegan.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Vegan", getString(R.string.vegan_information));
+                return false;
+            }
+        });
+
+        binding.cbKosher.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Kosher", getString(R.string.kosher_information));
+                return false;
+            }
+        });
+
+        binding.cbHalal.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                createTagInformationDialog("Halal", getString(R.string.halal_information));
+                return false;
+            }
+        });
+    }
+
+    private void createTagInformationDialog(String title, String message) {
+        SpannableString s = new SpannableString(message);
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        AlertDialog dialog = new MaterialAlertDialogBuilder(this)
+                .setTitle(title)
+                .setMessage(s)
+                .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        return;
+                    }
+                })
+                .show();
+        ((TextView)(dialog.findViewById(android.R.id.message))).setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     @Override

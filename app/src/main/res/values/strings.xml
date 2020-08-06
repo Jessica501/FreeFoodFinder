@@ -10,4 +10,24 @@
         Don\'t have an account?
         <font color="#0645AD">Sign up.</font>
     </string>
+
+    <string name="vegetarian_information">
+        Vegetarian food does not contain any meat
+        (includes meat, poultry, seafood, insects, gelatin, or stocks from animals).
+    </string>
+    <string name="vegan_information">
+        Vegan food does not contain any animal products.
+        Food that contains meat, dairy, eggs, or honey are not vegan.
+    </string>
+    <string name="kosher_information">
+        Kosher food is any food or beverage that Jewish dietary laws allow a person to eat.
+        Kosher certified foods are often labeled on the packaging.
+        For more information, visit https://oukosher.org/the-kosher-primer/.
+    </string>
+    <string name="halal_information">
+        Halal food is any food or beverage that Islamic dietary laws allows a person to eat.
+        Halal foods are often labeled on the packaging. For more information, visit
+        https://www.icv.org.au/about/about-islam-overview/what-is-halal-a-guide-for-non-muslims/
+    </string>
+
 </resources>
