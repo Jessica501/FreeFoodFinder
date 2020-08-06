@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 import com.example.freefood.activities.MainActivity;
+import com.example.freefood.activities.PostDetailActivity;
 import com.example.freefood.utils.Utils;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -24,6 +25,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 
+import java.util.Map;
 import java.util.Random;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -41,7 +43,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        final Intent intent = new Intent(this, MainActivity.class);
+        Map<String, String> data = remoteMessage.getData();
+
+        // do not display notification if current user posted it
+        String postUserId = data.get("userId");
+        if (postUserId.equals(ParseUser.getCurrentUser().getObjectId())) {
+            return;
+        }
+
+        // only displays notification if you are within NOTIIFICATIONS_RADIUS from the post location
+        double latitude = Double.parseDouble(data.get("latitude"));
+        double longitude = Double.parseDouble(data.get("longitude"));
+
+        final Intent intent = new Intent(this, PostDetailActivity.class);
+        intent.putExtra("post_id", data.get("postId"));
         NotificationManager notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         int notificationID = new Random().nextInt(3000);
 
@@ -52,15 +67,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             setupChannels(notificationManager);
         }
 
-        // do not display notification if current user posted it
-        String postUserId = remoteMessage.getData().get("userId");
-        if (postUserId.equals(ParseUser.getCurrentUser().getObjectId())) {
-            return;
-        }
-
-        // only displays notification if you are within NOTIIFICATIONS_RADIUS from the post location
-        double latitude = Double.parseDouble(remoteMessage.getData().get("latitude"));
-        double longitude = Double.parseDouble(remoteMessage.getData().get("longitude"));
 
         ParseGeoPoint postLocation = new ParseGeoPoint(latitude, longitude);
         if (Utils.getRelativeDistance(postLocation) > NOTIFICATIONS_RADIUS) {
@@ -76,11 +82,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_fastfood_24)
                 .setLargeIcon(largeIcon)
-                .setContentTitle(remoteMessage.getData().get("title"))
-                .setContentText(remoteMessage.getData().get("message"))
+                .setContentTitle(data.get("title"))
+                .setContentText(data.get("message"))
                 .setAutoCancel(true)
                 .setSound(notificationSoundUri)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(data.get("message")));
 
         //Set notification color to match your app color template
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {notificationBuilder.setColor(getResources().getColor(R.color.primaryDarkColor));

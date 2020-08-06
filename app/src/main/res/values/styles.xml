@@ -12,6 +12,7 @@
         <item name="colorPrimaryVariant">@color/primaryLightColor</item>
         <item name="colorSecondary">@color/secondaryColor</item>
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="android:textColorLink">@color/secondaryDarkColor</item>
         <item name="colorSurface">@color/white</item>
         <item name="background">@color/white</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>

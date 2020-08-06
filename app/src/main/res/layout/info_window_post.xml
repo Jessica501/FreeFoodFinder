@@ -5,15 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:cropToPadding="false"
-        android:scaleType="centerCrop"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_fastfood_24" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_margin="4dp"
+            android:cropToPadding="false"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_fastfood_24" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/tvTitle"
@@ -25,7 +36,7 @@
         android:textColor="#222222"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/ivImage"
+        app:layout_constraintStart_toEndOf="@+id/cvImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
