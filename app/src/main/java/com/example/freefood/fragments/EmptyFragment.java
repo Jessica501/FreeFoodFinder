@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.freefood.R;
 import com.example.freefood.databinding.FragmentEmptyBinding;
 
 public class EmptyFragment extends Fragment {

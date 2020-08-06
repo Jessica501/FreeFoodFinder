@@ -76,8 +76,6 @@ public class ComposeFragment extends Fragment {
 
     private Place place;
     private ParseGeoPoint parseGeoPoint;
-    private boolean edit;
-    private Post editPost;
     private AutocompleteSupportFragment autocompleteFragment;
 
 
@@ -109,23 +107,6 @@ public class ComposeFragment extends Fragment {
                 onPickPhoto(view);
             }
         });
-
-//        edit = getIntent().getBooleanExtra("edit", false);
-//        if (edit) {
-//            editPost = getIntent().getExtras().getParcelable("post");
-//            try {
-//                loadInitialFields(editPost);
-//            } catch (JSONException e) {
-//                Log.e(TAG, "Error loading contains json information into checkboxes", e);
-//            }
-//            binding.btnClaimed.setVisibility(View.VISIBLE);
-//        } else {
-//            image = (ParseFile) Parcels.unwrap(getIntent().getParcelableExtra("image"));
-//            Glide.with(CreateDetailActivity.this)
-//                    .load(image.getUrl())
-//                    .into(binding.ivImage);
-//            binding.btnClaimed.setVisibility(View.GONE);
-//        }
 
         PlacesClient placesClient = Places.createClient(getContext());
 
@@ -167,31 +148,11 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "Location cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                if (edit) {
-//                    updatePost();
-//                } else {
                 savePost(null);
-//                }
             }
         });
 
         binding.btnClaimed.setVisibility(View.GONE);
-
-//        binding.btnClaimed.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                editPost.setClaimed(true);
-//                editPost.saveInBackground(new SaveCallback() {
-//                    @Override
-//                    public void done(ParseException e) {
-//                        if (e != null) {
-//                            Log.e(TAG, "Error saving post after setting claimed to false");
-//                        }
-//                        finish();
-//                    }
-//                });
-//            }
-//        });
 
         binding.cbCurrentLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -327,17 +288,11 @@ public class ComposeFragment extends Fragment {
                 createNotification(finalPost);
 
                 Intent i;
-//                if (edit) {
-//                    i = new Intent(getContext(), PostDetailActivity.class);
-//                    i.putExtra("post_id", editPost.getObjectId());
-//                } else {
                     i = new Intent(getContext(), MainActivity.class);
-//                }
                 startActivity(i);
             }
         });
     }
-
 
     private void createNotification(Post post) {
         String topic = "/topics/all"; //topic must match with what the receiver subscribed to
@@ -389,7 +344,6 @@ public class ComposeFragment extends Fragment {
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
     }
 
-
     private JSONObject createTagsJson() throws JSONException {
         JSONObject tags = new JSONObject();
         tags.put("vegetarian", binding.cbVegetarian.isChecked());
@@ -398,16 +352,6 @@ public class ComposeFragment extends Fragment {
         tags.put("halal", binding.cbHalal.isChecked());
         return tags;
     }
-
-//    private void updatePost() {
-//        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-//        query.getInBackground(editPost.getObjectId(), new GetCallback<Post>() {
-//            @Override
-//            public void done(Post object, ParseException e) {
-//                savePost(object);
-//            }
-//        });
-//    }
 
     // creates a contains JSONObject using the checkboxes for the various allergens
     private JSONObject createContainsJson() throws JSONException {
@@ -422,27 +366,4 @@ public class ComposeFragment extends Fragment {
         contains.put("fish", binding.cbFish.isChecked());
         return contains;
     }
-
-//    // load initial fields if post is being edited
-//    private void loadInitialFields(Post post) throws JSONException {
-//        parseFile = post.getImage();
-//        Glide.with(this)
-//                .load(post.getImage().getUrl())
-//                .into(binding.ivImage);
-//        binding.etTitle.setText(post.getTitle());
-//        String address = Utils.reverseGeocode(getContext(), post.getLocation());
-//        autocompleteFragment.setText(address);
-//        this.parseGeoPoint = post.getLocation();
-//        binding.etDescription.setText(post.getDescription());
-//        JSONObject jsonObject = post.getContains();
-//
-//        CheckBox[] checkBoxes = new CheckBox[]{binding.cbMilk, binding.cbEggs, binding.cbPeanuts, binding.cbTreeNuts, binding.cbSoy, binding.cbWheat, binding.cbFish, binding.cbShellfish};
-//        for (int i = 0; i < 8; i++) {
-//            CheckBox checkBox = checkBoxes[i];
-//            String allergen = String.valueOf(checkBox.getText()).toLowerCase();
-//            if (jsonObject.getBoolean(allergen)) {
-//                checkBox.setChecked(true);
-//            }
-//        }
-//    }
 }

@@ -42,11 +42,7 @@ public class PostInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     public View getInfoContents(Marker marker) {
 
         Post post = (Post) marker.getTag();
-        if (post.getClaimed()) {
-            binding.tvTitle.setText("CLAIMED - " + post.getTitle());
-        } else {
-            binding.tvTitle.setText(post.getTitle());
-        }
+        binding.tvTitle.setText(post.getClaimedTitle());
         if (post.getDescription().trim().isEmpty()) {
             binding.tvDescription.setVisibility(View.GONE);
         } else {

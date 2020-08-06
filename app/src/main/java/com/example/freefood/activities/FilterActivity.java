@@ -6,17 +6,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.freefood.R;
 import com.example.freefood.databinding.ActivityFilterBinding;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
-
-import org.json.JSONException;
 
 import java.util.HashSet;
 import java.util.List;

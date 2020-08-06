@@ -35,14 +35,11 @@ import java.util.List;
 
 import static android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE;
 
-
 public class Utils {
-
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 11;
     public static final int PICK_PHOTO_CODE = 21;
-
-
+    
     // converts the contains JSONObject to a String
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String containsJsontoString(JSONObject jsonObject) throws JSONException {
@@ -173,10 +170,8 @@ public class Utils {
 
     public static String getRelativeTimeAgo(Date date) {
         long dateMillis = date.getTime();
-        String relativeDate = "";
-        relativeDate = String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
+        return String.valueOf(DateUtils.getRelativeTimeSpanString(dateMillis,
                 System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, FORMAT_ABBREV_RELATIVE));
-        return relativeDate;
     }
 
     public static String reverseGeocode(Context context, ParseGeoPoint location) {
@@ -205,5 +200,4 @@ public class Utils {
         int stop = original.indexOf(",");
         return original.substring(0, stop);
     }
-
 }

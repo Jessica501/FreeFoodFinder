@@ -43,14 +43,12 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
-
 
 public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final String TAG = "MapFragment";
@@ -60,8 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private GoogleMap map;
     private HashSet<String> allergens;
     private double maxDistance;
-    private List<Post> posts;
-    private Place place;
     private HashSet<String> tags;
 
 
@@ -81,7 +77,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         super.onViewCreated(view, savedInstanceState);
 
 
-        posts = new ArrayList<>();
         SupportMapFragment mapFragment;
         mapFragment = (SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);

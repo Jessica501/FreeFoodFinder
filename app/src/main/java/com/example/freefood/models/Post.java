@@ -49,6 +49,14 @@ public class Post extends ParseObject implements Comparable<Post> {
     public void setClaimed(boolean claimed) { put(KEY_CLAIMED, claimed); }
     public boolean getClaimed() { return getBoolean(KEY_CLAIMED); }
 
+    public String getClaimedTitle() {
+        if (getClaimed()) {
+            return "CLAIMED - " + getTitle();
+        } else {
+            return getTitle();
+        }
+    }
+
     public ParseRelation<Comment> getComments() { return getRelation(KEY_COMMENTS); }
 
     @Override

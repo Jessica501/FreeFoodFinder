@@ -1,17 +1,12 @@
 package com.example.freefood;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.example.freefood.models.Comment;
 import com.example.freefood.models.Post;
 import com.example.freefood.models.User;
 import com.parse.Parse;
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

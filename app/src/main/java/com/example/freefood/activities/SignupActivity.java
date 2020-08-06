@@ -52,13 +52,16 @@ public class SignupActivity extends AppCompatActivity {
         if (name.trim().isEmpty()) {
             Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
-        } if (username.trim().isEmpty()) {
+        }
+        if (username.trim().isEmpty()) {
             Toast.makeText(this, "Username cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
-        } if (password.trim().isEmpty()) {
+        }
+        if (password.trim().isEmpty()) {
             Toast.makeText(this, "Password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
-        } if (!password.equals(confirmPassword)) {
+        }
+        if (!password.equals(confirmPassword)) {
             Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
             return false;
         }

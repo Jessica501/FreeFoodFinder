@@ -180,11 +180,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void bind(Post post) {
             this.post = post;
-            if (post.getClaimed()) {
-                binding.tvTitle.setText("CLAIMED - " + post.getTitle());
-            } else {
-                binding.tvTitle.setText(post.getTitle());
-            }
+            binding.tvTitle.setText(post.getClaimedTitle());
 //            binding.tvLocation.setText(Utils.shortenedReverseGeocode(context, post.getLocation()));
             String description = post.getDescription().trim();
             if (description.isEmpty()) {

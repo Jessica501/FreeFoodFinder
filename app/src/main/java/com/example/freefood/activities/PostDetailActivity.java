@@ -59,7 +59,6 @@ import static com.example.freefood.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CO
 import static com.example.freefood.utils.Utils.containsJsontoString;
 import static com.example.freefood.utils.Utils.getRelativeDistanceString;
 import static com.example.freefood.utils.Utils.getRelativeTimeAgo;
-import static com.example.freefood.utils.Utils.queryPosts;
 
 public class PostDetailActivity extends AppCompatActivity {
 
@@ -124,7 +123,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String description = String.valueOf(binding.etComment.getText());
-                if (description.trim().isEmpty() && parseFile == null) {
+                if (parseFile == null && description.trim().isEmpty()) {
                     Toast.makeText(PostDetailActivity.this, "Cannot submit empty comment", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -319,12 +318,7 @@ public class PostDetailActivity extends AppCompatActivity {
             binding.ivEdit.setVisibility(View.GONE);
             binding.ivDelete.setVisibility(View.GONE);
         }
-
-        if (post.getClaimed()) {
-            binding.tvTitle.setText("CLAIMED - " + post.getTitle());
-        } else {
-            binding.tvTitle.setText(post.getTitle());
-        }
+        binding.tvTitle.setText(post.getClaimedTitle());
         binding.tvRelativeDistance.setText(getRelativeDistanceString(post));
         binding.tvLocation.setText(Utils.reverseGeocode(this, post.getLocation()));
         binding.tvUsername.setText("@" + post.getAuthor().getUsername());
@@ -356,8 +350,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 .circleCrop()
                 .into(binding.ivProfile);
 
-        SupportMapFragment mapFragment;
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
