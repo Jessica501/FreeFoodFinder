@@ -3,6 +3,7 @@ package com.example.freefood.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,9 +11,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.transition.Fade;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.MyFirebaseMessagingService;
 import com.example.freefood.R;
 import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.ActivitySettingsBinding;
@@ -33,6 +37,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
     ActivitySettingsBinding binding;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,26 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onPickPhoto(view);
+            }
+        });
+
+        float currentRadius = (float) MyFirebaseMessagingService.getNotificationsRadius();
+        binding.tvDistance.setText(String.valueOf(currentRadius));
+        binding.slider.setValue(currentRadius);
+
+        binding.slider.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                binding.tvDistance.setText(String.valueOf(binding.slider.getValue()));
+                return false;
+            }
+        });
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyFirebaseMessagingService.setNotificationsRadius(binding.slider.getValue());
+                Toast.makeText(SettingsActivity.this, "Notifications radius set to " + binding.slider.getValue() + " miles", Toast.LENGTH_SHORT).show();
             }
         });
     }

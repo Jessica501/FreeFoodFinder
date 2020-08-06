@@ -32,7 +32,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "mFCMService";
     private final String ADMIN_CHANNEL_ID ="admin_channel";
     private static final String SUBSCRIBE_TO = "all";
-    private static final double NOTIFICATIONS_RADIUS = 5;
+    private static double notificationsRadius = 5;
 
     @Override
     public void onNewToken (String token) {
@@ -51,7 +51,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return;
         }
 
-        // only displays notification if you are within NOTIIFICATIONS_RADIUS from the post location
+        // only displays notification if you are within notificationsRadius from the post location
         double latitude = Double.parseDouble(data.get("latitude"));
         double longitude = Double.parseDouble(data.get("longitude"));
 
@@ -69,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         ParseGeoPoint postLocation = new ParseGeoPoint(latitude, longitude);
-        if (Utils.getRelativeDistance(postLocation) > NOTIFICATIONS_RADIUS) {
+        if (Utils.getRelativeDistance(postLocation) > notificationsRadius) {
             return;
         }
 
@@ -111,4 +111,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(adminChannel);
         }
     }
+
+    public static double getNotificationsRadius() {
+        return notificationsRadius;
+    }
+
+    public static void setNotificationsRadius(double radius) {
+        notificationsRadius = radius;
+    }
+
 }

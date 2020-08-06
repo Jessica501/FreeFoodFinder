@@ -52,4 +52,66 @@
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/ivProfile"
         app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+
+    <TextView
+        android:id="@+id/tvNotifications"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/titillium_web_semibold"
+        android:text="Notifications"
+        android:textColor="#202020"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:stepSize="0.1"
+        android:value="false"
+        android:valueFrom="0.0"
+        android:valueTo="10.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNotifications" />
+
+    <TextView
+        android:id="@+id/tvNotifyMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:text="Notify me about posts within "
+        app:layout_constraintEnd_toStartOf="@+id/tvMiles"
+        app:layout_constraintTop_toTopOf="@+id/tvDistance" />
+
+    <TextView
+        android:id="@+id/tvMiles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" miles of my location."
+        app:layout_constraintEnd_toEndOf="@+id/slider"
+        app:layout_constraintTop_toBottomOf="@+id/slider" />
+
+    <TextView
+        android:id="@+id/tvDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="__"
+        app:layout_constraintEnd_toStartOf="@+id/tvMiles"
+        app:layout_constraintStart_toEndOf="@+id/tvNotifyMe"
+        app:layout_constraintTop_toTopOf="@+id/tvMiles" />
+
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMiles" />
 </androidx.constraintlayout.widget.ConstraintLayout>
