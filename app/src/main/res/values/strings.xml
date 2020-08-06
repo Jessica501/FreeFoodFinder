@@ -2,7 +2,12 @@
     <string name="app_name">SnackTrack</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="have_an_account">
+        Have an account already?
+        <font color="#0645AD">Log in.</font>
+    </string>
+    <string name="do_not_have_an_account">
+        Don\'t have an account?
+        <font color="#0645AD">Sign up.</font>
+    </string>
 </resources>

@@ -46,7 +46,7 @@
         android:id="@+id/tvNoAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an account? Sign up."
+        android:text="@string/do_not_have_an_account"
         android:textColor="#2B2B2B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/etUsername"

@@ -68,7 +68,7 @@
         android:id="@+id/tvHaveAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Have an account already? Log in."
+        android:text="@string/have_an_account"
         android:textColor="#2B2B2B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/etName"
