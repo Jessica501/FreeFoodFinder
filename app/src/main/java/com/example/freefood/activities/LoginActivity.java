@@ -2,8 +2,10 @@ package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -34,7 +36,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), SignupActivity.class);
-                startActivity(i);
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this).toBundle();
+                startActivity(i, bundle);
             }
         });
 
@@ -47,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                 logInUser(username, password);
             }
         });
+
     }
 
     private void logInUser(String username, String password) {

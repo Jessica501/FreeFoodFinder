@@ -4,6 +4,8 @@
         <!-- Customize your theme here. -->
 
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/default_window_fade</item>
+        <item name="android:windowExitTransition">@transition/default_window_fade</item>
 
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>

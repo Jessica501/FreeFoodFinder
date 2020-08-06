@@ -1,5 +1,6 @@
 package com.example.freefood.fragments;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.freefood.activities.LoginActivity;
+import com.example.freefood.activities.SignupActivity;
 import com.example.freefood.adapters.PostsAdapter;
 import com.example.freefood.R;
 import com.example.freefood.activities.SettingsActivity;
@@ -57,7 +60,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getContext(), SettingsActivity.class);
-                startActivity(i);
+                Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle();
+                startActivity(i,bundle);
             }
         });
 
@@ -103,7 +107,6 @@ public class ProfileFragment extends Fragment {
         binding.swipeContainer.setColorSchemeResources(R.color.secondaryColor,
                 R.color.secondaryDarkColor,
                 R.color.secondaryLightColor);
-
     }
 
     @Override

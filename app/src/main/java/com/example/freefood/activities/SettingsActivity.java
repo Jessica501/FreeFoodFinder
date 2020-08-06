@@ -8,10 +8,12 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.example.freefood.R;
 import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.ActivitySettingsBinding;
 import com.example.freefood.models.User;

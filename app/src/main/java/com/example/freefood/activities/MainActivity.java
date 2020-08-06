@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.MenuItem;
 
