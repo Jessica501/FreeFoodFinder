@@ -1,11 +1,13 @@
 package com.example.freefood.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,9 +29,11 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import permissions.dispatcher.NeedsPermission;
 
+import static com.example.freefood.utils.Utils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE;
 import static com.example.freefood.utils.Utils.PICK_PHOTO_CODE;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -37,13 +41,42 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
     ActivitySettingsBinding binding;
 
-    @SuppressLint("ClickableViewAccessibility")
+    public String photoFileName = "photo.jpg";
+    public File photoFile;
+    private ParseFile newProfileImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        initializeCurrentSettings();
+
+        binding.btnGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onPickPhoto(view);
+            }
+        });
+
+        binding.btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onLaunchCamera(view);
+            }
+        });
+
+        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveSettings();
+            }
+        });
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initializeCurrentSettings() {
         User user = (User) ParseUser.getCurrentUser();
         binding.tvName.setText(user.getName());
         binding.tvUsername.setText("@"+user.getUsername());
@@ -51,13 +84,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .load(user.getProfileImage().getUrl())
                 .circleCrop()
                 .into(binding.ivProfile);
-
-        binding.btnUpdateProfilePhoro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onPickPhoto(view);
-            }
-        });
 
         float currentRadius = (float) MyFirebaseMessagingService.getNotificationsRadius();
         binding.tvDistance.setText(String.valueOf(currentRadius));
@@ -70,14 +96,43 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+    private void saveSettings() {
+        saveProfileImage();
+        saveNotificationsRadius();
+        Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
+    }
+
+
+    // save profile image to parse
+    private void saveProfileImage() {
+        if (newProfileImage == null) {
+            return;
+        }
+        final User user = (User) ParseUser.getCurrentUser();
+        user.setProfileImage(newProfileImage);
+        user.saveInBackground(new SaveCallback() {
             @Override
-            public void onClick(View view) {
-                MyFirebaseMessagingService.setNotificationsRadius(binding.slider.getValue());
-                Toast.makeText(SettingsActivity.this, "Notifications radius set to " + binding.slider.getValue() + " miles", Toast.LENGTH_SHORT).show();
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error saving profile image", e);
+                } else {
+                    Log.i(TAG, "Successfully saved profile image");
+                    // load image into profile imageView
+                    Glide.with(SettingsActivity.this)
+                            .load(user.getProfileImage().getUrl())
+                            .circleCrop()
+                            .into(binding.ivProfile);
+                    binding.ivPreview.setVisibility(View.INVISIBLE);
+                    binding.tvPreview.setVisibility(View.INVISIBLE);
+                }
             }
         });
+    }
+
+    private void saveNotificationsRadius() {
+        MyFirebaseMessagingService.setNotificationsRadius(binding.slider.getValue());
     }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -89,6 +144,25 @@ public class SettingsActivity extends AppCompatActivity {
         if (intent.resolveActivity(this.getPackageManager()) != null) {
             // Bring up gallery to select a photo
             startActivityForResult(intent, PICK_PHOTO_CODE);
+        }
+    }
+
+    public void onLaunchCamera(View view) {
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Create a File reference for future access
+        photoFile = Utils.getPhotoFileUri(photoFileName, this);
+
+        // wrap File object into a content provider
+        // required for API >= 24
+        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
+        Uri fileProvider = FileProvider.getUriForFile(this, "com.codepath.fileprovider.FreeFoodFinder", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        if (intent.resolveActivity(this.getPackageManager()) != null) {
+            // Start the image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
     }
 
@@ -106,27 +180,32 @@ public class SettingsActivity extends AppCompatActivity {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
             byte[] photoBytes = stream.toByteArray();
-            final ParseFile parseFile = new ParseFile(photoBytes);
+            newProfileImage = new ParseFile(photoBytes);
 
-            // save profile image to Parse
-            final User user = (User) ParseUser.getCurrentUser();
-            user.setProfileImage(parseFile);
-            user.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    if (e != null) {
-                        Log.e(TAG, "Error saving profile image", e);
-                    } else {
-                        Log.i(TAG, "Successfully saved profile image");
-                        // load image into profile imageView
-                        Glide.with(SettingsActivity.this)
-                                .load(user.getProfileImage().getUrl())
-                                .circleCrop()
-                                .into(binding.ivProfile);
-                    }
-                }
-            });
-
+            binding.ivPreview.setVisibility(View.VISIBLE);
+            binding.tvPreview.setVisibility(View.VISIBLE);
+            Glide.with(SettingsActivity.this)
+                    .load(photoUri)
+                    .circleCrop()
+                    .into(binding.ivPreview);
+        }
+        // Result from camera
+        else if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // by this point we have the camera photo on disk
+                Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+                // create parseFile
+                newProfileImage = new ParseFile(photoFile);
+                // Load the taken image into a preview
+                binding.ivPreview.setVisibility(View.VISIBLE);
+                binding.tvPreview.setVisibility(View.VISIBLE);
+                Glide.with(SettingsActivity.this)
+                        .load(takenImage)
+                        .circleCrop()
+                        .into(binding.ivPreview);
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

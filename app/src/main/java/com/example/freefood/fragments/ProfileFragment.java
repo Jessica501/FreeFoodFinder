@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
 
     FragmentProfileBinding binding;
     protected PostsAdapter adapter;
-    Snackbar snackbar;
+    User user;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(i);
             }
         });
-        final User user = (User) ParseUser.getCurrentUser();
+        user = (User) ParseUser.getCurrentUser();
         binding.tvName.setText(user.getName());
         binding.tvUsername.setText("@" + user.getUsername());
         Glide.with(getContext())
@@ -112,6 +112,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Glide.with(getContext())
+                .load(user.getProfileImage().getUrl())
+                .circleCrop()
+                .into(binding.ivProfile);
         queryPosts(adapter, ParseUser.getCurrentUser());
     }
 

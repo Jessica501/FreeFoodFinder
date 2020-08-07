@@ -25,6 +25,7 @@
         <item name="imageButtonStyle">@style/ImageButton</item>
         <item name="sliderStyle">@style/Widget.App.Slider</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
+        <item name="android:textViewStyle">@style/App.TextView</item>
     </style>
 
 
@@ -104,6 +105,10 @@
     <style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
         <item name="fontFamily">@font/titillium_web_semibold</item>
         <item name="android:textSize">22dp</item>
+    </style>
+
+    <style name="App.TextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/grayTextColor</item>
     </style>
 
 </resources>

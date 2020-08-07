@@ -44,26 +44,73 @@
         app:layout_constraintTop_toBottomOf="@+id/tvName"
         tools:text="Username" />
 
-    <Button
-        android:id="@+id/btnUpdateProfilePhoro"
+    <TextView
+        android:id="@+id/tvUpdateProfile"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:text="Update profile photo"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/titillium_web_semibold"
+        android:text="Update Profile Photo"
+        android:textColor="#202020"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+
+    <Button
+        android:id="@+id/btnGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Gallery"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/ivProfile"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
+        app:icon="@drawable/ic_baseline_photo_library_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvUpdateProfile" />
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Camera"
+        app:icon="@drawable/ic_baseline_photo_camera_24"
+        app:layout_constraintStart_toStartOf="@+id/btnGallery"
+        app:layout_constraintTop_toBottomOf="@+id/btnGallery" />
+
+    <ImageView
+        android:id="@+id/ivPreview"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCamera"
+        app:layout_constraintEnd_toEndOf="@+id/tvPreview"
+        app:layout_constraintStart_toStartOf="@+id/tvPreview"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/tvPreview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Preview:"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/ivPreview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnGallery" />
 
     <TextView
         android:id="@+id/tvNotifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/titillium_web_semibold"
         android:text="Notifications"
         android:textColor="#202020"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
 
     <com.google.android.material.slider.Slider
         android:id="@+id/slider"
@@ -114,4 +161,5 @@
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvMiles" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
