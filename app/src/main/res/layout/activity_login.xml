@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
 
+    <TextView
+        android:id="@+id/tvAppName"
+        style="@style/App.TextView.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SnackTrack"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="0dp"
@@ -52,6 +66,6 @@
         app:layout_constraintEnd_toEndOf="@+id/etUsername"
         app:layout_constraintStart_toStartOf="@+id/etUsername"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".6" />
+        app:layout_constraintVertical_bias=".65" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

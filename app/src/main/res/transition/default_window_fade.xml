@@ -4,5 +4,6 @@
         <target android:excludeId="@android:id/statusBarBackground" />
         <target android:excludeId="@android:id/navigationBarBackground" />
         <target android:excludeId="@id/include" />
+        <target android:excludeId="@id/tvAppName"/>
     </targets>
 </fade>

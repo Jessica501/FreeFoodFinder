@@ -116,4 +116,11 @@
         <item name="android:textColor">@color/darkGrayTextColor</item>
         <item name="android:textSize">18dp</item>
     </style>
+
+    <style name="App.TextView.Title" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/atma_semibold</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:textSize">30dp</item>
+    </style>
+
 </resources>
