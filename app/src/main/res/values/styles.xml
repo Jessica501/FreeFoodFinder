@@ -111,4 +111,9 @@
         <item name="android:textColor">@color/grayTextColor</item>
     </style>
 
+    <style name="App.TextView.Heading" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/titillium_web_semibold</item>
+        <item name="android:textColor">@color/darkGrayTextColor</item>
+        <item name="android:textSize">18dp</item>
+    </style>
 </resources>

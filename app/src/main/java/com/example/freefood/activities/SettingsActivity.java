@@ -23,13 +23,17 @@ import com.example.freefood.R;
 import com.example.freefood.utils.Utils;
 import com.example.freefood.databinding.ActivitySettingsBinding;
 import com.example.freefood.models.User;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import permissions.dispatcher.NeedsPermission;
 
@@ -75,11 +79,11 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     private void initializeCurrentSettings() {
         User user = (User) ParseUser.getCurrentUser();
         binding.tvName.setText(user.getName());
-        binding.tvUsername.setText("@"+user.getUsername());
+        binding.tvUsername.setText("@" + user.getUsername());
         Glide.with(SettingsActivity.this)
                 .load(user.getProfileImage().getUrl())
                 .circleCrop()
@@ -96,29 +100,53 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        binding.etName.setText(user.getName());
+        binding.etUsername.setText(user.getUsername());
     }
 
     private void saveSettings() {
-        saveProfileImage();
-        saveNotificationsRadius();
-        Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
+        final String name = String.valueOf(binding.etName.getText());
+        final String username = String.valueOf(binding.etUsername.getText());
+
+        // check if username is unchanged
+        if (username.equals(ParseUser.getCurrentUser().getUsername())) {
+            saveUser(name, username);
+            saveNotificationsRadius();
+        }
+        // if username is changed, check if username is taken
+        else {
+            ParseQuery<ParseUser> usernameQuery = ParseUser.getQuery();
+            usernameQuery.whereEqualTo("username", username);
+            usernameQuery.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> objects, ParseException e) {
+                    if (objects.size() > 0) {
+                        Toast.makeText(SettingsActivity.this, "Username taken. Try again.", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        saveUser(name, username);
+                        saveNotificationsRadius();
+                    }
+                }
+            });
+        }
     }
 
-
-    // save profile image to parse
-    private void saveProfileImage() {
-        if (newProfileImage == null) {
-            return;
-        }
+    // save name, username, profile image to parse
+    private void saveUser(final String name, final String username) {
         final User user = (User) ParseUser.getCurrentUser();
-        user.setProfileImage(newProfileImage);
+        user.setName(name);
+        user.setUsername(username);
+        if (newProfileImage != null) {
+            user.setProfileImage(newProfileImage);
+        }
         user.saveInBackground(new SaveCallback() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void done(ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Error saving profile image", e);
-                } else {
-                    Log.i(TAG, "Successfully saved profile image");
+                if (e == null) {
+                    Log.i(TAG, "Successfully saved user");
                     // load image into profile imageView
                     Glide.with(SettingsActivity.this)
                             .load(user.getProfileImage().getUrl())
@@ -126,6 +154,20 @@ public class SettingsActivity extends AppCompatActivity {
                             .into(binding.ivProfile);
                     binding.ivPreview.setVisibility(View.INVISIBLE);
                     binding.tvPreview.setVisibility(View.INVISIBLE);
+
+                    binding.tvName.setText(name);
+                    binding.tvUsername.setText("@" + username);
+
+                    binding.tilName.clearFocus();
+                    binding.tilUsername.clearFocus();
+                    Toast.makeText(SettingsActivity.this, "Settings saved", Toast.LENGTH_SHORT).show();
+                }
+                // note: this should not happen
+                else if (e.getCode() == ParseException.USERNAME_TAKEN) {
+                    Toast.makeText(SettingsActivity.this, "Error: Username taken.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Log.e(TAG, "Error saving user " + e.getCode(), e);
                 }
             }
         });

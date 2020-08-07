@@ -74,13 +74,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(i);
             }
         });
-        user = (User) ParseUser.getCurrentUser();
-        binding.tvName.setText(user.getName());
-        binding.tvUsername.setText("@" + user.getUsername());
-        Glide.with(getContext())
-                .load(user.getProfileImage().getUrl())
-                .circleCrop()
-                .into(binding.ivProfile);
+        loadUserFields();
 
         // set adapter and layout manager for recycler view
         adapter = new PostsAdapter(getContext());
@@ -109,13 +103,20 @@ public class ProfileFragment extends Fragment {
                 R.color.secondaryLightColor);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void loadUserFields() {
+        user = (User) ParseUser.getCurrentUser();
+        binding.tvName.setText(user.getName());
+        binding.tvUsername.setText("@" + user.getUsername());
         Glide.with(getContext())
                 .load(user.getProfileImage().getUrl())
                 .circleCrop()
                 .into(binding.ivProfile);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUserFields();
         queryPosts(adapter, ParseUser.getCurrentUser());
     }
 
