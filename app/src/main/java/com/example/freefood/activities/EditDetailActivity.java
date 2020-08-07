@@ -261,6 +261,7 @@ public class EditDetailActivity extends AppCompatActivity {
                     return;
                 }
                 Log.i(TAG, "Post save was successful");
+                binding.pbLoading.setVisibility(View.INVISIBLE);
                 Intent i;
                 i = new Intent(EditDetailActivity.this, PostDetailActivity.class);
                 i.putExtra("post_id", editPost.getObjectId());
@@ -275,6 +276,7 @@ public class EditDetailActivity extends AppCompatActivity {
         query.getInBackground(editPost.getObjectId(), new GetCallback<Post>() {
             @Override
             public void done(Post object, ParseException e) {
+                binding.pbLoading.setVisibility(View.VISIBLE);
                 savePost(object);
             }
         });

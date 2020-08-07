@@ -160,6 +160,7 @@ public class ComposeFragment extends Fragment {
                     Toast.makeText(getContext(), "Location cannot be empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                binding.pbLoading.setVisibility(View.VISIBLE);
                 savePost(null);
             }
         });
@@ -349,6 +350,7 @@ public class ComposeFragment extends Fragment {
                 Log.i(TAG, "Post save was successful");
                 createNotification(finalPost);
 
+                binding.pbLoading.setVisibility(View.INVISIBLE);
                 Intent i;
                 i = new Intent(getContext(), MainActivity.class);
                 startActivity(i);

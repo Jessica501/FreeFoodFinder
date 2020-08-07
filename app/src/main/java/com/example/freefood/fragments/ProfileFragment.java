@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment {
                 ParseUser.logOut();
                 Intent i = new Intent(getContext(), LoginActivity.class);
                 startActivity(i);
+                getActivity().finish();
             }
         });
         loadUserFields();
