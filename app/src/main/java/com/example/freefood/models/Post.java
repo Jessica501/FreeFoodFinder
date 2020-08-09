@@ -63,7 +63,13 @@ public class Post extends ParseObject implements Comparable<Post> {
     public int compareTo(Post post) {
         double myRelativeDistance = Utils.getRelativeDistance(this);
         double otherRelativeDistance = Utils.getRelativeDistance(post);
-        return (int)(myRelativeDistance - otherRelativeDistance);
-
+        double difference = myRelativeDistance - otherRelativeDistance;
+        if (difference < 0 ) {
+            return -1;
+        } else if (difference > 0 ) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 }
