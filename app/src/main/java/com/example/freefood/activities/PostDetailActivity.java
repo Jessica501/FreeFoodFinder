@@ -287,6 +287,7 @@ public class PostDetailActivity extends AppCompatActivity {
     }
 
     private void saveComment(String description) {
+        binding.pbLoading.setVisibility(View.VISIBLE);
         final Comment comment = new Comment();
         comment.setAuthor(ParseUser.getCurrentUser());
         comment.setPost(post);
@@ -299,6 +300,7 @@ public class PostDetailActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "Error saving comment", e);
+                    binding.pbLoading.setVisibility(View.INVISIBLE);
                     return;
                 }
                 if (relation == null) {
@@ -308,6 +310,7 @@ public class PostDetailActivity extends AppCompatActivity {
                 post.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
+                        binding.pbLoading.setVisibility(View.INVISIBLE);
                         if (e != null) {
                             Log.e(TAG, "Error saving comment", e);
                             return;

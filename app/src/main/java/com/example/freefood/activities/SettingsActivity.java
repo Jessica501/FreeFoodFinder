@@ -109,6 +109,7 @@ public class SettingsActivity extends AppCompatActivity {
         final String name = String.valueOf(binding.etName.getText());
         final String username = String.valueOf(binding.etUsername.getText());
 
+        binding.pbLoading.setVisibility(View.VISIBLE);
         // check if username is unchanged
         if (username.equals(ParseUser.getCurrentUser().getUsername())) {
             saveUser(name, username);
@@ -145,6 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void done(ParseException e) {
+                binding.pbLoading.setVisibility(View.INVISIBLE);
                 if (e == null) {
                     Log.i(TAG, "Successfully saved user");
                     // load image into profile imageView
