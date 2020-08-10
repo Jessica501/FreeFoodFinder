@@ -111,7 +111,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         map.setInfoWindowAdapter(new PostInfoWindowAdapter(getContext()));
 
         LatLng latLng = new LatLng(MainActivity.mLocation.getLatitude(), MainActivity.mLocation.getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
 
         queryMapPosts();
 
