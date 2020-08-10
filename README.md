@@ -1,6 +1,3 @@
-Original App Design Project - README Template
-===
-
 # Free Food Finder
 
 ## Table of Contents
@@ -11,7 +8,9 @@ Original App Design Project - README Template
 
 ## Overview
 ### Description
-Users make a post when they have leftover food from an event (or for whatever reason) and other users who are nearby are notified.
+Users post about free food they have leftover from events (or for whatever reason). Other users get push notifications when posts are created near their current location. Users can also browse posts on a stream or map view and filter posts by distance, allergens, and dietary restriction tags.
+
+Video demonstration of the app is [here](https://www.youtube.com/watch?v=HCKPufC6TUo).
 
 ### App Evaluation
 - **Category:** Food
@@ -26,6 +25,7 @@ Users make a post when they have leftover food from an event (or for whatever re
 ### 1. User Stories (Required and Optional)
 
 **Required Must-have Stories**
+
 * User can register a new account
 * User can login
 * User can view free food posts which indicate how close the food is and whether or not the food has been claimed
@@ -38,13 +38,13 @@ Users make a post when they have leftover food from an event (or for whatever re
 * User can filter posts on their feed/in notifications for how far the food is and whether it's been claimed
 
 **Optional Nice-to-have Stories**
+* User can view the posts in their feed in a map view
+* Users can comment on posts/rate the food
+* Users can view all of their own past posts
 * User can get real-time notifications when people near them post
 * Poster gets a notification an hour after the posting asking if the food has been claimed if they haven't already market it as such
 * User can edit their profile to include dietary restrictions
-* User can view the posts in their feed in a map view
-* Users can comment on posts/rate the food
 * Users can follow companies/organizations that post frequently
-* Users can view all of their own past posts
 * Users can search for other users and view all of their past posts
 * Users can customize whether or not others can view their past posts
 * Users can customize notifications to only include those they follow
@@ -58,19 +58,26 @@ Users make a post when they have leftover food from an event (or for whatever re
     * User can register a new account
 * Stream
     * User can view free food posts which indicate how close the food is and whether or not the food has been claimed
+* Map
+    * User can view free food posts in a map view
 * Detail
     * Users can mark when food has been fully claimed after posting
     * User can open up Google maps to find a route to the free food
 * Creation
     * User can post about free food, including a picture of the item and its location
+* Profile
+    * User can view their own posts
+* Settings
+    * User can edit their account settings
 
 ### 3. Navigation
 
 **Tab Navigation** (Tab to Screen)
 
 * Stream
+* Map
 * Creation
-* (optional) Profile
+* Profile
 
 **Flow Navigation** (Screen to Screen)
 
@@ -80,22 +87,22 @@ Users make a post when they have leftover food from an event (or for whatever re
     * Stream
 * Stream
     * Detail
-    * (optional) Profile
+* Map
+    * Detail
 * Detail
     * Stream
-    * (optional) Profile
 * Creation
     * Stream
+* Profile
+    * Detail
+    * Settings
+    * Login
 
-## Wireframes
+## Wireframe
 https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 <img src="YOUR_WIREFRAME_IMAGE_URL" width=600>
 ![](https://i.imgur.com/Z5zAuvB.png)
 
-
-### [BONUS] Digital Wireframes & Mockups
-
-### [BONUS] Interactive Prototype
 
 ## Schema
 ### Models
@@ -110,7 +117,6 @@ https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
 | location | JSON Object with "__type": "Geopoint" | location of the food
 | description | String | more detailed description of the food |
 | contains | JSON Object | maps various allergens/ingredients to a boolean (true if the food contains the allergen) |
-| commentsCount | Number | Number of comments that have been posted to an image
 | comments | Relation to Comment | all the comments that are on this post |
 | claimed | Boolean | true if the food has been marked claimed, false otherwise |
 | createdAt | DateTime | date when post is created (default field) |
@@ -155,16 +161,17 @@ https://www.figma.com/file/u35L1rLYrGHbaMb4xBPz6Y/Wireframe?node-id=0%3A1
     * (Delete) delete post
     * (Read/GET) query all comments on a post
     * (Create/POST) create a new comment on a post
-    * (Delete) delete existing comment
 * Creation
-* Create Detail
     * (Create/POST) create a new post object
 * Profile
     * (Read/GET) query logged in user object
     * (Read/GET) query posts associated with user
-    * (Update/PUT) update user profile image
 * Settings
     * (Update/PUT) change various user fields
+    * (Update/PUT) update user profile image
 
 
-- [OPTIONAL: List endpoints if using existing API such as Yelp]
+### APIs Used:
+* Google Maps: used to display posts in a map view
+* Google Places: used to allow users to search for a location by its street address
+* Firebase: used to implement push notifications
